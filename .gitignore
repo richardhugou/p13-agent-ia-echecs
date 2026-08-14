@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# uv
+# (uv.lock est versionné volontairement)
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+
+# Environnement & secrets
+.env
+*.env.local
+
+# Données & artefacts locaux
+mlruns/
+volumes/
+*.bin
+models_cache/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store

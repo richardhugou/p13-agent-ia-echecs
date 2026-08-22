@@ -85,4 +85,4 @@ Gitflow simplifié : `main` (stable, démo) ← `develop` (intégration) ← `fe
 
 ## Limites connues du POC
 
-8 ouvertures couvertes (manifeste signé) ; pas d'authentification ; exécution locale uniquement ; abstention par seuil non activée en production (décision documentée, défense par le prompt) ; le système d'analyse vidéo (partie 2) est une étude, non implémentée — voir `livrables/`.
+8 ouvertures couvertes (manifeste signé) ; pas d'authentification ; exécution locale uniquement ; le seuil d'abstention (`RAG_SCORE_MIN=0.63`, décidé sur données — notebook 07) bloque 4 pièges sur 5, le dernier repose sur la règle d'honnêteté du prompt ; le système d'analyse vidéo (partie 2) est une étude, non implémentée — voir `livrables/`.

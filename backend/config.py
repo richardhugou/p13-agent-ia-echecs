@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     milvus_port: int = 19530
     embedding_model: str = "qwen3-embedding:0.6b"
     rag_top_k: int = 5
+    # Seuil d'abstention (décision produit du 26/08, notebook 07) : sous ce score, une fiche
+    # n'est pas transmise au rédacteur — coupe mécaniquement les citations hors sujet.
+    rag_score_min: float = 0.63
 
     lichess_explorer_url: str = "https://explorer.lichess.ovh"
     lichess_api_token: str = ""  # requis depuis 2026 : l'explorer répond 401 sans autorisation

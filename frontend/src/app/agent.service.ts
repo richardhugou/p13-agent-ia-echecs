@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 export interface CoupTheorique {
   uci: string;
   san: string;
+  /** Notation française annotée : « Fc5 (fou f8) » — pièce et case de départ explicites. */
+  san_fr: string;
   games: number;
   white: number;
   draws: number;

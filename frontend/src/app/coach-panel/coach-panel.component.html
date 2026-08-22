@@ -18,7 +18,7 @@
       <span class="sous-titre">{{ reponse.total_games | number }} parties de maîtres</span>
     </p>
     <div class="coup" *ngFor="let coup of reponse.theory_moves.slice(0, 5)">
-      <span class="san">{{ coup.san }}</span>
+      <span class="san">{{ sanCourt(coup) }}<span class="depart" *ngIf="departPiece(coup)"> {{ departPiece(coup) }}</span></span>
       <span class="jauge"><span class="rempli" [style.width.%]="(coup.games / maxGames) * 100"></span></span>
       <span class="parties">{{ coup.games | number }}</span>
     </div>

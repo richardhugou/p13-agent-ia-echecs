@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import pytest
 
 from graph import synthese as syn
-from graph.notation import annoter_san
+from graph.notation import annoter_san, libelle_fr
 from services import llm
 
 ETAT_THEORIE = {
@@ -33,6 +33,17 @@ def test_annoter_san() -> None:
     assert annoter_san("e4") == "e4 — le pion va en e4"
     assert annoter_san("O-O") == "O-O — le petit roque"
     assert annoter_san("e8=Q") == "e8=Q — le pion va en e8 et devient une Dame"
+
+
+def test_libelle_fr() -> None:
+    # Né de l'alerte « Bc5 illégal » : la case de départ lève l'ambiguïté visuelle.
+    assert libelle_fr("Bc5", "f8c5") == "Fc5 (fou f8)"
+    assert libelle_fr("Nf6", "g8f6") == "Cf6 (cavalier g8)"
+    assert libelle_fr("Qh4#", "d8h4") == "Dh4# (dame d8)"
+    assert libelle_fr("e4", "e2e4") == "e4 (pion e2)"
+    assert libelle_fr("O-O", "e1g1") == "O-O (petit roque)"
+    assert libelle_fr("O-O-O", "e8c8") == "O-O-O (grand roque)"
+    assert libelle_fr("e4", "") == "e4"  # UCI absent : on n'invente pas
 
 
 def test_mode_none_renvoie_le_gabarit(monkeypatch) -> None:

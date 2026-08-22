@@ -2,6 +2,7 @@
 
 import chess
 
+from graph.notation import libelle_fr
 from services import lichess
 from services.board import normalize_fen
 from services.cache import get_cache
@@ -35,6 +36,7 @@ def legal_moves_payload(board: chess.Board, data: dict) -> list[dict]:
             {
                 "uci": move["uci"],
                 "san": move.get("san"),
+                "san_fr": libelle_fr(move.get("san"), move["uci"]),
                 "games": games,
                 "white": move.get("white", 0),
                 "draws": move.get("draws", 0),

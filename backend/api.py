@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from config import get_settings
 from graph.build import get_graph
 from services import engine, evaluation, lichess, rag, theory
+from services import videos as service_videos
 from services.board import parse_fen
 
 router = APIRouter(prefix="/api/v1")
@@ -59,6 +60,19 @@ def evaluate_position(
     except engine.EngineUnavailable as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     return {"fen": board.fen(), **result, "cached": cached}
+
+
+@router.get("/videos")
+def videos_pour_ouverture(
+    opening: str = Query(..., description="Nom d'ouverture (FR de préférence)"),
+    maxi: int = Query(3, ge=1, le=8, description="Nb de vidéos"),
+) -> dict:
+    """Vidéos pédagogiques (métadonnées YouTube, cache 7 j, filtres durée + titre)."""
+    try:
+        resultats = service_videos.rechercher(opening, maxi=maxi)
+    except service_videos.VideosUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    return {"opening": opening, "videos": resultats}
 
 
 @router.get("/vector-search")

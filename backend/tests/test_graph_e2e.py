@@ -33,6 +33,7 @@ FICHE_WIKI = {
 def test_trajet_theorie(monkeypatch) -> None:
     monkeypatch.setattr(nodes.theory, "masters_with_cache", lambda board: (ITALIENNE, False))
     monkeypatch.setattr(nodes.rag, "search", lambda requete, eco=None: [FICHE_WIKI])
+    monkeypatch.setattr(nodes.service_videos, "rechercher", lambda terme, maxi=3: [])
     result = get_graph().invoke({"fen": START_FEN})
     assert "Italian Game" in result["answer"]
     assert "e4" in result["answer"]

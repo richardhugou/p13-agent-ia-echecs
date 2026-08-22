@@ -27,6 +27,8 @@ class Settings(BaseSettings):
 
     # Synthèse LLM — D1 révisée le 2026-08-22 : ollama/qwen3.5:4b titulaire, mesuré.
     # "none" = gabarit déterministe seul (défaut sûr : tests, CI, démo hors-ligne).
+    youtube_api_key: str = ""
+
     llm_provider: str = "none"  # none | ollama | anthropic
     llm_model: str = "qwen3.5:4b"
     llm_api_key: str = ""  # requis seulement pour anthropic

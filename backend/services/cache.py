@@ -16,6 +16,7 @@ from config import get_settings
 logger = logging.getLogger(__name__)
 
 EXPLORER_TTL_S = 24 * 3600
+VIDEOS_TTL_S = 7 * 24 * 3600
 
 
 class MongoCache:
@@ -23,15 +24,19 @@ class MongoCache:
         self.ok = False
         self._explorer = None
         self._evals = None
+        self._videos = None
         try:
             self._client: MongoClient = MongoClient(uri, serverSelectionTimeoutMS=1500)
             self._client.admin.command("ping")
             db = self._client[db_name]
             self._explorer = db["explorer_cache"]
             self._evals = db["eval_cache"]
+            self._videos = db["videos_cache"]
             self._explorer.create_index("cached_at", expireAfterSeconds=EXPLORER_TTL_S)
             self._explorer.create_index("key", unique=True)
             self._evals.create_index("key", unique=True)
+            self._videos.create_index("cached_at", expireAfterSeconds=VIDEOS_TTL_S)
+            self._videos.create_index("key", unique=True)
             self.ok = True
         except PyMongoError as exc:
             logger.warning("MongoDB indisponible (%s) — cache désactivé", exc)
@@ -63,6 +68,12 @@ class MongoCache:
 
     def set_explorer(self, key: str, payload: dict) -> None:
         self._set(self._explorer, key, payload)
+
+    def get_videos(self, key: str):
+        return self._get(self._videos, key)
+
+    def set_videos(self, key: str, payload: list) -> None:
+        self._set(self._videos, key, payload)
 
     def get_eval(self, key: str) -> dict | None:
         return self._get(self._evals, key)

@@ -41,4 +41,9 @@ until [ "$(docker inspect -f '{{.State.Health.Status}}' p13-api 2>/dev/null)" = 
   sleep 2
 done
 curl -sf http://localhost:8000/api/v1/healthcheck; echo
-echo "✅ POC prêt — Swagger : http://localhost:8000/docs"
+echo "── Bibliothèque (Milvus recharge ses collections après un redémarrage) ──"
+until curl -sf "http://localhost:8000/api/v1/vector-search?q=pret&k=1" > /dev/null 2>&1; do
+  sleep 3
+done
+echo "bibliothèque prête"
+echo "✅ POC prêt — Swagger : http://localhost:8000/docs · MLflow : http://localhost:5001"

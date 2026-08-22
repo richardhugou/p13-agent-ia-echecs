@@ -1,11 +1,26 @@
 """Nœud de synthèse — met les faits en mots pour l'élève.
 
-Deux modes : gabarit déterministe (toujours disponible, zéro coût) ; LLM (à venir,
-activé par LLM_API_KEY). Règle intangible : la synthèse ne choisit JAMAIS un coup —
-elle rédige à partir des faits présents dans l'état, rien d'autre.
+Trois modes (LLM_PROVIDER) : none = gabarit déterministe seul ; ollama (défaut POC,
+qwen3.5:4b local) ; anthropic (option qualité). Le LLM rédige le corps de la réponse,
+la ligne Sources est ajoutée par le code — garantie par construction, pas par prompt
+(les mesures ont montré que les petits modèles la perdent). Règle intangible : la
+synthèse ne choisit JAMAIS un coup — elle rédige à partir des faits de l'état.
 """
 
+import json
+
+from config import get_settings
+from graph.notation import annoter_san
 from graph.state import AgentState
+from services import llm
+
+PROMPT_COACH = """Tu es un coach d'échecs pour de jeunes joueurs (10 à 14 ans).
+On te donne des FAITS vérifiés sur une position. Règles absolues :
+1. Ne recommande JAMAIS un coup absent des faits fournis. N'invente ni coup, ni chiffre.
+2. N'ajoute AUCUNE explication stratégique de ton cru : présente les faits, rien de plus.
+3. Si les faits sont vides ou insuffisants, dis honnêtement que tu ne peux pas répondre.
+4. Rédige 3 à 5 phrases en français simple, tutoie l'élève, reste encourageant.
+5. N'écris PAS de ligne « Sources » : elle est ajoutée automatiquement après toi."""
 
 
 def _eval_en_mots(engine_eval: dict) -> str:
@@ -72,6 +87,53 @@ def synthese_gabarit(state: AgentState) -> dict:
     return {"answer": " ".join(parts), "sources": sources}
 
 
+def _faits_annotes(state: AgentState) -> str:
+    """Les faits préparés pour le LLM — coups annotés, évaluation pré-verbalisée."""
+    faits: dict = {}
+    trait = "aux Blancs" if " w " in state.get("fen", "") else "aux Noirs"
+    faits["au_trait"] = f"C'est {trait} de jouer."
+    if state.get("opening"):
+        faits["ouverture"] = state["opening"]
+    faits["position_en_theorie"] = bool(state.get("in_theory"))
+    faits["parties_de_maitres_connues"] = state.get("total_games", 0)
+    moves = state.get("theory_moves") or []
+    if moves:
+        faits["coups_recommandes_par_la_theorie"] = [
+            {"coup": annoter_san(m["san"]), "parties": m["games"]} for m in moves[:3]
+        ]
+    top_games = state.get("top_games") or []
+    if top_games:
+        faits["partie_de_reference"] = top_games[0]
+    if state.get("engine_eval"):
+        engine_eval = state["engine_eval"]
+        faits["evaluation_du_moteur"] = _eval_en_mots(engine_eval)
+        if engine_eval.get("best_line"):
+            faits["meilleure_suite_detaillee"] = [
+                annoter_san(coup) for coup in engine_eval["best_line"][:3]
+            ]
+    if state.get("errors"):
+        faits["sources_indisponibles"] = state["errors"]
+    if state.get("question"):
+        faits["question_de_l_eleve"] = state["question"]
+    return "FAITS :\n" + json.dumps(faits, ensure_ascii=False)
+
+
 def synthese(state: AgentState) -> dict:
-    """Point d'entrée du nœud — le mode LLM (Haiku) se branchera ici (commit 4)."""
-    return synthese_gabarit(state)
+    """Gabarit d'abord (toujours juste), LLM ensuite s'il est disponible — sinon repli."""
+    gabarit = synthese_gabarit(state)
+    settings = get_settings()
+    if settings.llm_provider == "none":
+        return gabarit
+
+    try:
+        corps = llm.generate(PROMPT_COACH, _faits_annotes(state)).strip()
+    except llm.LLMUnavailable as exc:
+        return {
+            **gabarit,
+            "errors": (state.get("errors") or []) + [f"LLM indisponible, repli gabarit : {exc}"],
+        }
+
+    answer = corps
+    if gabarit["sources"]:
+        answer += "\n\nSources : " + " · ".join(gabarit["sources"])
+    return {"answer": answer, "sources": gabarit["sources"]}

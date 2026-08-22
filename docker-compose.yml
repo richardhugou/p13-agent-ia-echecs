@@ -10,6 +10,8 @@ services:
     environment:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4200}
       MONGO_URI: mongodb://mongodb:27017
+      # depuis le conteneur, l'hôte (où tourne Ollama) s'appelle host.docker.internal
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
     env_file:
       - path: .env
         required: false

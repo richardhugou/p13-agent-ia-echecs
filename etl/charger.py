@@ -9,6 +9,7 @@
 
 import json
 import time
+import urllib.error
 import urllib.request
 from datetime import UTC, datetime
 from pathlib import Path
@@ -16,12 +17,19 @@ from pathlib import Path
 import numpy as np
 from pymilvus import DataType, MilvusClient
 
-CHUNKS = Path(__file__).parent / "chunks" / "chunks.jsonl"
-RAPPORT = Path(__file__).parent / "chunks" / "rapport-chargement.json"
+import argparse
+
+_p = argparse.ArgumentParser(description="Chargement paramétrable (Run A/B)")
+_p.add_argument("--dossier", default="chunks")
+_p.add_argument("--collection", default="openings_kb")
+ARGS, _ = _p.parse_known_args()
+
+CHUNKS = Path(__file__).parent / ARGS.dossier / "chunks.jsonl"
+RAPPORT = Path(__file__).parent / ARGS.dossier / "rapport-chargement.json"
 OLLAMA = "http://localhost:11434"
 MODELE = "qwen3-embedding:0.6b"
 MILVUS = "http://localhost:19530"
-COLLECTION = "openings_kb"
+COLLECTION = ARGS.collection
 INSTR = "Instruct: Given a question about chess openings, retrieve relevant passages\nQuery: "
 NEAR_DUP_SEUIL = 0.95
 
@@ -33,11 +41,39 @@ def embed(textes: list[str]) -> list[list[float]]:
     return json.load(urllib.request.urlopen(req, timeout=300))["embeddings"]
 
 
+def lots_adaptatifs(textes: list[str], max_items: int = 16, max_chars: int = 8000):
+    """Lots bornés en nombre ET en volume — 32 grosses fiches d'un coup noient le runner."""
+    lot: list[str] = []
+    for texte in textes:
+        if lot and (len(lot) >= max_items or sum(map(len, lot)) + len(texte) > max_chars):
+            yield lot
+            lot = []
+        lot.append(texte)
+    if lot:
+        yield lot
+
+
 def vectoriser(fiches: list[dict], rapport: dict) -> np.ndarray:
     debut = time.perf_counter()
     vecteurs: list[list[float]] = []
-    for i in range(0, len(fiches), 32):
-        vecteurs += embed([f["text"] for f in fiches[i : i + 32]])
+    # 3000 c ≈ 750 tokens (plafond sûr mesuré du runner) : garde-fou par fiche ; lots adaptatifs : garde-fou par requête ;
+    # repli fiche-par-fiche si le runner refuse un lot (crash EOF observé sur les grosses fiches)
+    replis = 0
+    for lot in lots_adaptatifs([f["text"][:3000] for f in fiches]):
+        try:
+            vecteurs += embed(lot)
+        except urllib.error.HTTPError:
+            replis += 1
+            for texte in lot:
+                for tentative in (1, 2, 3):
+                    try:
+                        vecteurs += embed([texte])
+                        break
+                    except urllib.error.HTTPError:
+                        if tentative == 3:
+                            raise
+                        time.sleep(2)
+    rapport["lots_en_repli"] = replis
     rapport["vectorisation_s"] = round(time.perf_counter() - debut, 1)
     matrice = np.array(vecteurs, dtype=np.float32)
     return matrice / np.linalg.norm(matrice, axis=1, keepdims=True)
@@ -112,7 +148,7 @@ def principal() -> None:
     for fiche, vecteur in zip(fiches, matrice, strict=True):
         lignes.append({
             "vector": vecteur.tolist(),
-            "text": fiche["text"][:8000],
+            "text": fiche["text"].encode()[:8000].decode(errors="ignore"),  # Milvus compte en octets
             "ouverture": fiche["ouverture"],
             "eco": fiche["eco"],
             "opening_name": fiche["opening_name"][:500],

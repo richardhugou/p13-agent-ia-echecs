@@ -67,8 +67,18 @@ services:
       # exposé à l'hôte pour l'ETL (job local au POC) — en prod l'ETL vivrait dans le réseau
       - "19530:19530"
 
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.22.0
+    container_name: p13-mlflow
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////mlflow/mlflow.db --artifacts-destination /mlflow/artifacts
+    volumes:
+      - mlflow_data:/mlflow
+    ports:
+      - "5001:5000"  # 5000 côté hôte est squatté par AirPlay (macOS)
+
 volumes:
   mongo_data:
+  mlflow_data:
   etcd_data:
   minio_data:
   milvus_data:

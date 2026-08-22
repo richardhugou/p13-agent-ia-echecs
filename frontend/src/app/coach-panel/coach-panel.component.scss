@@ -1,0 +1,127 @@
+// Panneau coach — palette « échiquier boisé » du deck (vert #3A5A40, bois, crème).
+.coach {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  max-width: 460px;
+  font-family: Roboto, sans-serif;
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+
+  .badge {
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+
+    &.theorie { background: #bfe3c3; color: #0b2211; }
+    &.moteur { background: #ffdad2; color: #4a1206; }
+  }
+
+  .ouverture { font-weight: 600; font-size: 15px; }
+  .eco { color: #7a756c; font-weight: 400; margin-left: 4px; }
+  .eval { font-weight: 600; color: #8c4a3c; }
+}
+
+.carte {
+  background: #f3eee4;
+  border-radius: 16px;
+  padding: 14px 16px;
+
+  .titre-carte {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5f5e5a;
+
+    .sous-titre { font-weight: 400; white-space: nowrap; }
+  }
+}
+
+.coup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+
+  .san { min-width: 44px; font-weight: 600; }
+
+  .jauge {
+    flex: 1;
+    height: 7px;
+    background: #e5dfd2;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .rempli { display: block; height: 100%; background: #3a5a40; border-radius: 4px; }
+  }
+
+  .parties { min-width: 64px; text-align: right; color: #7a756c; font-size: 13px; }
+}
+
+.reference { margin: 10px 0 0; font-size: 12.5px; color: #7a756c; }
+
+.reponse {
+  .texte { margin: 0; font-size: 14.5px; line-height: 1.55; white-space: pre-line; }
+
+  .sources {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: #7a756c;
+    word-break: break-all;
+
+    mat-icon { vertical-align: -3px; margin-right: 4px; }
+  }
+}
+
+.question {
+  display: flex;
+  gap: 8px;
+
+  input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #d3d1c7;
+    border-radius: 10px;
+    font-size: 14px;
+
+    &:focus { outline: 2px solid #3a5a40; border-color: transparent; }
+  }
+}
+
+.videos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .video {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #fcf9f4;
+    border: 1px solid #e5dfd2;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover { background: #f3eee4; }
+
+    mat-icon { color: #8c4a3c; }
+
+    .infos { display: flex; flex-direction: column; }
+    .titre-video { font-size: 13.5px; font-weight: 500; }
+    .meta { font-size: 12px; color: #7a756c; }
+  }
+}
+
+.incident { font-size: 12.5px; color: #8c4a3c; margin: 0; }

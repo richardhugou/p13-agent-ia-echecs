@@ -60,6 +60,8 @@ La boucle produit : jouer → comprendre → dévier → évaluer. Un seul écra
 
 **La clé de jointure de tout le système : le FEN** (position encodée en une ligne de texte) — la seule donnée d'entrée fournie par l'élève.
 
+**Périmètre signé** : manifeste versionné `etl/corpus.yml` — **47 pages FR + 114 EN = 161 retenues** sur 3 251 disponibles (génération assistée, arbitrages tracés, signé le 23/08 ; règle : pas de manifeste signé, pas d'extraction).
+
 **L'EDA (exploration des données) — chaque figure sortira d'un run rejouable** :
 
 | Figure montrée | Ce qu'elle prouve au jury |
@@ -189,7 +191,9 @@ Le choix est **réversible** : changer de LLM = changer une variable d'environne
 
 **Les métriques, définies avant de mesurer** : recall@5 (cible ≥ 0,8), MRR, taux d'abstention correcte sur les pièges, latence p95 — et les métriques système : **0 coup illégal** (validation python-chess sur 100 % des sorties), **100 % des réponses RAG sourcées**, coût par réponse.
 
-**La discipline** : chaque run (paramètres, métriques, figures) est loggé dans MLflow — **aucun chiffre des diapos suivantes n'a d'autre origine**. Et on compare toujours à une baseline : Run A « naïf » vs Run B « amélioré » (diapo 12).
+**La discipline** : chaque run (paramètres, métriques, figures) est loggé dans MLflow — **aucun chiffre des diapos suivantes n'a d'autre origine**. Et on compare toujours à une baseline : Run A « naïf » vs Run B « amélioré » (diapo 14).
+
+**Les mesures d'adoption** : aucune brique modèle n'entre dans le système sans son banc de mesure **versionné et rejouable** (notebook exécuté + test). Méthode : similarité cosinus entre vecteurs d'embedding, sur des paires étalonnées dont la réponse est connue (cible / lié / hors-sujet, FR et EN). Exemple mesuré : le préfixe d'instruction sur les requêtes fait passer la séparation cible/hors-sujet de 0,29 à **0,50** (notebook 02).
 
 ---
 
@@ -275,7 +279,7 @@ Du POC local au service FFE :
 
 - **Répertoire personnalisé** : l'agent apprend les ouvertures que l'élève travaille et adapte ses recommandations (mémoire par profil).
 - **Mode entraînement actif** : l'agent joue la ligne théorique contre l'élève et le corrige en direct (au lieu de commenter passivement).
-- **Corpus enrichi** : passer de 8–10 ouvertures aux 500 codes ECO ; ajouter les parties commentées de la base FFE.
+- **Corpus enrichi** : passer des 8 ouvertures aux 500 codes ECO ; ajouter les parties commentées de la base FFE et les variantes absentes du wiki FR (Winawer, Partie hongroise… — périmètre réduit assumé au manifeste).
 - **Analyse vidéo → FEN** (partie 2 de l'étude) : indexer les vidéos par position réelle et non par titre — architecture MCP conçue, coûts chiffrés dans l'étude jointe.
 - **Évaluation continue** : élargir le gold set avec les vraies questions des élèves ; boucle de feedback entraîneurs.
 - **Qualité LLM** : A/B Haiku 4.5 vs Sonnet 5 sur les explications FR, juge automatique sur le gold set.

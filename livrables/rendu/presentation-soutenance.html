@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: "Helvetica Neue", Roboto, Arial, sans-serif; color: #1C1B18; }
+  .slide { width: 1280px; height: 720px; background: #FCF9F4; position: relative; overflow: hidden;
+           padding: 56px 64px 64px; page-break-after: always; display: flex; flex-direction: column; }
+  .kicker { font-size: 14px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #3A5A40; margin-bottom: 10px; }
+  h1 { font-size: 38px; font-weight: 500; line-height: 1.15; margin-bottom: 26px; }
+  .footer { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; padding: 0 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 11px; color: #7A756C; }
+  .card { background: #F3EEE4; border-radius: 24px; padding: 24px; }
+  .card.key { background: #BFE3C3; color: #0B2211; }
+  .card.wood { background: #F0E6D2; color: #2A2011; }
+  .card.terra { background: #FFDAD2; color: #4a1206; }
+  .chip { display: inline-block; border: 1px dashed #7A756C; color: #7A756C; border-radius: 999px;
+          padding: 3px 12px; font-size: 12px; white-space: nowrap; }
+  .chip.solid { border-style: solid; color: #3A5A40; border-color: #3A5A40; }
+  .dash { font-size: 40px; font-weight: 300; color: #7A756C; }
+  .mono { font-family: "SF Mono", "Roboto Mono", Menlo, monospace; background: #F0E6D2; color: #2A2011;
+          border-radius: 8px; padding: 2px 8px; font-size: 0.9em; }
+  table { border-collapse: collapse; width: 100%; }
+  th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #7A756C; font-weight: 600;
+       text-align: left; padding: 8px 14px; border-bottom: 1px solid #7A756C; }
+  td { font-size: 16px; padding: 10px 14px; border-bottom: 1px solid #E5DFD2; vertical-align: middle; }
+  .damier { position: absolute; right: -40px; top: -40px; width: 300px; height: 300px; opacity: 0.4;
+            display: grid; grid-template-columns: repeat(8, 1fr); transform: rotate(8deg); border-radius: 16px; overflow: hidden; }
+  .damier div:nth-child(16n+1), .damier div:nth-child(16n+3), .damier div:nth-child(16n+5), .damier div:nth-child(16n+7),
+  .damier div:nth-child(16n+10), .damier div:nth-child(16n+12), .damier div:nth-child(16n+14), .damier div:nth-child(16n+16)
+  { background: #F3EEE4; }
+  .row { display: flex; gap: 20px; }
+  .grow { flex: 1; }
+  .punchline { background: #BFE3C3; color: #0B2211; border-radius: 24px; padding: 18px 28px;
+               font-size: 20px; font-weight: 500; text-align: center; }
+  .arrow { color: #7A756C; font-size: 20px; align-self: center; }
+  .stitle { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .body { font-size: 16px; line-height: 1.45; }
+  .small { font-size: 13.5px; line-height: 1.4; color: #4a4740; }
+  li { margin-bottom: 6px; }
+  .num { color: #3A5A40; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ SLIDE 1 ═══════════ -->
+<div class="slide">
+  <div class="damier"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  <div style="margin-top: 60px;">
+    <div class="kicker">Soutenance · Preuve de concept</div>
+    <h1 style="font-size: 52px; max-width: 760px;">Un coach IA pour les ouvertures d'échecs</h1>
+    <p style="font-size: 22px; color: #7A756C; margin-bottom: 40px;">Preuve de concept pour la Fédération Française des Échecs</p>
+    <p class="body">Richard Hugou — IA Engineer junior, Cavalier Data &nbsp;·&nbsp; Soutenance du <span class="chip">date à fixer</span> &nbsp;·&nbsp; Mission POC — 2 semaines</p>
+  </div>
+  <div style="position: absolute; right: 110px; bottom: 120px; font-size: 110px; color: #3A5A40;">♘ ♗ ♖</div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>1 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 2 ═══════════ -->
+<div class="slide">
+  <div class="kicker">Le contexte</div>
+  <h1>Le contexte et le besoin</h1>
+  <div class="row" style="margin-bottom: 22px;">
+    <div class="card grow"><div class="stitle">⚑ Le problème</div>
+      <p class="body">Plus de <span class="chip">60 000 licenciés — à sourcer</span> dont <span class="chip">~60 % de jeunes — à sourcer</span>, quelques centaines d'entraîneurs diplômés, cours à 30–60 €/h.<br><span style="color:#3A5A40; font-weight:600;">Le goulot d'étranglement, c'est l'humain.</span></p>
+    </div>
+  </div>
+  <div class="card key" style="text-align:center; font-size: 21px; font-weight: 500; margin-bottom: 22px; padding: 22px;">
+    « Comment offrir à chaque jeune espoir un retour de niveau entraîneur<br>sur ses ouvertures, à la demande ? »
+  </div>
+  <p class="body" style="margin-bottom: 12px;"><strong>Ce que l'outil devrait savoir faire :</strong></p>
+  <div class="row">
+    <div class="card grow small">✓ proposer les meilleurs coups reconnus par la théorie</div>
+    <div class="card grow small">✎ expliquer l'ouverture, sources citées</div>
+    <div class="card grow small">▶ recommander des vidéos adaptées à la position</div>
+    <div class="card grow small">⚖ évaluer objectivement hors des sentiers battus</div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>2 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 3 ═══════════ -->
+<div class="slide">
+  <div class="kicker">La réponse</div>
+  <h1>Le parcours d'un coup</h1>
+  <table style="margin-bottom: 20px;">
+    <tr><td style="text-align:right; width: 46%;">« Où en est la partie ? »</td><td style="width:4%;" class="arrow">→</td>
+        <td><strong>Une position lisible par la machine</strong> — le <span class="mono">FEN</span>, validé à chaque coup</td></tr>
+    <tr><td style="text-align:right;">« Que jouent les grands maîtres ici, et comment ça s'appelle ? »</td><td class="arrow">→</td>
+        <td><strong>Une base de parties de maîtres</strong> — Lichess, 2 M+ parties, ouvertures nommées</td></tr>
+    <tr><td style="text-align:right;">« Et si l'élève joue un coup que la base n'a jamais vu ? »</td><td class="arrow">→</td>
+        <td><strong>Une fonction d'évaluation</strong> — Stockfish, un score pour toute position</td></tr>
+    <tr><td style="text-align:right;">« Et pour l'expliquer à une enfant de 12 ans ? »</td><td class="arrow">→</td>
+        <td><strong>Des textes sourcés + un rédacteur</strong> — RAG et LLM</td></tr>
+  </table>
+  <div class="punchline">Les trois sources à la fois, à chaque coup, dans cet ordre — chaque étape fabrique l'entrée de la suivante.<br>Ce déroulé conditionnel répété, c'est ça, un agent.</div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>3 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 4 ═══════════ -->
+<div class="slide">
+  <div class="kicker">Les données · 1/4 — Sources</div>
+  <h1>Les sources de données</h1>
+  <table style="margin-bottom: 18px;">
+    <tr><th>Besoin</th><th>Source</th><th>Volumétrie</th><th>Licence</th></tr>
+    <tr><td>Nommer les ouvertures</td><td>Référentiel <span class="mono">chess-openings</span></td><td><strong>3 810 lignes</strong> <span class="chip solid">compté 22/08</span></td><td>CC0</td></tr>
+    <tr><td>Ce que joue l'élite</td><td>API Lichess Explorer</td><td>2 M+ parties masters <span class="chip">à confirmer</span></td><td>CC0</td></tr>
+    <tr><td>Expliquer les idées</td><td>Wiki d'ouvertures FR + EN</td><td><strong>225 art. FR + 3 026 p. EN</strong> <span class="chip solid">compté 22/08</span></td><td>CC BY-SA, attribution</td></tr>
+    <tr><td>Montrer des vidéos</td><td>API YouTube (métadonnées)</td><td><span class="chip">quota 10 000 u/j</span></td><td>CGU : embed/liens seuls</td></tr>
+  </table>
+  <div class="row" style="margin-bottom: 14px;">
+    <div class="card grow" style="border: 1px solid #7A756C; background: repeating-linear-gradient(45deg,#F3EEE4,#F3EEE4 8px,#EDE7DA 8px,#EDE7DA 16px); text-align:center; padding: 16px;"><span class="small">Composition du corpus par source</span><br><span class="chip">EDA — à mesurer</span></div>
+    <div class="card grow" style="border: 1px solid #7A756C; background: repeating-linear-gradient(45deg,#F3EEE4,#F3EEE4 8px,#EDE7DA 8px,#EDE7DA 16px); text-align:center; padding: 16px;"><span class="small">Couverture ECO des ouvertures cibles</span><br><span class="chip">EDA — à mesurer</span></div>
+    <div class="card grow" style="border: 1px solid #7A756C; background: repeating-linear-gradient(45deg,#F3EEE4,#F3EEE4 8px,#EDE7DA 8px,#EDE7DA 16px); text-align:center; padding: 16px;"><span class="small">Doublons éliminés · longueurs</span><br><span class="chip">EDA — à mesurer</span></div>
+  </div>
+  <p class="body" style="color:#3A5A40; font-weight: 600; text-align:center;">La clé de jointure de tout le système : le FEN — la seule donnée fournie par l'élève.</p>
+  <p class="small" style="text-align:center; margin-top:6px;">Périmètre signé : manifeste versionné <span class="mono">corpus.yml</span> — <b>47 FR + 114 EN = 161 pages</b> retenues sur 3 251 disponibles · règle : pas de manifeste signé, pas d'extraction</p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>4 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE formats bruts ═══════════ -->
+<div class="slide">
+  <div class="kicker">Les données · 2/4 — Formats bruts</div>
+  <h1>Les formats bruts</h1>
+  <div class="row" style="margin-bottom: 12px;">
+    <div class="card grow" style="padding: 16px 20px;"><div class="stitle">Référentiel d'ouvertures — <span class="chip solid">TSV</span></div>
+      <p class="small" style="font-family: 'SF Mono', Menlo, monospace;">C50 ⇥ Italian Game ⇥ 1. e4 e5 2. Nf3 Nc6 3. Bc4</p></div>
+    <div class="card grow" style="padding: 16px 20px;"><div class="stitle">Lichess Explorer — <span class="chip solid">JSON</span></div>
+      <p class="small" style="font-family: 'SF Mono', Menlo, monospace;">{"opening":{"eco":"C50"},"moves":[{"uci":"e2e4","san":"e4","white":213045,…}]}</p></div>
+  </div>
+  <div class="row" style="margin-bottom: 12px;">
+    <div class="card grow" style="padding: 16px 20px;"><div class="stitle">Wiki d'ouvertures — <span class="chip solid">wikitext</span></div>
+      <p class="small" style="font-family: 'SF Mono', Menlo, monospace;">== Idées principales ==<br>Le fou en c4 vise le point faible f7…</p></div>
+    <div class="card grow" style="padding: 16px 20px;"><div class="stitle">YouTube Data — <span class="chip solid">JSON</span></div>
+      <p class="small" style="font-family: 'SF Mono', Menlo, monospace;">{"videoId":"a1B2c3","title":"L'Italienne expliquée","duration":"PT12M4S"}</p></div>
+  </div>
+  <div class="row" style="margin-bottom: 14px;">
+    <div class="card grow" style="padding: 16px 20px;"><div class="stitle">Stockfish — <span class="chip solid">texte UCI</span></div>
+      <p class="small" style="font-family: 'SF Mono', Menlo, monospace;">info depth 16 score cp 34 pv e2e4 e7e5 g1f3</p></div>
+  </div>
+  <div class="punchline" style="font-size: 18px;">Cinq formats hétérogènes → la normalisation est obligatoire.<br><span style="font-size: 15px; font-weight: 400;">Pivots : positions en FEN, coups en SAN, textes en chunks à métadonnées uniformes — JSON comme format d'échange interne.</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>5 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 5 ═══════════ -->
+<div class="slide">
+  <div class="kicker">Les données · 3/4 — Traitement</div>
+  <h1>Le traitement des données</h1>
+  <div class="row" style="margin-bottom: 24px; justify-content: center;">
+    <div class="card" style="padding: 14px 22px;">Extraire</div><div class="arrow">→</div>
+    <div class="card" style="padding: 14px 22px;">Nettoyer</div><div class="arrow">→</div>
+    <div class="card" style="padding: 14px 22px;">Découper</div><div class="arrow">→</div>
+    <div class="card key" style="padding: 14px 22px;">Vectoriser</div><div class="arrow">→</div>
+    <div class="card" style="padding: 14px 22px;">Indexer</div>
+  </div>
+  <div class="row" style="margin-bottom: 18px; align-items: stretch;">
+    <div class="card grow"><div class="stitle">Extraire</div>
+      <p class="small">API MediaWiki (wikitext), jamais de scraping HTML. Chaque document archivé avec URL source, horodatage, licence.</p></div>
+    <div class="card key grow"><div class="stitle">Transformer — la normalisation</div>
+      <p class="small">Nettoyage du balisage · notation unifiée (« Fc4 » FR ↔ « Bc4 » EN) · FEN de référence calculé par python-chess · chunks 300–500 tokens, overlap 15 %, jamais une suite de coups coupée · déduplication (hash + similarité &gt; 0,95).</p></div>
+    <div class="card grow"><div class="stitle">Charger</div>
+      <p class="small">Embeddings Qwen3-0.6B — FR et EN dans le même espace (1024 d) → Milvus (HNSW, cosinus) avec métadonnées : eco, ouverture, fen_ref, source, licence.</p></div>
+  </div>
+  <p class="body" style="text-align:center;">Pipeline <strong>rejouable et idempotent</strong> (upsert par hash de contenu).<br><span class="small">Rapport chiffré à chaque exécution : pages retenues, chunks (longueur moyenne), doublons écartés <span class="chip">à mesurer</span></span></p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>6 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE modèle de données ═══════════ -->
+<div class="slide">
+  <div class="kicker">Les données · 4/4 — Modèle de données</div>
+  <h1>Le modèle de données</h1>
+  <div class="row" style="align-items: flex-start;">
+    <div class="grow">
+      <p class="stitle">Milvus — collection <span class="mono">openings_kb</span></p>
+      <table style="margin-bottom: 10px;">
+        <tr><th>Champ</th><th>Type</th><th>Rôle</th></tr>
+        <tr><td class="small"><span class="mono">pk</span></td><td class="small">int64</td><td class="small">clé</td></tr>
+        <tr><td class="small"><span class="mono">vector</span></td><td class="small">float_vector(1024)</td><td class="small">embedding — cosinus, HNSW</td></tr>
+        <tr><td class="small"><span class="mono">text</span></td><td class="small">varchar</td><td class="small">le passage</td></tr>
+        <tr><td class="small"><span class="mono">eco · opening_name · fen_ref · lang</span></td><td class="small">varchar</td><td class="small">filtres scalaires</td></tr>
+        <tr><td class="small"><span class="mono">source_url · licence</span></td><td class="small">varchar</td><td class="small">attribution</td></tr>
+        <tr><td class="small"><span class="mono">content_hash · ingested_at</span></td><td class="small">varchar / int64</td><td class="small">idempotence, fraîcheur</td></tr>
+      </table>
+    </div>
+    <div class="grow">
+      <p class="stitle">MongoDB — base <span class="mono">chessagent</span></p>
+      <table style="margin-bottom: 10px;">
+        <tr><th>Collection</th><th>Contenu</th><th>Particularité</th></tr>
+        <tr><td class="small"><span class="mono">explorer_cache</span></td><td class="small">réponse explorer par FEN</td><td class="small">TTL 24 h</td></tr>
+        <tr><td class="small"><span class="mono">videos_cache</span></td><td class="small">métadonnées par ouverture</td><td class="small">TTL 7 j</td></tr>
+        <tr><td class="small"><span class="mono">eval_cache</span></td><td class="small">éval par FEN + profondeur</td><td class="small">sans TTL</td></tr>
+        <tr><td class="small"><span class="mono">sessions</span></td><td class="small">conversations</td><td class="small">—</td></tr>
+        <tr><td class="small"><span class="mono">eval_runs</span></td><td class="small">résultats gold set par run</td><td class="small">traçabilité</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="punchline" style="font-size: 17px;">Clé de jointure transverse : le <span style="font-family: 'SF Mono', Menlo, monospace;">FEN</span> normalisé (+ eco pour l'agrégat par ouverture).</div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>7 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 6 ═══════════ -->
+<div class="slide">
+  <div class="kicker">Les données · Vidéos</div>
+  <h1>Les vidéos pédagogiques</h1>
+  <div class="row" style="margin-bottom: 20px;">
+    <div class="card grow"><div class="stitle">D'où elles viennent</div><p class="body">L'API officielle YouTube Data — uniquement des <strong>métadonnées</strong> (titre, chaîne, durée, langue), jamais les fichiers.</p></div>
+    <div class="card key grow"><div class="stitle">Comment on les choisit</div><p class="body">Recherche par nom d'ouverture, filtres de pertinence : durée 4–30 min, titre contenant l'ouverture, langue. Résultats conservés en base → réponse instantanée sur les positions déjà vues.</p></div>
+    <div class="card grow"><div class="stitle">Les cas limites</div><p class="body">« Aucune vidéo trouvée » : géré proprement — l'agent répond sans vidéo plutôt que de proposer du hors-sujet.</p></div>
+  </div>
+  <div class="card wood"><div class="stitle">Conformité (et limite structurante de la partie 2)</div>
+  <p class="body">Affichage en lien / lecteur intégré, <strong>aucun téléchargement</strong> (CGU YouTube).</p></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>8 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 7 ═══════════ -->
+<div class="slide">
+  <div class="kicker">L'approche</div>
+  <h1>Les briques du système</h1>
+  <table style="margin-bottom: 18px;">
+    <tr><th>Brique</th><th>Rôle</th><th>Entraînée par nous ?</th><th>Évaluée par…</th></tr>
+    <tr><td>API Lichess</td><td>Coups théoriques + stats</td><td>Non — parties réelles CC0</td><td>seuil « en théorie » testé · 0 coup illégal</td></tr>
+    <tr><td><strong>Stockfish</strong> (&gt; 3600 Elo)</td><td>Évaluation hors théorie</td><td>Non — moteur éprouvé</td><td>latence / profondeur mesurées</td></tr>
+    <tr><td><strong>Qwen3-Embedding-0.6B</strong></td><td>Recherche sémantique FR+EN</td><td>Non — pré-entraîné</td><td>recall@5 ≥ 0,8 · MRR (gold set)</td></tr>
+    <tr><td><strong>LLM de synthèse</strong></td><td>Rédige, pédagogise, cite</td><td>Non — API</td><td>sources 100 % · abstention · coût</td></tr>
+  </table>
+  <div class="punchline">Nous n'entraînons aucun modèle — choix assumé. Notre valeur ajoutée : l'orchestration et l'évaluation systématique.<br><span style="font-size: 16px; font-weight: 400;">Ce qu'on ajuste (chunking, top-k, seuil), on le mesure.</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>9 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 8 ═══════════ -->
+<div class="slide">
+  <div class="kicker">L'approche · Le LLM</div>
+  <h1>Le choix du LLM de synthèse</h1>
+  <table style="margin-bottom: 18px;">
+    <tr><th>Option</th><th>Prix (entrée / sortie, par M tokens)</th><th>Verdict</th></tr>
+    <tr style="background:#BFE3C3;"><td><strong>Claude Haiku 4.5 ✓</strong></td><td>1 $ / 5 $ <span class="chip solid">vérifié</span></td><td>rapide, français correct, budget tenu</td></tr>
+    <tr><td>Claude Sonnet 5</td><td>3 $ / 15 $</td><td>plan B si le français déçoit sur le gold set</td></tr>
+    <tr><td>LLM local (Ollama)</td><td>0 €</td><td>écarté : 16 Go de RAM partagés → risque démo</td></tr>
+  </table>
+  <div class="card wood"><div class="stitle">Réversible par conception</div><p class="body">Le LLM ne fait que la mise en forme finale : en changer = changer une variable d'environnement.</p></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>10 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 9 ═══════════ -->
+<div class="slide">
+  <div class="kicker">La techno</div>
+  <h1>L'orchestration de l'agent</h1>
+  <svg viewBox="0 0 1160 400" style="width: 100%; margin-bottom: 8px;" role="img">
+    <defs>
+      <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+        <path d="M0,0 L8,4.5 L0,9 z" fill="#7A756C"/>
+      </marker>
+    </defs>
+    <rect x="150" y="20" width="200" height="52" rx="20" fill="#F3EEE4"/>
+    <text x="250" y="51" text-anchor="middle" font-size="17" fill="#1C1B18">Valider la position</text>
+    <line x1="350" y1="46" x2="418" y2="46" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="422" y="20" width="220" height="52" rx="20" fill="#F3EEE4"/>
+    <text x="532" y="51" text-anchor="middle" font-size="17" fill="#1C1B18">Identifier l'ouverture</text>
+    <line x1="642" y1="46" x2="710" y2="46" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <polygon points="810,8 918,46 810,84 702,46" fill="#F0E6D2"/>
+    <text x="810" y="52" text-anchor="middle" font-size="16" fill="#2A2011">En théorie ?</text>
+    <path d="M 760 72 C 660 110, 560 120, 490 142" fill="none" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <text x="590" y="112" font-size="15" fill="#3A5A40" font-weight="600">oui</text>
+    <path d="M 830 86 C 845 105, 850 118, 852 140" fill="none" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <text x="866" y="118" font-size="15" fill="#993C1D" font-weight="600">non</text>
+    <rect x="330" y="146" width="300" height="52" rx="20" fill="#BFE3C3"/>
+    <text x="480" y="177" text-anchor="middle" font-size="17" fill="#0B2211">Coups théoriques — Lichess</text>
+    <rect x="710" y="146" width="290" height="52" rx="20" fill="#BFE3C3"/>
+    <text x="855" y="177" text-anchor="middle" font-size="17" fill="#0B2211">Évaluation — Stockfish</text>
+    <path d="M 440 198 C 350 235, 260 255, 200 268" fill="none" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <path d="M 790 198 C 560 260, 350 265, 215 273" fill="none" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="20" y="276" width="300" height="52" rx="20" fill="#BFE3C3"/>
+    <text x="170" y="307" text-anchor="middle" font-size="17" fill="#0B2211">Contexte documentaire — Milvus</text>
+    <line x1="320" y1="302" x2="358" y2="302" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="362" y="276" width="220" height="52" rx="20" fill="#BFE3C3"/>
+    <text x="472" y="307" text-anchor="middle" font-size="17" fill="#0B2211">Vidéos — YouTube</text>
+    <line x1="582" y1="302" x2="620" y2="302" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="624" y="276" width="210" height="52" rx="20" fill="#FFDAD2"/>
+    <text x="729" y="307" text-anchor="middle" font-size="17" fill="#4a1206">Synthèse — LLM</text>
+    <line x1="834" y1="302" x2="872" y2="302" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="876" y="276" width="240" height="52" rx="20" fill="#FCF9F4" stroke="#3A5A40" stroke-width="2.5"/>
+    <text x="996" y="307" text-anchor="middle" font-size="17" font-weight="600" fill="#1C1B18">Réponse sourcée</text>
+  </svg>
+  <p class="small" style="text-align:center; margin-bottom: 12px;">vert = sources de vérité · terracotta = rédaction · <strong>le LLM ne choisit jamais un coup</strong> · chaque nœud a un fallback · chaque passage est tracé</p>
+  <div style="text-align:center;">
+    <span class="chip solid">Angular</span> <span class="chip solid">FastAPI + LangGraph</span> <span class="chip solid">Milvus</span> <span class="chip solid">MongoDB</span> <span class="chip solid">Stockfish embarqué</span> <span class="chip solid">MLflow</span>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>11 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 10 ═══════════ -->
+<div class="slide">
+  <div class="kicker">La preuve · Protocole</div>
+  <h1>Le protocole d'évaluation</h1>
+  <div class="row" style="margin-bottom: 20px;">
+    <div class="card key grow"><div class="stitle">Le gold set — construit à la main, versionné</div>
+      <p class="body">25 questions étiquetées :<br><span class="num">15</span> directes · <span class="num">5</span> par position (FEN) · <span class="num">5</span> pièges où la bonne réponse est de <strong>s'abstenir</strong></p></div>
+    <div class="card grow"><div class="stitle">Les métriques, définies avant de mesurer</div>
+      <p class="body">recall@5 (cible ≥ 0,8) · MRR · abstention correcte · latence p95 · <strong>0 coup illégal</strong> · 100 % des réponses sourcées · coût par réponse</p></div>
+  </div>
+  <div class="card wood" style="margin-bottom: 14px;"><div class="stitle">La discipline</div>
+  <p class="body">Chaque run (paramètres, métriques, figures) est loggé dans MLflow — <strong>aucun chiffre des diapos suivantes n'a d'autre origine</strong>. Toujours comparé à une baseline (Run A vs Run B, diapo 14).</p></div>
+  <div class="card"><div class="stitle">Les mesures d'adoption</div>
+  <p class="body">Aucune brique modèle n'entre sans son banc de mesure <strong>versionné et rejouable</strong> (notebook exécuté + test). Méthode : similarité cosinus sur des paires étalonnées (cible / lié / hors-sujet, FR et EN). Mesuré : le préfixe d'instruction fait passer la séparation cible/hors-sujet de 0,29 à <strong>0,50</strong>.</p></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>12 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 11 ═══════════ -->
+<div class="slide">
+  <div class="kicker">La preuve · Mesure</div>
+  <h1>Mesure de la performance</h1>
+  <table style="margin-bottom: 16px;">
+    <tr><th>Indicateur</th><th>Cible</th><th>Mesuré</th></tr>
+    <tr><td>Coups illégaux proposés</td><td><strong>0</strong></td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>recall@5 (gold set 25 questions)</td><td>≥ 0,8</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>Abstention correcte sur les pièges</td><td>5 / 5</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>Réponses RAG sourcées</td><td>100 %</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>Latence agent p95</td><td>&lt; 8 s</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>Coût LLM total dev + démo</td><td>&lt; 5 €</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+  </table>
+  <p class="body" style="color:#3A5A40; font-weight:600; text-align:center;">Toute valeur affichée ici sortira d'un run MLflow tracé — d'aucun autre endroit.</p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>13 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 12 ═══════════ -->
+<div class="slide">
+  <div class="kicker">La preuve · Itérations</div>
+  <h1>Les itérations</h1>
+  <div class="row" style="margin-bottom: 18px;">
+    <div class="card grow" style="border: 1px solid #7A756C; background: transparent;"><div class="stitle">Run A — « naïf »</div>
+      <p class="body">chunks 1 000 tokens, sans overlap<br>top-3, aucun filtre</p></div>
+    <div class="arrow" style="font-size: 32px;">→</div>
+    <div class="card key grow"><div class="stitle">Run B — « amélioré »</div>
+      <p class="body">chunks 300–500 + overlap 15 %<br>top-5, filtre ECO quand l'ouverture est identifiée</p></div>
+  </div>
+  <table style="margin-bottom: 14px;">
+    <tr><th>Métrique</th><th>Run A</th><th>Run B</th><th>Δ</th></tr>
+    <tr><td>recall@5</td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td></tr>
+    <tr><td>MRR</td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td></tr>
+    <tr><td>Latence p95</td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td></tr>
+  </table>
+  <p class="small">Autres itérations mesurées : seuil N du routeur théorie/moteur · profondeur/temps Stockfish · prompt de synthèse (abstention propre).</p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>14 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 13 ═══════════ -->
+<div class="slide">
+  <div class="kicker">Le produit · Déploiement 1/2</div>
+  <h1>Déploiement du POC</h1>
+  <div class="card" style="background:#EDE7DA; font-family: 'SF Mono', Menlo, monospace; font-size: 24px; text-align:center; padding: 18px; border-radius: 16px; margin-bottom: 20px;">$ docker compose up</div>
+  <table style="margin-bottom: 14px;">
+    <tr><th>Service</th><th>Rôle</th><th>Port</th></tr>
+    <tr><td>frontend</td><td>Angular + ngx-chessboard</td><td>4200</td></tr>
+    <tr><td>api</td><td>FastAPI + LangGraph + Stockfish embarqué (Swagger pour la démo)</td><td>8000</td></tr>
+    <tr><td>milvus (+ etcd, minio)</td><td>recherche vectorielle</td><td>interne</td></tr>
+    <tr><td>mongodb</td><td>caches, sessions, runs</td><td>interne</td></tr>
+    <tr><td>mlflow</td><td>tracking des expériences</td><td>5000</td></tr>
+  </table>
+  <p class="body">Volumes persistants · variables d'environnement · seuls les ports utiles exposés · <strong>testé sur machine vierge : utilisable en &lt; 5 min</strong> <span class="chip">à vérifier en É6</span></p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>15 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 14 ═══════════ -->
+<div class="slide">
+  <div class="kicker">Le produit · Déploiement 2/2</div>
+  <h1>La trajectoire d'industrialisation</h1>
+  <div class="row" style="margin-bottom: 20px;">
+    <div class="card grow"><div class="stitle">À l'échelle du POC</div>
+      <p class="body">exécution locale, un utilisateur · services en conteneurs sur une machine · FEN comme clé, routeur déterministe, LLM via API</p></div>
+    <div class="card key grow"><div class="stitle">À l'échelle industrielle</div>
+      <p class="body">mêmes conteneurs, orchestration managée · Milvus en cluster · cache Lichess partagé · pool de workers Stockfish — <strong>l'architecture ne change pas, elle se redimensionne</strong></p></div>
+  </div>
+  <div class="row">
+    <div class="card wood grow"><div class="stitle">Public mineur</div>
+      <p class="body">hébergement UE, minimisation des données (RGPD) — comptes et suivi = V1, hors POC, assumé</p></div>
+    <div class="card grow"><div class="stitle">Mise à jour des connaissances</div>
+      <p class="body">ingestion du corpus re-jouée en batch hebdomadaire (delta par hash) — <strong>sans réentraînement</strong></p></div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>16 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 15 (coût) ═══════════ -->
+<div class="slide">
+  <div class="kicker">Le produit · Coûts</div>
+  <h1>Structure de coûts</h1>
+  <table style="margin-bottom: 16px;">
+    <tr><th>Poste (coût du POC)</th><th>Coût</th><th>Pourquoi</th></tr>
+    <tr><td>Données : parties, stats, corpus encyclopédique</td><td><strong>0 €</strong></td><td>licences libres (CC0, CC BY-SA)</td></tr>
+    <tr><td>Moteur Stockfish + embeddings</td><td><strong>0 €</strong></td><td>open source, exécution locale</td></tr>
+    <tr><td>Recherche de vidéos</td><td><strong>0 €</strong></td><td>quota gratuit, consommation maîtrisée par cache <span class="chip">réel — à mesurer</span></td></tr>
+    <tr style="background:#BFE3C3;"><td><strong>LLM de synthèse (dev + démo)</strong></td><td><strong>≈ 2,3 $</strong> estimés</td><td>seul poste payant <span class="chip">compteur de tokens — à mesurer</span></td></tr>
+  </table>
+  <div class="card key"><div class="stitle">Coût du passage à l'échelle</div>
+      <p class="body">Coût marginal d'une réponse : de l'ordre du <strong>centime</strong> (tokens LLM ; le reste est local ou en cache) → <span class="chip">€/élève/mois — calculé des tokens mesurés au POC</span>. Postes additionnels : hébergement (UE, public mineur), supervision — détail dans l'étude de faisabilité jointe.</p></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>17 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 16 ═══════════ -->
+<div class="slide">
+  <div class="kicker">La suite</div>
+  <h1>Pistes d'améliorations</h1>
+  <div class="row" style="margin-bottom: 16px;">
+    <div class="card grow"><div class="stitle">Répertoire personnalisé</div><p class="small">l'agent mémorise les ouvertures travaillées et adapte ses recommandations</p></div>
+    <div class="card grow"><div class="stitle">Mode entraînement actif</div><p class="small">l'agent joue la ligne théorique contre l'élève et corrige en direct</p></div>
+    <div class="card grow"><div class="stitle">Corpus élargi</div><p class="small">des 8 ouvertures vers les 500 codes ECO + parties FFE + variantes absentes du wiki FR (Winawer, Partie hongroise…) — périmètre réduit assumé</p></div>
+  </div>
+  <div class="row">
+    <div class="card terra grow"><div class="stitle">Analyse vidéo → FEN (partie 2)</div><p class="small">indexer les vidéos par position réelle — architecture MCP conçue, coûts chiffrés dans l'étude jointe</p></div>
+    <div class="card grow"><div class="stitle">Évaluation continue</div><p class="small">gold set enrichi des vraies questions d'élèves, feedback entraîneurs</p></div>
+    <div class="card grow"><div class="stitle">Qualité LLM</div><p class="small">A/B Haiku 4.5 vs Sonnet 5 sur le gold set, juge automatique</p></div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>18 / 19</span></div>
+</div>
+
+<!-- ═══════════ SLIDE 16 ═══════════ -->
+<div class="slide">
+  <div style="margin-top: 60px;">
+    <div class="kicker" style="text-align:center;">Conclusion</div>
+    <div class="card key" style="max-width: 780px; margin: 0 auto 30px; text-align:center; font-size: 26px; font-weight: 500; padding: 32px;">
+      La promesse : un retour de niveau entraîneur, à la demande.
+    </div>
+    <div style="text-align:center; margin-bottom: 30px;">
+      <span class="chip solid">✓ Routage théorie / moteur</span>&nbsp;
+      <span class="chip solid">✓ Réponses sourcées</span>&nbsp;
+      <span class="chip solid">✓ Livraison en une commande</span>&nbsp;
+      <span class="chip solid">✓ Protocole de mesure</span>
+    </div>
+    <p style="text-align:center;" class="body">Objectifs O1–O6 : <span class="chip">statuts à remplir après mesure</span></p>
+    <p style="text-align:center; font-size: 24px; font-weight: 500; margin-top: 40px;">Merci — place aux questions <span style="color:#3A5A40;">♘</span></p>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>19 / 19</span></div>
+</div>
+
+</body>
+</html>

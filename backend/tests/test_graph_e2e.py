@@ -19,14 +19,28 @@ HORS_THEORIE = {"white": 0, "draws": 0, "black": 0, "opening": None, "moves": []
 EVAL = {"cp": -110, "mate": None, "depth": 12, "best_line": ["d4", "d5"], "engine": "stockfish"}
 
 
+FICHE_WIKI = {
+    "text": "Partie italienne > Partie italienne > Introduction —\nLe fou en c4 vise f7.",
+    "score": 0.7,
+    "source_url": "https://fr.wikipedia.org/wiki/Partie_italienne",
+    "opening_name": "Partie italienne",
+    "lang": "fr",
+    "section": "Introduction",
+    "ouverture": "italienne",
+}
+
+
 def test_trajet_theorie(monkeypatch) -> None:
     monkeypatch.setattr(nodes.theory, "masters_with_cache", lambda board: (ITALIENNE, False))
+    monkeypatch.setattr(nodes.rag, "search", lambda requete, eco=None: [FICHE_WIKI])
     result = get_graph().invoke({"fen": START_FEN})
     assert "Italian Game" in result["answer"]
     assert "e4" in result["answer"]
     assert "Caruana" in result["answer"]
+    assert "f7" in result["answer"]  # l'extrait de la bibliothèque est dans la réponse
     assert any("Lichess" in s for s in result["sources"])
-    assert result["rag_chunks"] == [] and result["videos"] == []  # stubs traversés
+    assert any("wikipedia" in s for s in result["sources"])  # attribution CC BY-SA
+    assert result["videos"] == []  # stub É4 toujours traversé
 
 
 def test_trajet_moteur(monkeypatch) -> None:

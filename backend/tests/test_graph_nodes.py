@@ -101,3 +101,43 @@ def test_seuil_exact_du_routeur(monkeypatch, total, attendu) -> None:
     monkeypatch.setattr(nodes.theory, "masters_with_cache", lambda board: (fixture, False))
     result = nodes.identifier_ouverture({"fen": START_FEN})
     assert result["in_theory"] is attendu
+
+
+def test_contexte_rag_requete_depuis_ouverture(monkeypatch) -> None:
+    recu = {}
+
+    def espion(requete, eco=None):
+        recu.update(requete=requete, eco=eco)
+        return [{"text": "x", "source_url": "u"}]
+
+    monkeypatch.setattr(nodes.rag, "search", espion)
+    out = nodes.contexte_rag({"opening": {"name": "Italian Game", "eco": "C50"}})
+    assert out["rag_chunks"][0]["source_url"] == "u"
+    assert "Italian Game" in recu["requete"] and recu["eco"] == "C50"
+
+
+def test_contexte_rag_question_prioritaire(monkeypatch) -> None:
+    recu = {}
+    monkeypatch.setattr(
+        nodes.rag, "search", lambda requete, eco=None: recu.update(requete=requete) or []
+    )
+    nodes.contexte_rag({"question": "pourquoi f7 ?", "opening": {"name": "X", "eco": "C50"}})
+    assert recu["requete"] == "pourquoi f7 ?"
+
+
+def test_contexte_rag_rien_a_chercher(monkeypatch) -> None:
+    def interdit(*a, **k):
+        raise AssertionError("la bibliothèque ne doit pas être appelée sans requête")
+
+    monkeypatch.setattr(nodes.rag, "search", interdit)
+    assert nodes.contexte_rag({}) == {"rag_chunks": []}
+
+
+def test_contexte_rag_indisponible(monkeypatch) -> None:
+    def boom(requete, eco=None):
+        raise nodes.rag.RagUnavailable("Milvus éteint")
+
+    monkeypatch.setattr(nodes.rag, "search", boom)
+    out = nodes.contexte_rag({"opening": {"name": "X", "eco": "C50"}})
+    assert out["rag_chunks"] == []
+    assert "bibliothèque indisponible" in out["errors"][0]

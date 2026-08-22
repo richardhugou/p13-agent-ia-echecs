@@ -77,6 +77,13 @@ def synthese_gabarit(state: AgentState) -> dict:
             parts.append(_eval_en_mots(engine_eval))
             sources.append(f"Stockfish (profondeur {engine_eval.get('depth')})")
 
+    chunks = state.get("rag_chunks") or []
+    if chunks:
+        extrait = chunks[0]["text"].split("—\n", 1)[-1].strip()
+        parts.append(f"À retenir : {extrait[:220]}{'…' if len(extrait) > 220 else ''}")
+        for url in dict.fromkeys(c["source_url"] for c in chunks[:3]):
+            sources.append(f"Corpus (CC BY-SA) — {url}")
+
     errors = state.get("errors") or []
     if errors:
         parts.append("Note : certaines sources étaient indisponibles (" + " ; ".join(errors) + ").")
@@ -111,6 +118,12 @@ def _faits_annotes(state: AgentState) -> str:
             faits["meilleure_suite_detaillee"] = [
                 annoter_san(coup) for coup in engine_eval["best_line"][:3]
             ]
+    chunks = state.get("rag_chunks") or []
+    if chunks:
+        faits["extraits_documentaires"] = [
+            {"extrait": c["text"].split("—\n", 1)[-1].strip()[:300], "source": c["source_url"]}
+            for c in chunks[:3]
+        ]
     if state.get("errors"):
         faits["sources_indisponibles"] = state["errors"]
     if state.get("question"):

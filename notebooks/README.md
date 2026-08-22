@@ -7,7 +7,7 @@ Règle de labo : **aucune mesure ne vit uniquement dans une discussion** — tou
 |---|---|---|
 | `01-inventaire-corpus.ipynb` | comptes exacts des sources (APIs officielles) | ✅ exécuté |
 | `02-mesures-embeddings.ipynb` | adoption D-a : dims, vitesse, effet du préfixe d'instruction | ✅ exécuté · garde-fou : `backend/tests/test_embeddings_mesure.py` |
-| `03-eda-corpus.ipynb` | figures EDA des diapos data | à venir (É3) |
+| `03-eda-corpus.ipynb` | figures EDA des diapos data | ✅ exécuté · PNG dans `figures/` |
 | `04-evaluation-rag.ipynb` | gold set, Run A vs Run B, métriques MLflow | à venir (É3) |
 | `05-demo-agent.ipynb` | le parcours d'un coup, brique par brique | à venir (É6) |
 | `06-mesures-llm.ipynb` | reconstruction du banc de mesure de la campagne LLM (journal du 22/08) | à reconstruire |

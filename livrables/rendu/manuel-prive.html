@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: "Helvetica Neue", Roboto, Arial, sans-serif; color: #1C1B18; }
+  .slide { width: 1280px; height: 720px; background: #FCF9F4; position: relative; overflow: hidden;
+           padding: 52px 64px 60px; page-break-after: always; display: flex; flex-direction: column; }
+  .chap { justify-content: center; align-items: center; text-align: center; }
+  .kicker { font-size: 14px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #3A5A40; margin-bottom: 8px; }
+  h1 { font-size: 36px; font-weight: 500; line-height: 1.15; margin-bottom: 20px; }
+  .footer { position: absolute; bottom: 0; left: 0; right: 0; height: 38px; padding: 0 64px;
+            display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #7A756C; }
+  .def { background: #F3EEE4; border-radius: 18px; padding: 14px 20px; margin-bottom: 12px; font-size: 17px; line-height: 1.5; }
+  .ana { background: #F0E6D2; border-radius: 18px; padding: 14px 20px; margin-bottom: 12px; font-size: 16px; line-height: 1.5; color: #2A2011; }
+  .nous { background: #BFE3C3; border-radius: 18px; padding: 14px 20px; font-size: 16px; line-height: 1.5; color: #0B2211; margin-top: auto; }
+  .schema { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 10px 0 12px; flex-wrap: wrap; }
+  .box { background: #F3EEE4; border-radius: 14px; padding: 10px 16px; font-size: 14px; text-align: center; }
+  .box.v { background: #BFE3C3; color: #0B2211; }
+  .box.t { background: #FFDAD2; color: #4a1206; }
+  .box.w { background: #F0E6D2; color: #2A2011; }
+  .fl { color: #7A756C; font-size: 18px; }
+  .mono { font-family: "SF Mono", Menlo, monospace; background: #F0E6D2; border-radius: 8px; padding: 2px 8px; font-size: 0.85em; color: #2A2011; }
+  .small { font-size: 13px; color: #5F5E5A; line-height: 1.4; }
+  .lbl { font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; }
+  th { font-size: 12px; text-transform: uppercase; color: #7A756C; text-align: left; padding: 6px 12px; border-bottom: 1px solid #7A756C; }
+  td { font-size: 14px; padding: 7px 12px; border-bottom: 1px solid #E5DFD2; }
+</style>
+</head>
+<body>
+
+<div class="slide chap">
+  <div class="kicker">Document privé — pour Richard</div>
+  <h1 style="font-size: 50px; max-width: 900px;">Le grand manuel du projet</h1>
+  <p style="font-size: 20px; color: #7A756C; max-width: 760px;">Chaque terme expliqué depuis zéro — définition, analogie, schéma, et ce que ça veut dire chez nous. Pour comprendre, puis décider.</p>
+  <p style="margin-top: 30px; font-size: 15px; color: #7A756C;">8 chapitres · lecture ~40 min · aucune connaissance supposée</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>1 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 1</div>
+  <h1 style="font-size: 44px;">Ce qu'on construit</h1>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>2 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 1 · Le produit</div>
+  <h1>Un coach d'échecs artificiel qui regarde l'échiquier avec l'élève</h1>
+  <div class="def">📖 Léa, 12 ans, joue un coup sur un échiquier à l'écran. À chaque coup, un panneau lui répond : quel est le nom de ce début de partie, quels coups les champions jouent ici, pourquoi, et — si elle invente quelque chose que personne ne joue — si son idée est bonne ou mauvaise, chiffres à l'appui.</div>
+  <div class="schema">
+    <div class="box" style="width:200px; height:130px; display:flex; align-items:center; justify-content:center; font-size: 40px;">♟ ♞ ♝</div>
+    <div class="fl">+</div>
+    <div class="box w" style="width:340px; text-align:left; font-size:13px;">« Position : Partie italienne.<br>Les maîtres jouent Fc5 (25 481 parties)…<br>Partie de référence : Caruana – Carlsen 2020. »<br><span class="small">Sources : Lichess</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Chez nous :</span> l'échiquier (le futur front Angular) + le panneau coach (notre API, qui répond déjà). Toute la machinerie de ce manuel sert UNE phrase affichée à une enfant.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>3 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 1 · La boucle</div>
+  <h1>La boucle : jouer, comprendre, dévier, évaluer</h1>
+  <div class="schema">
+    <div class="box v">1 · Elle JOUE un coup</div><div class="fl">→</div>
+    <div class="box v">2 · Elle COMPREND<br><span class="small">nom, coups des maîtres, idées</span></div><div class="fl">→</div>
+    <div class="box t">3 · Elle DÉVIE<br><span class="small">un coup que personne ne joue</span></div><div class="fl">→</div>
+    <div class="box v">4 · On ÉVALUE<br><span class="small">« ça te coûte ~1 pion »</span></div>
+  </div>
+  <div class="ana">🧩 C'est le geste d'un entraîneur humain : il te laisse jouer, t'explique, et te reprend quand tu sors des sentiers battus. Notre projet = automatiser ce geste, pas remplacer le jeu.</div>
+  <div class="nous">♟ <span class="lbl">L'étape 3→4 est le cœur de la valeur</span> : détecter la frontière entre « connu de la théorie » et « inédit », et changer d'outil à ce moment-là. Tout le reste du manuel explique les briques qui rendent ça possible.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>4 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 2</div>
+  <h1 style="font-size: 44px;">Le vocabulaire de base</h1>
+  <p class="small" style="margin-top:8px;">FEN · API · JSON · cache</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>5 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 2 · FEN</div>
+  <h1>Le FEN — la photo de l'échiquier en une ligne de texte</h1>
+  <div class="def">📖 Une position d'échecs complète (où sont les pièces, à qui de jouer, quels roques restent permis) s'écrit en une seule ligne de caractères. Deux joueurs arrivés à la même position par des chemins différents ont exactement le même FEN.</div>
+  <div class="schema"><div class="box w" style="font-family:'SF Mono',Menlo,monospace; font-size:15px;">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR <b>w</b> KQkq - 0 1</div></div>
+  <p class="small" style="text-align:center; margin-bottom:10px;">les 8 rangées (minuscules = Noirs, majuscules = Blancs) · <b>w</b> = trait aux Blancs · KQkq = roques encore possibles</p>
+  <div class="ana">🧩 Les coordonnées GPS d'une partie : peu importe la route prise, si tu es au même endroit, c'est la même adresse.</div>
+  <div class="nous">♟ <span class="lbl">C'est LA clé de tout le système</span> : Lichess, Stockfish, le cache, la future bibliothèque — tout est interrogé et rangé par FEN. C'est aussi la seule chose que l'élève « envoie » (son échiquier la fabrique à chaque coup).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>6 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 2 · API</div>
+  <h1>Une API — un guichet entre programmes</h1>
+  <div class="def">📖 Un programme expose des « guichets » (on dit <i>endpoints</i>) où d'autres programmes déposent une demande et reçoivent une réponse, dans un format convenu. Pas d'écran, pas de souris : machine à machine.</div>
+  <div class="schema">
+    <div class="box">notre agent</div><div class="fl">— demande : « FEN r1bq… » →</div>
+    <div class="box v">guichet<br><span class="mono">/masters</span> de Lichess</div><div class="fl">— réponse : coups + stats →</div>
+    <div class="box">notre agent</div>
+  </div>
+  <div class="ana">🧩 Le guichet d'une administration : tu remplis le bon formulaire (la requête), tu le déposes au bon guichet (l'endpoint), on te rend un document (la réponse). Si le guichet est fermé (panne), il te faut un plan B.</div>
+  <div class="nous">♟ <span class="lbl">On CONSOMME des API</span> (Lichess, YouTube, MediaWiki, Ollama) et on en <span class="lbl">FABRIQUE une</span> : la nôtre, avec ses guichets <span class="mono">/moves</span>, <span class="mono">/evaluate</span>, <span class="mono">/agent/ask</span> — c'est là que le futur échiquier Angular viendra frapper.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>7 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 2 · JSON</div>
+  <h1>Le JSON — la langue des messages entre programmes</h1>
+  <div class="def">📖 Un format texte universel pour structurer des données : des paires « nom : valeur », des listes, des imbrications. Lisible par les machines ET par les humains.</div>
+  <div class="schema"><div class="box w" style="text-align:left; font-family:'SF Mono',Menlo,monospace; font-size:14px;">{ "opening": { "eco": "C50", "name": "Italian Game" },<br>&nbsp;&nbsp;"moves": [ { "san": "Bc5", "white": 25481 } ] }</div></div>
+  <div class="ana">🧩 Une fiche bristol normalisée : n'importe quel service qui connaît la norme peut la lire, la remplir, la transmettre.</div>
+  <div class="nous">♟ <span class="lbl">Toutes nos réponses circulent en JSON</span> — c'est notre « format d'échange interne » (diapo formats bruts du deck). Quand les formats d'entrée diffèrent (TSV, wikitext, texte UCI…), on les <i>normalise</i> vers nos pivots : FEN pour les positions, JSON pour les échanges.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>8 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 2 · Cache</div>
+  <h1>Le cache — la mémoire des réponses déjà obtenues</h1>
+  <div class="def">📖 Avant de poser une question coûteuse (appel réseau, gros calcul), on regarde si on a déjà la réponse en réserve. Si oui : réponse instantanée, zéro coût. Un <span class="lbl">TTL</span> (time-to-live) = date de péremption de la réserve.</div>
+  <div class="schema">
+    <div class="box">1ᵉʳ appel<br><span class="small">FEN italienne</span></div><div class="fl">→</div>
+    <div class="box t">Lichess<br><span class="small">~1 s, réseau</span></div><div class="fl">→</div>
+    <div class="box w">réserve MongoDB<br><span class="small">« explorer_cache »</span></div><div class="fl">→</div>
+    <div class="box v">2ᵉ appel<br><span class="small">instantané, cached: true</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Trois réserves chez nous</span> : réponses Lichess (péremption 24 h — les stats bougent peu), vidéos YouTube (7 j), évaluations Stockfish (<i>jamais</i> périmées : le calcul est déterministe, même position ⇒ même note). C'est ce qui protège nos quotas et notre vitesse — tu l'as vu en vrai : <span class="mono">cached: true</span>.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>9 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 3</div>
+  <h1 style="font-size: 44px;">L'atelier</h1>
+  <p class="small" style="margin-top:8px;">Docker · compose · .env · git & gitflow · CI</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>10 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 3 · Docker</div>
+  <h1>Docker — chaque logiciel dans sa boîte prête à l'emploi</h1>
+  <div class="def">📖 Un <i>conteneur</i> emballe un logiciel avec TOUT ce dont il a besoin (la bonne version de Python, les bibliothèques, les réglages). La boîte tourne pareil sur ta machine, celle du jury, ou un serveur. Une <i>image</i> = le moule ; un <i>conteneur</i> = la boîte en marche.</div>
+  <div class="ana">🧩 Des plats cuisinés sous vide : peu importe la cuisine où tu les réchauffes, le résultat est identique. Fini le « ça marche chez moi mais pas chez toi ».</div>
+  <div class="nous">♟ <span class="lbl">Notre exigence de mission</span> : le jury doit lancer TOUT le projet en une commande sur une machine vierge. Notre image backend contient Python 3.12 + nos dépendances + Stockfish, figés au octet près (versions épinglées = reproductibilité).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>11 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 3 · Compose & .env</div>
+  <h1>docker compose — le chef d'orchestre des boîtes</h1>
+  <div class="def">📖 Un fichier (<span class="mono">docker-compose.yml</span>) décrit toutes les boîtes du projet, leurs branchements et leur ordre d'allumage. <span class="mono">docker compose up</span> = tout démarre ensemble. Le fichier <span class="mono">.env</span> contient les réglages et secrets (jetons, clés) — il reste sur ta machine, jamais dans git.</div>
+  <div class="schema">
+    <div class="box v">api<br><span class="small">FastAPI + agent + Stockfish</span></div>
+    <div class="box">mongodb<br><span class="small">les caches</span></div>
+    <div class="box w" style="border: 1.5px dashed #7A756C;">milvus (+ etcd + minio)<br><span class="small">arrive en É3</span></div>
+    <div class="box" style="border: 1.5px dashed #7A756C;">frontend<br><span class="small">arrive en É5</span></div>
+    <div class="box" style="border: 1.5px dashed #7A756C;">mlflow<br><span class="small">arrive avec l'évaluation</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Exception voulue : Ollama vit HORS des boîtes</span>, directement sur ton Mac — dans une boîte, il perdrait l'accès à la puce M5 (le GPU). Les boîtes le joignent par une adresse spéciale : <span class="mono">host.docker.internal</span>.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>12 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 3 · Git & gitflow</div>
+  <h1>Git — l'historique ; gitflow — la discipline des chantiers</h1>
+  <div class="def">📖 Git enregistre chaque état du projet sous forme de <i>commits</i> (des instantanés signés et commentés). Une <i>branche</i> = un chantier parallèle qui n'abîme pas le reste. <span class="lbl">Gitflow</span> = notre règle : les chantiers (<span class="mono">feature/…</span>) se replient dans <span class="mono">develop</span> quand ils sont finis ; <span class="mono">main</span> reste la version montrable.</div>
+  <svg viewBox="0 0 1050 150" style="width:100%; margin: 4px 0 10px;">
+    <line x1="40" y1="40" x2="1010" y2="40" stroke="#7A756C" stroke-width="2"/>
+    <text x="15" y="45" font-size="14" fill="#1C1B18">main</text>
+    <line x1="120" y1="40" x2="180" y2="85" stroke="#7A756C" stroke-width="1.5"/>
+    <line x1="180" y1="85" x2="1010" y2="85" stroke="#3A5A40" stroke-width="2"/>
+    <text x="15" y="90" font-size="14" fill="#3A5A40">develop</text>
+    <line x1="260" y1="85" x2="320" y2="125" stroke="#7A756C" stroke-width="1.5"/>
+    <line x1="320" y1="125" x2="560" y2="125" stroke="#8C4A3C" stroke-width="2"/>
+    <line x1="560" y1="125" x2="620" y2="85" stroke="#7A756C" stroke-width="1.5"/>
+    <text x="330" y="118" font-size="13" fill="#8C4A3C">feature/LangGraph (fini, replié)</text>
+    <line x1="680" y1="85" x2="740" y2="125" stroke="#7A756C" stroke-width="1.5"/>
+    <line x1="740" y1="125" x2="1010" y2="125" stroke="#8C4A3C" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="750" y="118" font-size="13" fill="#8C4A3C">feature/RAG (le chantier qui s'ouvre)</text>
+    <circle cx="320" cy="125" r="5" fill="#8C4A3C"/><circle cx="440" cy="125" r="5" fill="#8C4A3C"/><circle cx="560" cy="125" r="5" fill="#8C4A3C"/>
+  </svg>
+  <div class="nous">♟ <span class="lbl">Chaque commit est signé de ton nom</span>, raconte UN pas cohérent, et laisse toujours les tests verts — on peut s'arrêter entre deux sans rien casser. Les plans de commits que tu valides avant chaque feature, c'est ça.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>13 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 3 · CI</div>
+  <h1>La CI — le contrôleur qualité qui ne dort jamais</h1>
+  <div class="def">📖 <i>Intégration continue</i> : à chaque envoi de code sur GitHub, un robot relance TOUS nos tests et vérifications de style sur une machine neuve. Vert = le projet entier fonctionne encore. Rouge = on a cassé quelque chose, on le sait en 30 secondes.</div>
+  <div class="schema">
+    <div class="box">git push</div><div class="fl">→</div>
+    <div class="box w">robot GitHub Actions<br><span class="small">installe tout de zéro</span></div><div class="fl">→</div>
+    <div class="box">style (ruff) · 41 tests (pytest)</div><div class="fl">→</div>
+    <div class="box v">✓ vert en ~30 s</div>
+  </div>
+  <div class="ana">🧩 Le contrôle technique après chaque réparation de la voiture — pas une fois par an.</div>
+  <div class="nous">♟ <span class="lbl">Nos 41 tests tournent aussi avec un vrai Stockfish</span> installé par le robot. Un test a déjà attrapé deux vrais bugs avant qu'ils n'atteignent le dépôt (le cache qui plantait sans Mongo, le 401 qui explosait en 500).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>14 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 4</div>
+  <h1 style="font-size: 44px;">Les sources de vérité</h1>
+  <p class="small" style="margin-top:8px;">Lichess · Stockfish · python-chess</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>15 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 4 · Lichess</div>
+  <h1>Lichess Opening Explorer — ce que les maîtres ont vraiment joué</h1>
+  <div class="def">📖 Le plus grand site d'échecs libre du monde expose un guichet : tu lui donnes un FEN, il répond avec tous les coups joués dans cette position par ~2 millions de parties de maîtres — combien de fois, avec quel résultat, et des parties célèbres en référence.</div>
+  <div class="ana">🧩 Une bibliothécaire qui a lu toutes les parties de l'histoire : « ici, 25 481 maîtres ont joué Fc5 ».</div>
+  <div class="nous">♟ <span class="lbl">C'est notre définition de « la théorie »</span> — des statistiques réelles, jamais une opinion. Découverte de terrain : depuis 2026 ce guichet exige une pièce d'identité (ton jeton personnel gratuit, rangé dans <span class="mono">.env</span> — principe du moindre privilège : zéro droit coché). Et « en théorie » = seuil : ≥ 5 parties de maîtres connaissent la position.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>16 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 4 · Stockfish</div>
+  <h1>Stockfish — la calculatrice qui note n'importe quelle position</h1>
+  <div class="def">📖 Un programme de calcul pur, plus fort que tout humain (~3600 Elo contre ~2830 pour le champion du monde). Il explore des millions de suites de coups et rend UNE note : les <i>centipawns</i> (+100 = l'équivalent d'un pion d'avance pour les Blancs), ou « mat en N coups ». La <i>profondeur</i> = jusqu'où il regarde (nous : 16 coups).</div>
+  <div class="schema">
+    <div class="box">FEN quelconque<br><span class="small">même jamais vu</span></div><div class="fl">→</div>
+    <div class="box t">Stockfish<br><span class="small">calcule, ne parle pas</span></div><div class="fl">→</div>
+    <div class="box w"><span class="mono">cp: +38</span> ou <span class="mono">mat en 1</span><br><span class="small">+ la meilleure suite de coups</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Ta « fonction de coût »</span> : quand la bibliothécaire ne connaît pas la position (hors théorie), la calculatrice prend le relais. Il vit DANS notre boîte backend (gratuit, local, hors réseau) et ses notes sont mises en réserve pour toujours.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>17 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 4 · python-chess</div>
+  <h1>python-chess — l'arbitre à l'entrée</h1>
+  <div class="def">📖 Une bibliothèque Python qui connaît les règles des échecs : elle lit un FEN, vérifie que la position est légale (pas deux rois blancs, pas de pion sur la première rangée…) et sait lister TOUS les coups permis.</div>
+  <div class="ana">🧩 Le videur à l'entrée de la boîte : rien ni personne ne passe sans montrer une position valide.</div>
+  <div class="nous">♟ <span class="lbl">Notre objectif n° 1 (« zéro coup illégal proposé ») repose sur lui, deux fois</span> : à l'entrée (FEN validé avant tout traitement) et à la sortie (tout coup proposé par Lichess est refiltré contre la liste des coups légaux — ceinture et bretelles, et c'est testé).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>18 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 5</div>
+  <h1 style="font-size: 44px;">L'agent</h1>
+  <p class="small" style="margin-top:8px;">LangGraph · nœuds · état · routeur · stub · fallback</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>19 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 5 · LangGraph</div>
+  <h1>LangGraph — l'organigramme qui s'exécute</h1>
+  <div class="def">📖 Un outil Python pour écrire un agent comme un organigramme : des <span class="lbl">nœuds</span> (chacun une étape de travail), des flèches, et des <span class="lbl">embranchements conditionnels</span> (« si oui, va ici ; sinon, va là »). L'organigramme n'est pas un dessin : c'est le programme lui-même.</div>
+  <div class="schema">
+    <div class="box">valider la position</div><div class="fl">→</div>
+    <div class="box">identifier l'ouverture</div><div class="fl">→</div>
+    <div class="box w">◇ en théorie ?</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="box v" style="font-size:12px;">oui → coups des maîtres</div>
+      <div class="box t" style="font-size:12px;">non → note Stockfish</div>
+    </div>
+    <div class="fl">→</div><div class="box" style="border:1.5px dashed #7A756C; font-size:12px;">bibliothèque<br>(se remplit en É3)</div>
+    <div class="fl">→</div><div class="box v" style="font-size:12px;">synthèse</div>
+  </div>
+  <div class="ana">🧩 Le chef de gare : il ne conduit aucun train, il fait passer chaque demande par les bons guichets, dans le bon ordre, avec les aiguillages.</div>
+  <div class="nous">♟ <span class="lbl">Pourquoi un graphe et pas un simple script ?</span> Parce que notre logique BRANCHE (théorie ou moteur) et que chaque nœud doit être testable seul. C'est exactement ce que la fiche d'autoévaluation appelle « structurer le graphe ».</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>20 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 5 · État & routeur</div>
+  <h1>L'état partagé et le routeur — le dossier et l'aiguillage</h1>
+  <div class="def">📖 <span class="lbl">L'état</span> = un dossier qui circule de nœud en nœud ; chacun y ajoute sa pièce (l'ouverture identifiée, les coups, la note du moteur…) sans toucher aux autres. <span class="lbl">Le routeur</span> = la règle d'aiguillage qui choisit la branche.</div>
+  <div class="schema"><div class="box w" style="text-align:left; font-family:'SF Mono',Menlo,monospace; font-size:13px;">dossier : { fen, ouverture, en_théorie, coups_théorie[],<br>&nbsp;note_moteur, fiches_bibliothèque[], vidéos[], réponse, sources[] }</div></div>
+  <div class="nous">♟ <span class="lbl">Décision que tu défends en soutenance : notre routeur est DÉTERMINISTE</span> — une simple règle chiffrée (≥ 5 parties de maîtres → branche théorie), pas un avis d'IA. Même entrée ⇒ toujours même chemin ⇒ testable à 100 % (on l'a testé à 4, 5 et 6 parties). L'IA générative n'aiguille jamais.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>21 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 5 · Stub & fallback</div>
+  <h1>Stub et fallback — les cases vides et les plans B</h1>
+  <div class="def">📖 Un <span class="lbl">stub</span> = un nœud posé dans le circuit mais encore vide : il reçoit le dossier, n'y ajoute rien, le transmet. Un <span class="lbl">fallback</span> (repli) = le plan B d'un nœud quand sa source tombe : on dégrade la réponse, on ne plante jamais.</div>
+  <div class="ana">🧩 L'usine dont le convoyeur est posé en entier dès le premier jour : deux postes attendent encore leurs machines (stubs), et chaque poste a une procédure en cas de panne (fallbacks).</div>
+  <div class="nous">♟ <span class="lbl">Nos plans B, tous testés</span> : Lichess en panne → bascule moteur + note d'incident · Stockfish absent → on continue sans note · Ollama éteint → texte à trous · FEN illisible → réponse pédagogique. Et É3 consiste littéralement à installer la machine dans le stub « bibliothèque ».</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>22 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 6</div>
+  <h1 style="font-size: 44px;">La voix</h1>
+  <p class="small" style="margin-top:8px;">LLM · tokens · prompt · température · Ollama · ta campagne de mesures</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>23 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 6 · LLM & tokens</div>
+  <h1>Un LLM — la machine à continuer le texte</h1>
+  <div class="def">📖 Un <i>grand modèle de langage</i> a lu des montagnes de texte et appris UNE chose : deviner la suite la plus plausible d'un texte, morceau par morceau. Ces morceaux s'appellent des <span class="lbl">tokens</span> (~¾ de mot). Il ne « sait » pas : il continue plausiblement — d'où son double visage : excellent rédacteur, dangereux affirmateur.</div>
+  <div class="schema">
+    <div class="box">« La théorie recommande Fc5, parce que… »</div><div class="fl">→</div>
+    <div class="box t">LLM</div><div class="fl">→</div>
+    <div class="box">« …le Fou vise le point f7 » <span class="small">(plausible… vrai ou pas !)</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Notre règle d'or : le LLM n'est JAMAIS la source de vérité.</span> Les coups viennent de Lichess, les notes de Stockfish, les idées (bientôt) de la bibliothèque. Le LLM ne fait que la mise en mots — et tu as vu aux mesures pourquoi on le tient en laisse courte.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>24 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 6 · Prompt & température</div>
+  <h1>Le prompt et la température — la fiche de poste et le curseur d'audace</h1>
+  <div class="def">📖 Le <span class="lbl">prompt</span> = les instructions écrites qu'on donne au LLM avant sa tâche : son rôle, ses règles, ses interdits. La <span class="lbl">température</span> = un curseur de hasard : basse (0,2) → sage et prévisible ; haute (1,0) → créatif et risqué.</div>
+  <div class="schema"><div class="box w" style="text-align:left; font-size:13px; max-width:640px;">« Tu es un coach pour jeunes joueurs. Ne recommande JAMAIS un coup absent des faits.<br>N'ajoute AUCUNE explication de ton cru. Si les faits sont vides, dis-le honnêtement.<br>3 à 5 phrases, tutoie, encourage. N'écris pas de ligne Sources : elle est ajoutée après toi. »</div></div>
+  <div class="nous">♟ <span class="lbl">Notre fiche de poste (ci-dessus) a été forgée PAR les mesures</span> — chaque règle répond à une faute observée. Température 0,2 : un coach doit être fiable, pas inventif. Et la dernière règle cache une leçon clé → deux diapos plus loin.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>25 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 6 · Ollama</div>
+  <h1>Ollama — l'IA qui tourne sur ta machine</h1>
+  <div class="def">📖 Une application qui télécharge des modèles ouverts et les fait tourner localement, en exposant un guichet (une API, comme les autres). Rien ne sort de ta machine : pas de compte, pas de clé, pas de réseau, pas de facture.</div>
+  <div class="schema">
+    <div class="box v">boîte api<br><span class="small">dans Docker</span></div><div class="fl">— host.docker.internal →</div>
+    <div class="box t">Ollama sur ton Mac<br><span class="small">accès direct à la puce M5</span></div><div class="fl">→</div>
+    <div class="box">qwen3.5:4b<br><span class="small">3,2 Go, ~30 tok/s</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Ton choix D1 révisé</span> : la voix de l'agent est locale (0 €, 0 clé, 0 réseau le jour J). Contrainte à retenir : <span class="mono">ollama serve</span> doit tourner pour la démo — sinon l'agent replie sur le texte à trous, sans planter. L'option Anthropic (qualité supérieure, ~2 €) reste à une variable de distance.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>26 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 6 · La campagne de mesures</div>
+  <h1>Ta campagne LLM — mesurer avant de payer</h1>
+  <table style="margin-bottom: 12px;">
+    <tr><th>Candidat</th><th>Verdict</th><th>La faute observée</th></tr>
+    <tr><td>qwen3:4b</td><td>❌</td><td>« penseur » incontrôlable — réponses vides</td></tr>
+    <tr><td>qwen2.5:3b</td><td>❌</td><td>contresens (« les Noirs perdent » quand ils matent), sources perdues</td></tr>
+    <tr><td style="background:#BFE3C3;"><b>qwen3.5:4b</b></td><td style="background:#BFE3C3;">✅ titulaire</td><td style="background:#BFE3C3;">passe la barre AVEC les trois garde-fous ci-dessous</td></tr>
+    <tr><td>qwen3.5:9b</td><td>❌</td><td>confond encore les pièces, 2× plus lent, rien de mieux</td></tr>
+  </table>
+  <div class="nous">♟ <span class="lbl">Les 3 garde-fous nés des mesures</span> : ① <b>faits annotés</b> — on écrit « Fc5 — le Fou va en c5 » au lieu de « Bc5 » : la confusion de pièces disparaît (la donnée corrige ce que la taille du modèle ne corrigeait pas) · ② <b>température 0,2</b> · ③ <b>la ligne Sources est ajoutée par NOTRE code après le LLM</b> — garantie par construction : la métrique « 100 % sourcé » ne peut plus échouer. C'est ton chapitre soutenance 🎓.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>27 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 7 — le chantier qui s'ouvre</div>
+  <h1 style="font-size: 44px;">La bibliothèque (É3)</h1>
+  <p class="small" style="margin-top:8px;">RAG · ETL · manifeste · wikitext · chunking · embeddings · Milvus · vector-search</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>28 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Le problème</div>
+  <h1>Ce qui manque à l'agent : le « pourquoi »</h1>
+  <div class="def">📖 Aujourd'hui l'agent sait dire <i>quoi</i> jouer (Lichess) et <i>combien</i> vaut une position (Stockfish). Mais si Léa demande « pourquoi le Fou va en c5 ? », il n'a RIEN : la case « bibliothèque » de son circuit est un stub qui renvoie une liste vide.</div>
+  <div class="schema">
+    <div class="box v">quoi jouer ✅<br><span class="small">Lichess</span></div>
+    <div class="box v">combien ça vaut ✅<br><span class="small">Stockfish</span></div>
+    <div class="box t" style="border: 2px dashed #8C4A3C;">POURQUOI ❌<br><span class="small">rag_chunks: [] — le chantier É3</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">É3 = remplir cette case</span> : aller chercher les textes qui expliquent les idées (Wikipédia FR + Wikibooks EN pour tes 8 ouvertures), les préparer, les ranger dans une bibliothèque interrogeable — et brancher le tout dans le graphe.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>29 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · RAG</div>
+  <h1>Le RAG — répondre livre ouvert</h1>
+  <div class="def">📖 <i>Retrieval-Augmented Generation</i> = « génération augmentée par la recherche ». Au lieu de laisser le LLM répondre de mémoire (il inventerait), on va d'abord CHERCHER les passages pertinents dans notre bibliothèque, puis on les lui donne à mettre en mots. Il répond livre ouvert, pas de tête.</div>
+  <div class="schema">
+    <div class="box">« pourquoi Fc5 ? »<br><span class="small">+ la position (FEN)</span></div><div class="fl">→</div>
+    <div class="box w">recherche dans<br>la bibliothèque</div><div class="fl">→</div>
+    <div class="box">3-5 passages pertinents<br><span class="small">avec leurs sources</span></div><div class="fl">→</div>
+    <div class="box t">LLM : mise en mots</div><div class="fl">→</div>
+    <div class="box v">réponse sourcée</div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Cohérent avec notre règle d'or</span> : le LLM reste un rédacteur — les idées viendront de passages réels, cités. Et l'abstention reste possible : bibliothèque muette → l'agent le dit, il n'invente pas.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>30 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · ETL</div>
+  <h1>L'ETL — Extraire, Transformer, Charger</h1>
+  <div class="def">📖 Le nom générique de toute chaîne qui prend des données brutes quelque part, les nettoie et les range ailleurs. <span class="lbl">E</span>xtract : aller chercher. <span class="lbl">T</span>ransform : nettoyer, découper, normaliser. <span class="lbl">L</span>oad : charger dans la base d'arrivée. Bien fait, il est <span class="lbl">rejouable</span> (on peut le relancer à l'identique) et <span class="lbl">idempotent</span> (le relancer deux fois ne crée pas de doublons).</div>
+  <div class="ana">🧩 Une conserverie : récolter les légumes (E), les laver et les découper (T), les mettre en bocaux étiquetés sur les bonnes étagères (L). Et le cahier de production note chaque fournée : c'est notre « rapport chiffré ».</div>
+  <div class="nous">♟ <span class="lbl">Ton mentor jugera cette chaîne</span> — c'est LE morceau data du projet. Chaque exécution produira ses chiffres (pages, fiches, doublons écartés, durée), et ces chiffres rempliront les diapos data et le notebook 02-eda.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>31 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Le manifeste</div>
+  <h1>corpus.yml — la liste de courses que tu signes</h1>
+  <div class="def">📖 Un fichier versionné qui liste EXACTEMENT ce qui entre dans la bibliothèque : pour chacune de tes 8 ouvertures, les pages Wikipédia FR et les sous-arbres Wikibooks EN retenus. Pas de manifeste = pas d'extraction : c'est la source de vérité du périmètre.</div>
+  <div class="schema"><div class="box w" style="text-align:left; font-family:'SF Mono',Menlo,monospace; font-size:13px;">italienne:<br>&nbsp;&nbsp;eco: [C50, C54]<br>&nbsp;&nbsp;wikipedia_fr: [Partie italienne, Giuoco Piano, …]<br>&nbsp;&nbsp;wikibooks_en: ["Chess Opening Theory/1. e4/1...e5/2. Nf3/…"]</div></div>
+  <div class="nous">♟ <span class="lbl">Ta décision D-c</span> : je le génère assisté (par catégories et préfixes), TU relis et tranches la liste — c'est ton corpus, ta signature. Checkpoint prévu au milieu du commit 1. Rappel de l'inventaire : 225 pages FR et 3 026 pages EN existent ; on en retiendra ~100–150.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>32 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · wikitext</div>
+  <h1>Le wikitext — le texte brut des wikis, à nettoyer</h1>
+  <div class="def">📖 Les pages Wikipédia/Wikibooks s'écrivent dans un langage à balises (le <i>wikitext</i>). L'API MediaWiki nous le livre brut : il faut retirer la tuyauterie (modèles, infobox, références) et garder le texte et ses titres de sections.</div>
+  <div class="schema">
+    <div class="box w" style="text-align:left; font-family:'SF Mono',Menlo,monospace; font-size:12px;">== Idées principales ==<br>Le [[fou (échecs)|fou]] en c4 vise f7{{sfn|Kasparov|2003}}…</div>
+    <div class="fl">→ nettoyage →</div>
+    <div class="box" style="text-align:left; font-size:13px;">Idées principales<br>Le fou en c4 vise f7…</div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Deux règles maison en plus</span> : normaliser la notation des coups (le « Fc4 » français et le « Bc4 » anglais désignent le même coup — on unifie) et calculer le <span class="lbl">FEN de référence</span> de chaque ligne avec python-chess : c'est lui qui reliera chaque fiche à l'échiquier. Chaque page garde son URL, sa date, sa licence (l'attribution CC BY-SA est une obligation ET notre argument qualité).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>33 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Chunking</div>
+  <h1>Le chunking — découper les pages en fiches</h1>
+  <div class="def">📖 On ne range pas des pages entières : on découpe en <span class="lbl">chunks</span> (fiches) de 300 à 500 tokens — assez courts pour être précis à retrouver, assez longs pour se comprendre seuls. Le <span class="lbl">recouvrement de 15 %</span> : chaque fiche répète la fin de la précédente, pour qu'aucune idée ne soit coupée en deux pile à la frontière.</div>
+  <svg viewBox="0 0 1000 110" style="width:100%; margin: 2px 0 10px;">
+    <rect x="20" y="10" width="960" height="26" rx="8" fill="#F3EEE4"/>
+    <text x="500" y="28" text-anchor="middle" font-size="13" fill="#5F5E5A">la page nettoyée, d'un seul tenant</text>
+    <rect x="20" y="60" width="330" height="30" rx="8" fill="#BFE3C3"/><text x="185" y="80" text-anchor="middle" font-size="13" fill="#0B2211">fiche 1</text>
+    <rect x="300" y="60" width="330" height="30" rx="8" fill="#9FE1CB" opacity="0.85"/><text x="465" y="80" text-anchor="middle" font-size="13" fill="#0B2211">fiche 2</text>
+    <rect x="580" y="60" width="330" height="30" rx="8" fill="#BFE3C3"/><text x="745" y="80" text-anchor="middle" font-size="13" fill="#0B2211">fiche 3</text>
+    <text x="318" y="105" font-size="12" fill="#3A5A40">↑ recouvrement 15 %</text>
+    <text x="598" y="105" font-size="12" fill="#3A5A40">↑ recouvrement 15 %</text>
+  </svg>
+  <div class="nous">♟ <span class="lbl">Règle métier maison : jamais couper une suite de coups en deux</span> (une variante « 1.e4 e5 2.Cf3 » tronquée devient un non-sens). Et ces tailles ne sont pas sorties du chapeau : le Run A « naïf » (fiches de 1000, sans recouvrement) contre le Run B « soigné » les mettra à l'épreuve, chiffres à l'appui.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>34 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Dédoublonnage & étiquettes</div>
+  <h1>Déduplication et métadonnées — des fiches uniques et étiquetées</h1>
+  <div class="def">📖 <span class="lbl">Déduplication</span> : écarter les fiches identiques (empreinte exacte, un <i>hash</i>) et les quasi-copies (similarité &gt; 0,95 — les wikis se recopient beaucoup). <span class="lbl">Métadonnées</span> : l'étiquette collée sur chaque fiche pour pouvoir filtrer et citer.</div>
+  <div class="schema"><div class="box w" style="text-align:left; font-family:'SF Mono',Menlo,monospace; font-size:13px;">{ eco: "C50", ouverture: "Partie italienne", fen_ref: "r1bq…",<br>&nbsp;&nbsp;source_url: "https://fr.wikipedia.org/…", langue: "fr", licence: "CC BY-SA" }</div></div>
+  <div class="nous">♟ <span class="lbl">Ces étiquettes servent trois causes</span> : filtrer la recherche (« seulement les fiches C50 » quand on sait l'ouverture — précision gratuite), citer la source sous chaque réponse (l'obligation CC BY-SA devenue argument), et l'idempotence (l'empreinte de contenu évite les doublons si on relance la chaîne).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>35 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Embeddings</div>
+  <h1>L'embedding — transformer une phrase en position dans l'espace</h1>
+  <div class="def">📖 Un modèle spécialisé lit un texte et le convertit en une liste de 1024 nombres — imagine un point dans un espace à 1024 dimensions. La magie : <span class="lbl">deux textes qui parlent de la même chose atterrissent proches</span>, même s'ils n'ont aucun mot en commun, même dans deux langues différentes.</div>
+  <svg viewBox="0 0 1000 150" style="width:100%; margin: 2px 0 8px;">
+    <circle cx="330" cy="60" r="7" fill="#3A5A40"/><text x="345" y="55" font-size="13" fill="#1C1B18">« le Fou vise le point faible f7 »</text>
+    <circle cx="360" cy="95" r="7" fill="#3A5A40"/><text x="375" y="100" font-size="13" fill="#1C1B18">« the bishop targets f7 » (EN !)</text>
+    <circle cx="820" cy="50" r="7" fill="#8C4A3C"/><text x="700" y="35" font-size="13" fill="#1C1B18">« le gambit dame refusé »</text>
+    <circle cx="860" cy="115" r="7" fill="#7A756C"/><text x="750" y="132" font-size="13" fill="#1C1B18">« recette de la tarte tatin »</text>
+    <ellipse cx="345" cy="78" rx="120" ry="48" fill="none" stroke="#3A5A40" stroke-dasharray="5 4"/>
+    <text x="120" y="83" font-size="12" fill="#3A5A40">proches = même idée</text>
+  </svg>
+  <div class="nous">♟ <span class="lbl">C'est le cœur de la recherche « par le sens »</span>, et l'argument décisif de ton corpus mixte : Qwen3-Embedding-0.6B place le français ET l'anglais dans le MÊME espace — la question de Léa (FR) retrouvera une fiche Wikibooks (EN). Ta décision D-a : le calcul passera par Ollama (mesuré avant adoption, repli sentence-transformers).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>36 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Similarité cosinus</div>
+  <h1>La similarité cosinus — mesurer l'angle entre deux idées</h1>
+  <div class="def">📖 Comment décider que deux points de l'espace sont « proches » ? On compare la DIRECTION de leurs flèches depuis l'origine : même direction (angle petit) → score proche de 1 = même sujet ; directions sans rapport → score vers 0. C'est la règle de classement de toute notre recherche.</div>
+  <svg viewBox="0 0 1000 140" style="width:100%; margin: 2px 0 8px;">
+    <defs><marker id="fa" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 z" fill="#3A5A40"/></marker>
+    <marker id="fb" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 z" fill="#8C4A3C"/></marker></defs>
+    <line x1="150" y1="120" x2="380" y2="35" stroke="#3A5A40" stroke-width="2.5" marker-end="url(#fa)"/>
+    <line x1="150" y1="120" x2="400" y2="60" stroke="#3A5A40" stroke-width="2.5" marker-end="url(#fa)" opacity="0.7"/>
+    <text x="410" y="45" font-size="13" fill="#3A5A40">angle petit → similarité ≈ 0,9 : même idée</text>
+    <line x1="620" y1="120" x2="850" y2="45" stroke="#3A5A40" stroke-width="2.5" marker-end="url(#fa)"/>
+    <line x1="620" y1="120" x2="920" y2="115" stroke="#8C4A3C" stroke-width="2.5" marker-end="url(#fb)"/>
+    <text x="700" y="138" font-size="13" fill="#8C4A3C">angle large → similarité ≈ 0,1 : sans rapport</text>
+  </svg>
+  <div class="nous">♟ <span class="lbl">Dans la bibliothèque</span>, « cherche les fiches pertinentes » = « trouve les 5 flèches dont l'angle avec la question est le plus petit ». Le seuil 0,95 du dédoublonnage, c'est la même mesure : deux fiches quasi parallèles = quasi-copies.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>37 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Milvus</div>
+  <h1>Milvus — la bibliothèque qui range par le sens</h1>
+  <div class="def">📖 Une <i>base de données vectorielle</i> : elle stocke des millions de flèches (nos embeddings) avec leurs étiquettes, et répond très vite à « donne-moi les 5 plus proches de celle-ci ». Une base classique (MongoDB) cherche par valeur exacte ; Milvus cherche <span class="lbl">par proximité de sens</span> — deux métiers différents, deux bases.</div>
+  <div class="schema">
+    <div class="box">MongoDB<br><span class="small">« donne-moi la fiche n° 42 »<br>valeurs exactes, caches, sessions</span></div>
+    <div class="box v">Milvus<br><span class="small">« donne-moi ce qui RESSEMBLE à ça »<br>vecteurs + filtres (eco, langue)</span></div>
+    <div class="box w">etcd + minio<br><span class="small">ses deux assistants (réglages, stockage)<br>— livrés avec, on ne les touche pas</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Imposé par le brief, et pertinent</span> : collection <span class="mono">openings_kb</span> (~300-600 fiches, &lt; 10 Mo — minuscule pour lui, mais l'architecture tiendrait des millions). Il rejoint le compose en É3 : +~1,5-2 Go de RAM, mesurés au passage. Question jury classique « pourquoi deux bases ? » → la réponse est ce schéma.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>38 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · HNSW</div>
+  <h1>HNSW — l'index qui trouve vite sans tout comparer</h1>
+  <div class="def">📖 Comparer la question à CHAQUE fiche serait lent à grande échelle. HNSW construit un réseau de raccourcis entre voisins proches — on saute de proche en proche vers la bonne zone, comme un GPS : autoroutes d'abord, petites rues ensuite. Résultat : quasi-instantané, même sur des millions de fiches.</div>
+  <svg viewBox="0 0 1000 130" style="width:100%; margin: 2px 0 8px;">
+    <line x1="120" y1="65" x2="450" y2="40" stroke="#B4B2A9" stroke-width="2"/><line x1="450" y1="40" x2="760" y2="70" stroke="#B4B2A9" stroke-width="2"/>
+    <line x1="450" y1="40" x2="560" y2="95" stroke="#D3D1C7" stroke-width="1.5"/><line x1="760" y1="70" x2="850" y2="100" stroke="#D3D1C7" stroke-width="1.5"/>
+    <line x1="760" y1="70" x2="880" y2="45" stroke="#D3D1C7" stroke-width="1.5"/>
+    <circle cx="120" cy="65" r="9" fill="#3A5A40"/><text x="95" y="40" font-size="12" fill="#3A5A40">départ (la question)</text>
+    <circle cx="450" cy="40" r="8" fill="#7A756C"/><circle cx="560" cy="95" r="6" fill="#B4B2A9"/><circle cx="850" cy="100" r="6" fill="#B4B2A9"/>
+    <circle cx="760" cy="70" r="8" fill="#7A756C"/><circle cx="880" cy="45" r="9" fill="#8C4A3C"/>
+    <text x="800" y="30" font-size="12" fill="#8C4A3C">la fiche la plus proche</text>
+  </svg>
+  <div class="nous">♟ <span class="lbl">Notre réglage</span> : index HNSW, mesure cosinus — des défauts éprouvés, cités dans le deck. Notre cible mesurable : recherche en moins de 100 ms (p95). Sur 600 fiches c'est surdimensionné — et c'est un argument d'industrialisation, pas un défaut.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>39 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 7 · Le branchement</div>
+  <h1>/vector-search et le nœud contexte_rag — la bibliothèque entre en gare</h1>
+  <div class="def">📖 Deux branchements pour finir É3 : un guichet <span class="mono">/vector-search</span> sur notre API (une question ou un FEN → les fiches les plus proches, filtrables par ouverture), et le remplissage du stub <span class="mono">contexte_rag</span> du graphe : à chaque coup de Léa, l'agent ira chercher 3-5 fiches et les donnera au rédacteur.</div>
+  <div class="schema">
+    <div class="box">question / FEN</div><div class="fl">→</div>
+    <div class="box t">embedding de la question<br><span class="small">via Ollama (D-a)</span></div><div class="fl">→</div>
+    <div class="box v">Milvus : les 5 plus proches<br><span class="small">+ filtre eco si connu</span></div><div class="fl">→</div>
+    <div class="box">le dossier de l'agent<br><span class="mono">rag_chunks[…]</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Le jour où ce nœud se remplit</span>, la réponse de l'agent gagne le « pourquoi » : « le Fou vise f7, le point faible des Noirs (Wikipédia — Partie italienne) ». La boucle de Léa devient complète — il ne manquera plus que les vidéos (É4) et l'échiquier (É5).</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>40 / 45</span></div>
+</div>
+
+<div class="slide chap">
+  <div class="kicker">Chapitre 8</div>
+  <h1 style="font-size: 44px;">La preuve</h1>
+  <p class="small" style="margin-top:8px;">gold set · recall@5 · MRR · MLflow · runs A/B</p>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>41 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 8 · Gold set</div>
+  <h1>Le gold set — le contrôle surprise préparé à l'avance</h1>
+  <div class="def">📖 Un jeu de 25 questions écrites À LA MAIN, avec pour chacune la réponse attendue (quelles fiches la bibliothèque devrait sortir). On fige ce jeu AVANT de régler le système : c'est lui qui départage objectivement toutes les configurations.</div>
+  <div class="schema">
+    <div class="box v">15 directes<br><span class="small">« les idées de la Sicilienne ? »</span></div>
+    <div class="box">5 par position<br><span class="small">un FEN d'Italienne → fiches Italienne attendues</span></div>
+    <div class="box t">5 pièges<br><span class="small">hors corpus → la bonne réponse est « je ne sais pas »</span></div>
+  </div>
+  <div class="ana">🧩 Le contrôle que le prof écrit avant le cours : les élèves (nos réglages) passent tous le MÊME examen — impossible de tricher en changeant les questions.</div>
+  <div class="nous">♟ <span class="lbl">Les pièges sont la partie maligne</span> : un système honnête doit savoir s'abstenir. Ce sera versionné dans le dépôt — un livrable data en soi, et la feature qui suivra É3.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>42 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 8 · recall@5 & MRR</div>
+  <h1>recall@5 et MRR — les deux notes de la bibliothécaire</h1>
+  <div class="def">📖 <span class="lbl">recall@5</span> : quand on demande 5 fiches, la bonne est-elle dans le lot ? (notre cible : oui 8 fois sur 10, ≥ 0,8). <span class="lbl">MRR</span> : et à quel RANG ? Bonne fiche en 1ʳᵉ position = 1 point ; en 2ᵉ = ½ ; en 5ᵉ = ⅕ — la moyenne récompense les bibliothécaires qui posent la bonne fiche SUR LE DESSUS de la pile.</div>
+  <div class="schema">
+    <div class="box v">tiroir : 🎯 ▢ ▢ ▢ ▢<br><span class="small">trouvée, rang 1 → recall ✓, MRR 1,0</span></div>
+    <div class="box w">tiroir : ▢ ▢ 🎯 ▢ ▢<br><span class="small">trouvée, rang 3 → recall ✓, MRR 0,33</span></div>
+    <div class="box t">tiroir : ▢ ▢ ▢ ▢ ▢<br><span class="small">absente → recall ✗, MRR 0</span></div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Pourquoi les deux ?</span> Le recall dit « on retrouve » ; le MRR dit « on retrouve VITE » — et c'est le rang 1 que le rédacteur citera en premier. Chaque [MESURE] des diapos résultats sort de ces deux notes.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>43 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Chapitre 8 · MLflow & runs</div>
+  <h1>MLflow — le cahier d'expériences ; les runs A/B — l'avant/après</h1>
+  <div class="def">📖 MLflow enregistre chaque <span class="lbl">run</span> (= une expérience : quels réglages, quelles notes obtenues, quelles figures) dans un cahier consultable. Le récit <span class="lbl">A/B</span> : Run A volontairement naïf (fiches de 1000, sans recouvrement, top-3) contre Run B soigné (300-500, 15 %, top-5, filtre eco) — l'écart chiffré PROUVE que nos choix valent quelque chose.</div>
+  <div class="schema">
+    <div class="box">Run A « naïf »<br><span class="small">recall@5 : — · MRR : —</span></div>
+    <div class="fl">vs</div>
+    <div class="box v">Run B « soigné »<br><span class="small">recall@5 : — · MRR : —</span></div>
+    <div class="fl">→</div>
+    <div class="box w">l'écart = ta diapo « itérations »</div>
+  </div>
+  <div class="nous">♟ <span class="lbl">Notre discipline gravée dans le deck</span> : « aucun chiffre des diapos n'a d'autre origine qu'un run tracé ». Face au mentor : tu ne dis pas « c'est mieux », tu montres le cahier.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>44 / 45</span></div>
+</div>
+
+<div class="slide">
+  <div class="kicker">Épilogue</div>
+  <h1>Où on en est, et ce qui t'attend comme décisions</h1>
+  <div class="schema" style="margin-bottom: 8px;">
+    <div class="box v" style="font-size:13px;">Socle ✅</div><div class="box v" style="font-size:13px;">Agent + voix locale ✅ <span class="small">(É1+É2, ~40 %)</span></div>
+    <div class="box t" style="font-size:13px;">É3 la bibliothèque ← ON EST ICI</div>
+    <div class="box" style="font-size:13px;">É4 vidéos</div><div class="box" style="font-size:13px;">É5 échiquier</div><div class="box" style="font-size:13px;">É6 démo</div>
+  </div>
+  <table style="margin-bottom: 10px;">
+    <tr><th>Commit É3</th><th>Ce que tu verras passer</th><th>Ton rôle</th></tr>
+    <tr><td>1 · manifeste + extraction</td><td>corpus.yml + pages brutes archivées</td><td><b>relire et signer la liste des pages</b></td></tr>
+    <tr><td>2 · transformation</td><td>fiches propres + rapport chiffré</td><td>lire le rapport</td></tr>
+    <tr><td>3 · Milvus + chargement</td><td>la bibliothèque en rayon (compose)</td><td>—</td></tr>
+    <tr><td>4 · vector-search + graphe</td><td>l'agent répond au « pourquoi »</td><td>juger la démo</td></tr>
+    <tr><td>5 · notebook 02-eda</td><td>les figures réelles des diapos data</td><td>valider les figures</td></tr>
+    <tr><td>6 · merge</td><td>É3 quasi close</td><td>go/no-go</td></tr>
+  </table>
+  <div class="nous">♟ Puis viendront : le gold set et les runs A/B (la preuve), ta clé YouTube (É4), l'échiquier Angular (É5), et la répétition générale (É6). Chaque terme de ce manuel resservira — il est fait pour être rouvert.</div>
+  <div class="footer"><span>Manuel privé P13</span><span></span><span>45 / 45</span></div>
+</div>
+
+</body>
+</html>

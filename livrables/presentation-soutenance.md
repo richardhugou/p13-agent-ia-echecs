@@ -189,7 +189,9 @@ Le choix est **réversible** : changer de LLM = changer une variable d'environne
 
 **Les métriques, définies avant de mesurer** : recall@5 (cible ≥ 0,8), MRR, taux d'abstention correcte sur les pièges, latence p95 — et les métriques système : **0 coup illégal** (validation python-chess sur 100 % des sorties), **100 % des réponses RAG sourcées**, coût par réponse.
 
-**La discipline** : chaque run (paramètres, métriques, figures) est loggé dans MLflow — **aucun chiffre des diapos suivantes n'a d'autre origine**. Et on compare toujours à une baseline : Run A « naïf » vs Run B « amélioré » (diapo 12).
+**La discipline** : chaque run (paramètres, métriques, figures) est loggé dans MLflow — **aucun chiffre des diapos suivantes n'a d'autre origine**. Et on compare toujours à une baseline : Run A « naïf » vs Run B « amélioré » (diapo 14).
+
+**Les mesures d'adoption** : aucune brique modèle n'entre dans le système sans son banc de mesure **versionné et rejouable** (notebook exécuté + test). Méthode : similarité cosinus entre vecteurs d'embedding, sur des paires étalonnées dont la réponse est connue (cible / lié / hors-sujet, FR et EN). Exemple mesuré : le préfixe d'instruction sur les requêtes fait passer la séparation cible/hors-sujet de 0,29 à **0,50** (notebook 02).
 
 ---
 

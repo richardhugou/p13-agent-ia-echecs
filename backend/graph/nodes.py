@@ -3,6 +3,7 @@
 from config import get_settings
 from graph.state import AgentState
 from services import engine, evaluation, lichess, rag, theory
+from services import videos as service_videos
 from services.board import parse_fen
 
 
@@ -101,5 +102,16 @@ def contexte_rag(state: AgentState) -> dict:
 
 
 def videos(state: AgentState) -> dict:
-    """Stub É4 : la recherche YouTube branchera ici. Vide, sans casser le flux."""
-    return {"videos": []}
+    """Vidéos pédagogiques pour l'ouverture identifiée. Plan B : on continue sans vidéos."""
+    opening = state.get("opening") or {}
+    rayon = rag.eco_vers_ouverture(opening.get("eco"))
+    terme = service_videos.NOMS_FR.get(rayon) or opening.get("name")
+    if not terme:
+        return {"videos": []}
+    try:
+        return {"videos": service_videos.rechercher(terme)}
+    except service_videos.VideosUnavailable as exc:
+        return {
+            "videos": [],
+            "errors": state.get("errors", []) + [f"vidéos indisponibles : {exc}"],
+        }

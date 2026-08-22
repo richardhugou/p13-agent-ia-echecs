@@ -1,0 +1,241 @@
+meta:
+  statut: brouillon — en attente de signature Richard
+  genere_le: '2026-08-22'
+  methode: candidats FR vérifiés + catégories filtrées ; sous-arbres EN plafonnés à 12 pages, du général
+    au profond
+  regle: pas de manifeste signé, pas d'extraction
+ouvertures:
+  italienne:
+    eco: C50-C54
+    wikipedia_fr:
+    - Défense des deux cavaliers
+    - Gambit Blackburne
+    - Gambit Evans
+    - Partie italienne
+    - Partie italienne Giuoco Piano
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...a6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...d6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...f5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...h6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Bc5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Be7
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Nd4
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Nf6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...f5/4.d3
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...f5/4. d3
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Bc5/4. b4
+    en_disponibles_dans_l_arbre: 349
+    candidats_absents_a_verifier:
+    - Partie hongroise
+  espagnole:
+    eco: C60-C99
+    wikipedia_fr:
+    - Défense Bird
+    - Défense Cordel
+    - Défense Cozio
+    - Défense Schliemann
+    - Défense Smyslov
+    - Défense Steinitz
+    - Défense berlinoise
+    - Défense classique berlinoise
+    - Espagnole fermée
+    - Espagnole ouverte
+    - Gambit Marshall
+    - Partie espagnole
+    - Piège de Mortimer
+    - Piège de l'arche de Noé
+    - Variante Breyer
+    - Variante Karpov
+    - Variante Kholmov
+    - Variante Möller
+    - Variante Smyslov
+    - Variante Steinitz différée
+    - Variante Tchigorine
+    - Variante Zaïtsev
+    - Variante d'Arkhangelsk
+    - Variante d'échange de la partie espagnole
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...a6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...d5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...d6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...f5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...f6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...g5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...g6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...h6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...Bb4
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...Bc5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...Be7
+    en_disponibles_dans_l_arbre: 258
+  sicilienne:
+    eco: B20-B99
+    wikipedia_fr:
+    - Attaque Richter-Rauzer
+    - Attaque Rossolimo
+    - Attaque Sozine
+    - Attaque anglaise
+    - Attaque grand prix
+    - Défense sicilienne
+    - Gambit Morra
+    - Gambit de l'aile
+    - Sicilienne Drag-Dorf
+    - Sicilienne Kalashnikov
+    - Sicilienne Kan
+    - Sicilienne Nimzowitsch
+    - Sicilienne Paulsen
+    - Sicilienne classique
+    - Sicilienne des quatre cavaliers
+    - Sicilienne fermée
+    - Système Kopec
+    - Système Maróczy
+    - Variante Alapine
+    - Variante Kramnik
+    - Variante La Bourdonnais
+    - Variante Najdorf
+    - Variante Polougaïevski
+    - Variante Snyder
+    - Variante Svechnikov
+    - Variante Taïmanov
+    - Variante Tchekhover
+    - Variante cobra classique
+    - Variante de Moscou de la défense sicilienne
+    - Variante de Scheveningue
+    - Variante du dragon
+    - Variante du dragon accéléré
+    - Variante du pion empoisonné
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...c5
+    - Chess Opening Theory/1. e4/1...c5/2.a3
+    - Chess Opening Theory/1. e4/1...c5/2.b4
+    - Chess Opening Theory/1. e4/1...c5/2.c3
+    - Chess Opening Theory/1. e4/1...c5/2.c4
+    - Chess Opening Theory/1. e4/1...c5/2.d4
+    - Chess Opening Theory/1. e4/1...c5/2.f4
+    - Chess Opening Theory/1. e4/1...c5/2. a3
+    - Chess Opening Theory/1. e4/1...c5/2. b3
+    - Chess Opening Theory/1. e4/1...c5/2. b4
+    - Chess Opening Theory/1. e4/1...c5/2. c3
+    - Chess Opening Theory/1. e4/1...c5/2. c4
+    en_disponibles_dans_l_arbre: 263
+  francaise:
+    eco: C00-C19
+    wikipedia_fr:
+    - Défense française
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...e6
+    - Chess Opening Theory/1. e4/1...e6/2. c4
+    - Chess Opening Theory/1. e4/1...e6/2. d3
+    - Chess Opening Theory/1. e4/1...e6/2. d4
+    - Chess Opening Theory/1. e4/1...e6/2. e5
+    - Chess Opening Theory/1. e4/1...e6/2. Bc4
+    - Chess Opening Theory/1. e4/1...e6/2. Nc3
+    - Chess Opening Theory/1. e4/1...e6/2. Nf3
+    - Chess Opening Theory/1. e4/1...e6/2. Qe2
+    - Chess Opening Theory/1. e4/1...e6/2. c4/2...d5
+    - Chess Opening Theory/1. e4/1...e6/2. d3/2...c5
+    - Chess Opening Theory/1. e4/1...e6/2. d3/2...d5
+    en_disponibles_dans_l_arbre: 161
+    candidats_absents_a_verifier:
+    - Variante Winawer
+    - Variante d'échange de la défense française
+  caro_kann:
+    eco: B10-B19
+    wikipedia_fr:
+    - Attaque Panov
+    - Défense Caro-Kann
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...c6
+    - Chess Opening Theory/1. e4/1...c6/2. b3
+    - Chess Opening Theory/1. e4/1...c6/2. c4
+    - Chess Opening Theory/1. e4/1...c6/2. d3
+    - Chess Opening Theory/1. e4/1...c6/2. d4
+    - Chess Opening Theory/1. e4/1...c6/2. Bc4
+    - Chess Opening Theory/1. e4/1...c6/2. Nc3
+    - Chess Opening Theory/1. e4/1...c6/2. Ne2
+    - Chess Opening Theory/1. e4/1...c6/2. Nf3
+    - Chess Opening Theory/1. e4/1...c6/2. c4/2...d5
+    - Chess Opening Theory/1. e4/1...c6/2. c4/2...e5
+    - Chess Opening Theory/1. e4/1...c6/2. d3/2...d5
+    en_disponibles_dans_l_arbre: 267
+  gambit_dame:
+    eco: D06-D69
+    wikipedia_fr:
+    - Contre-gambit Albin
+    - Défense Cambridge-Springs
+    - Défense Marshall
+    - Défense Tarrasch
+    - Défense Tchigorine
+    - Défense autrichienne
+    - Défense balte
+    - Défense de Méran
+    - Défense orthodoxe
+    - Défense semi-Tarrasch
+    - Défense semi-slave
+    - Défense slave
+    - Gambit Schara-Hennig
+    - Gambit dame
+    - Gambit dame accepté
+    - Gambit dame refusé
+    - Piège de Lasker
+    - Piège de l'éléphant
+    - Variante Lasker du gambit dame refusé
+    - Variante Tartakover
+    - Variante anti-Tartakover
+    - Variante d'échange du gambit dame refusé
+    - Variante du Westphalia
+    wikibooks_en:
+    - Chess Opening Theory/1. d4/1...d5/2. c4
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c5
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...e5
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...e6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...Bf5
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...Nc6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...Nf6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...dxc4
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...e6/3. g3
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c6/3. Nc3
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c6/3. Nf3
+    en_disponibles_dans_l_arbre: 209
+  est_indienne:
+    eco: E60-E99
+    wikipedia_fr:
+    - Défense est-indienne
+    - Défense ouest-indienne
+    wikibooks_en:
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. Nf3
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...d6
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...0-0
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...O-O
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...d6/5. f3
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...d6/5. f4
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...d6/5. Nf3
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...d6/5. f3/5...O-O
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...d6/5. Nf3/5...O-O
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4/4...d6/5. f3/5...O-O/6. Be3
+    en_disponibles_dans_l_arbre: 16
+  anglaise:
+    eco: A10-A39
+    wikipedia_fr:
+    - Ouverture anglaise
+    wikibooks_en:
+    - Chess Opening Theory/1. c4
+    - Chess Opening Theory/1. c4/1...a5
+    - Chess Opening Theory/1. c4/1...a6
+    - Chess Opening Theory/1. c4/1...b5
+    - Chess Opening Theory/1. c4/1...b6
+    - Chess Opening Theory/1. c4/1...c5
+    - Chess Opening Theory/1. c4/1...c6
+    - Chess Opening Theory/1. c4/1...d5
+    - Chess Opening Theory/1. c4/1...d6
+    - Chess Opening Theory/1. c4/1...e5
+    - Chess Opening Theory/1. c4/1...e6
+    - Chess Opening Theory/1. c4/1...f5
+    en_disponibles_dans_l_arbre: 106
+    candidats_absents_a_verifier:
+    - Défense sicilienne inversée

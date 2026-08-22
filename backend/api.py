@@ -2,8 +2,10 @@
 
 import chess
 from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
 
 from config import get_settings
+from graph.build import get_graph
 from services import engine, evaluation, lichess, theory
 from services.board import parse_fen
 
@@ -57,3 +59,33 @@ def evaluate_position(
     except engine.EngineUnavailable as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     return {"fen": board.fen(), **result, "cached": cached}
+
+
+class AskRequest(BaseModel):
+    fen: str
+    question: str | None = None
+    session_id: str | None = None
+
+
+@router.post("/agent/ask")
+def agent_ask(payload: AskRequest) -> dict:
+    """Le parcours d'un coup, orchestré par le graphe. Réponse structurée en blocs + sources.
+
+    Un FEN invalide renvoie 200 avec une réponse pédagogique : c'est l'agent qui
+    répond à l'élève, pas le serveur qui rejette une requête.
+    """
+    state = get_graph().invoke({"fen": payload.fen, "question": payload.question})
+    return {
+        "fen": payload.fen,
+        "answer": state.get("answer", ""),
+        "sources": state.get("sources", []),
+        "opening": state.get("opening"),
+        "in_theory": state.get("in_theory"),
+        "total_games": state.get("total_games", 0),
+        "theory_moves": state.get("theory_moves", []),
+        "top_games": state.get("top_games", []),
+        "engine_eval": state.get("engine_eval"),
+        "rag_chunks": state.get("rag_chunks", []),
+        "videos": state.get("videos", []),
+        "errors": state.get("errors", []),
+    }

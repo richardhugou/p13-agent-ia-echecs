@@ -227,7 +227,14 @@ Tous les chiffres sortent des **runs MLflow** (params, métriques, figures) — 
 | Latence recherche p50 | ~4 ms | ~5 ms | équivalentes à chaud |
 | Ce que reçoit le rédacteur | fenêtres brutes de 1 000 tokens | fiches ciblées avec fil d'Ariane et sections | **la vraie différence** — qualitative, à éprouver au gold set v2 (labels fins) |
 
-Enseignement honnête des runs : au niveau « rayon d'ouverture », les deux configurations réussissent — la mesure a montré que le gold set v1 était trop grossier pour les départager, et c'est une découverte en soi. Axes ouverts : gold set v2 à labels fins (page/section), et **défense en profondeur pour l'abstention** (seuil de score + règle d'honnêteté du prompt), le piège « domaine adjacent » ne cédant pas à un seuil seul.
+Enseignement honnête des runs : au niveau « rayon d'ouverture », les deux configurations réussissent — la mesure a montré que le gold set v1 était trop grossier pour les départager, et c'est une découverte en soi. Axe ouvert : gold set v2 à labels fins (page/section).
+
+**La décision du seuil d'abstention — prise sur données** (notebooks 05 et 07, figure `07-decision-seuil.png`) :
+
+- Mesure de bout en bout : sans seuil, une question hors corpus (défense scandinave) faisait **citer 5 fiches adjacentes en sources** — trompeur pour l'élève.
+- Les 25 questions du gold set passées par le chemin de production : les 3 pièges grossiers flottent sous 0,55 (bloqués gratuitement) ; les 2 pièges « adjacents » sont **entrelacés** avec les questions légitimes (scandinave 0,619 vs légitime la plus basse 0,618) — aucun seuil ne sépare tout.
+- **Choix : seuil 0,63**, à mi-chemin de ses voisines mesurées (0,619 / 0,641) : bloque 4/5 pièges **dont le cas mesuré**, au prix d'une question légitime sur 20 privée d'extraits wiki (elle garde stats et moteur). Le code n'ajoute pas de source qu'il ne transmet pas : les citations trompeuses disparaissent **par construction**. Vérifié après mise en production : scandinave → 0 fiche citée ; italienne → 5 fiches intactes.
+- **Défense en profondeur** : ce que le seuil ne bloque pas (piège « gambit du roi », 0,659), la règle d'honnêteté du prompt le couvre.
 
 ---
 

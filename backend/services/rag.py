@@ -68,9 +68,20 @@ def _embed_question(question: str) -> list[float]:
     return response.json()["embeddings"][0]
 
 
-def search(question: str, eco: str | None = None, k: int | None = None) -> list[dict]:
-    """Les k fiches les plus proches de la question, filtrées par rayon si l'ECO est connu."""
+def search(
+    question: str,
+    eco: str | None = None,
+    k: int | None = None,
+    score_min: float | None = None,
+) -> list[dict]:
+    """Les k fiches les plus proches de la question, filtrées par rayon si l'ECO est connu.
+
+    Les fiches sous le seuil d'abstention sont écartées AVANT le rédacteur : le code
+    ne peut pas citer ce qu'il ne transmet pas (décision du 26/08, notebook 07).
+    score_min=0.0 désactive le seuil (usage diagnostic : /vector-search).
+    """
     settings = get_settings()
+    seuil = settings.rag_score_min if score_min is None else score_min
     rayon = eco_vers_ouverture(eco)
     try:
         vecteur = _embed_question(question)
@@ -94,4 +105,5 @@ def search(question: str, eco: str | None = None, k: int | None = None) -> list[
             "ouverture": hit["entity"]["ouverture"],
         }
         for hit in hits
+        if hit["distance"] >= seuil
     ]

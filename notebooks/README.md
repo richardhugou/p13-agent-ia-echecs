@@ -11,5 +11,6 @@ Règle de labo : **aucune mesure ne vit uniquement dans une discussion** — tou
 | `04-evaluation-rag.ipynb` | gold set, Run A vs Run B, frontière d abstention | ✅ exécuté |
 | `05-mesures-agent.ipynb` | scénario de démo rejoué : 0 coup illégal, latence p50/p95, abstention e2e, coût | ✅ exécuté · PNG dans `figures/` |
 | `06-mesures-llm.ipynb` | reconstruction du banc de mesure de la campagne LLM (journal du 22/08) | à reconstruire |
+| `07-decision-seuil.ipynb` | la décision du seuil d'abstention : 25 questions par le chemin de production, balayage des seuils | ✅ exécuté · garde-fou : `test_rag_service.py::test_seuil_abstention` · décision : **0,63** |
 
 Exécution : `cd backend && uv run --with jupyter jupyter nbconvert --execute --inplace ../notebooks/<nb>.ipynb`

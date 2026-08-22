@@ -7,7 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
-import { AgentService, ReponseAgent } from '../agent.service';
+import { AgentService, CoupTheorique, ReponseAgent } from '../agent.service';
 
 /**
  * Le panneau coach — la moitié droite de la maquette :
@@ -109,5 +109,19 @@ export class CoachPanelComponent implements OnInit, OnDestroy {
 
   duree(s: number): string {
     return `${Math.round(s / 60)} min`;
+  }
+
+  /** « Fc5 (fou f8) » → « Fc5 » — la notation française, née de l'alerte Bc5. */
+  sanCourt(coup: CoupTheorique): string {
+    const libelle = coup.san_fr || coup.san;
+    const parenthese = libelle.indexOf(' (');
+    return parenthese === -1 ? libelle : libelle.slice(0, parenthese);
+  }
+
+  /** « Fc5 (fou f8) » → « (fou f8) » — quelle pièce joue, depuis quelle case. */
+  departPiece(coup: CoupTheorique): string {
+    const libelle = coup.san_fr || '';
+    const parenthese = libelle.indexOf(' (');
+    return parenthese === -1 ? '' : libelle.slice(parenthese + 1);
   }
 }

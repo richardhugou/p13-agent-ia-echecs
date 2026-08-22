@@ -8,7 +8,7 @@
 - [ ] Warm-up embeddings (une recherche vectorielle à vide) — pas de cold start devant le jury.
 - [ ] MLflow ouvert dans un onglet (runs baseline vs amélioré visibles).
 - [ ] **Plan B enregistré** : screencast complet du scénario (à enregistrer en É6, jour du test d'installation fraîche).
-- [ ] Onglets prêts : app (4200), Swagger (8000), MLflow (5000). Notifications coupées.
+- [ ] Onglets prêts : app (4200), Swagger (8000), MLflow (5001 — 5000 hôte squatté par AirPlay). Notifications coupées.
 
 ## 2. Scénario minuté
 
@@ -22,7 +22,7 @@ Une seule commande (`docker compose up`), montrer les services qui passent healt
 
 ### Séquence 2 — L'Italienne : théorie + RAG + vidéo (2 min 30)
 - Amener la position : **1.e4 e5 2.Cf3 Cc6 3.Fc4**
-- FEN attendu : `r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK1NR b KQkq - 3 3`
+- FEN attendu : `r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3`
 - Attendu : ouverture identifiée « Partie Italienne (C50) » ; suites théoriques (3…Fc5 Giuoco Piano, 3…Cf6 Deux Cavaliers) ; **contexte RAG avec sources citées** ; partie historique de référence ; **vidéo YouTube intégrée**.
 - Phrase : « le texte vient d'un corpus indexé sous licence libre — les sources sont cliquables ».
 
@@ -46,7 +46,7 @@ Swagger : un appel `/agent/ask` brut → blocs structurés (coups/contexte/vidé
 | Réseau coupé | Continuer : tout le scénario est en cache/fixtures (c'est prévu ET c'est un argument) |
 | Latence LLM anormale | Commenter la trace MLflow pendant l'attente ; si > 20 s, basculer sur la vidéo plan B |
 | Pas de vidéo retournée | Dire que le fallback « réponse sans vidéo » est un comportement conçu, montrer le cache |
-| Échiquier désynchronisé | Bouton reset position (à prévoir dans l'UI) → recharger le FEN de la séquence |
+| Échiquier désynchronisé | Bouton refresh du starter → recharger le FEN de la séquence |
 | Compose cassé sur la machine de démo | Vidéo plan B + Swagger sur machine de secours |
 
 ## 4. Positions de secours (variété si le jury veut « autre chose »)

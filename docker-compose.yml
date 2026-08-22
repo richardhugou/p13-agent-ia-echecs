@@ -1,7 +1,15 @@
-# POC agent IA ouvertures d'échecs — étape 2 : api + MongoDB.
-# Milvus (+ etcd, minio) et MLflow seront ajoutés aux étapes suivantes.
+# POC agent IA ouvertures d'échecs — pile complète :
+# frontend (nginx) + api + MongoDB + Milvus (etcd, minio) + MLflow.
 
 services:
+  frontend:
+    build: ./frontend
+    container_name: p13-frontend
+    ports:
+      - "${FRONT_PORT:-4200}:4200"
+    depends_on:
+      - api
+
   api:
     build: ./backend
     container_name: p13-api

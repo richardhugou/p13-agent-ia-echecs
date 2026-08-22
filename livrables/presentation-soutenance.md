@@ -55,7 +55,7 @@ La boucle produit : jouer → comprendre → dévier → évaluer. Un seul écra
 |---|---|---|---|
 | Référentiel `chess-openings` (Lichess) | **3 810 ouvertures nommées** (compté le 22/08), 500 codes ECO | ~500 Ko | CC0 |
 | API Lichess Opening Explorer | Stats masters (2 M+ parties) et en ligne (> 6 Md cumulées) par position | temps réel + cache | CC0 |
-| Corpus « Wikichess » | **225 articles Wikipédia FR + 3 026 pages Wikibooks EN disponibles** (comptés le 22/08) → ~100–150 retenues `[MESURE à l'ETL]` | sélection par ouvertures cibles | CC BY-SA |
+| Corpus « Wikichess » | **225 articles Wikipédia FR + 3 026 pages Wikibooks EN disponibles** (comptés le 22/08) → **161 retenues** (47 FR + 114 EN, manifeste signé) | sélection par ouvertures cibles | CC BY-SA |
 | YouTube Data API v3 | Métadonnées vidéos (jamais les fichiers) | ~30 requêtes réelles, cache 7 j | CGU respectées |
 
 **La clé de jointure de tout le système : le FEN** (position encodée en une ligne de texte) — la seule donnée d'entrée fournie par l'élève.
@@ -66,12 +66,12 @@ La boucle produit : jouer → comprendre → dévier → évaluer. Un seul écra
 
 | Figure montrée | Ce qu'elle prouve au jury |
 |---|---|
-| Composition du corpus par source (bar chart) | `[MESURE]` pages disponibles vs retenues, répartition FR/EN |
+| Composition du corpus par source (bar chart) | **3 251 disponibles → 161 retenues → 477 fiches** (notebook 03, figure 01) |
 | Couverture des ouvertures cibles (heatmap ECO A–E) | les 8–10 ouvertures annoncées sont réellement couvertes |
 | Distribution des longueurs avant chunking (histogramme) | la taille de chunk n'est pas sortie du chapeau |
 | Top-20 ouvertures : fréquence et taux de victoire, masters vs amateurs | le contexte métier — ce que les jeunes joueront vraiment |
 | Profondeur théorique moyenne des lignes cibles | où finit la théorie → où Stockfish prend le relais |
-| Taux de doublons / near-dup éliminés | `[MESURE]` % — la qualité de l'index se mesure |
+| Taux de doublons / near-dup éliminés | **0 doublon exact, 1 quasi-doublon écarté (~0,2 %)** — la qualité de l'index se mesure |
 
 ---
 
@@ -99,7 +99,7 @@ Ce que chaque source renvoie réellement — un extrait par source :
 2. **Transform** — nettoyage wikitext ; normalisation de la notation (« Fc4 » FR ↔ « Bc4 » EN) ; calcul du FEN de référence via python-chess ; **chunking par section 300–500 tokens, overlap 15 %**, jamais une suite de coups coupée en deux ; déduplication (hash exact + similarité > 0,95).
 3. **Load** — embeddings **Qwen3-Embedding-0.6B** (1024 d, multilingue FR+EN dans le même espace vectoriel — l'argument décisif du corpus mixte) → Milvus (HNSW, cosinus) ; métadonnées par chunk `{eco, opening_name, fen_ref, source_url, lang, licence…}` → filtres scalaires + attribution des sources.
 
-**Rapport chiffré à chaque exécution** : `[MESURE]` pages retenues → `[MESURE]` chunks (longueur moyenne `[MESURE]` tokens), doublons écartés `[MESURE]`.
+**Rapport chiffré à chaque exécution** : **156 pages extraites → 477 fiches** (longueur moyenne **244 tokens** — sous-cible mesurée et assumée, notebook 03), **1 doublon écarté**.
 
 ---
 
@@ -201,14 +201,14 @@ Le choix est **réversible** : changer de LLM = changer une variable d'environne
 
 | Métrique | Cible | Mesuré |
 |---|---|---|
-| Coups illégaux proposés | **0** | `[MESURE]` |
+| Coups illégaux proposés | **0** | **0 sur 56 coups affichés** (scénario de démo rejoué, notebook 05) |
 | recall@5 (gold set 25 questions) | ≥ 0,8 | **1,0** (runs MLflow du 24/08) |
-| MRR | — | `[MESURE]` |
-| Abstention correcte sur questions pièges | 5/5 | `[MESURE]` |
-| Citation des sources (réponses RAG) | 100 % | `[MESURE]` |
+| MRR | — | **1,0** (runs MLflow du 24/08) |
+| Abstention correcte sur questions pièges | 5/5 | **4/5** — le piège adjacent passe le seuil, d'où la défense en profondeur (diapo 14) |
+| Citation des sources (réponses RAG) | 100 % | **100 % — garanti par construction** (les sources sont ajoutées par le code, pas par le LLM) |
 | Latence recherche vectorielle p95 | < 100 ms | **7–11 ms** (à chaud) |
-| Latence agent p95 | < 8 s | `[MESURE]` |
-| Coût LLM total dev+démo | < 5 € | `[MESURE]` |
+| Latence agent p95 | < 8 s | **6,3 s** (p50 4,2 s — synthèse LLM locale comprise ; notebook 05, figure 06) |
+| Coût LLM total dev+démo | < 5 € | **0,00 € facturé** (qwen3.5:4b local ; équivalent cloud Haiku du banc complet ≈ 0,03 $) |
 
 Tous les chiffres sortent des **runs MLflow** (params, métriques, figures) — aucun chiffre de slide n'a d'autre origine. **Capture du cahier d'expériences : `notebooks/figures/04-mlflow-runs.png`** (expérience gold-set-rag, runs A_naif / B_soigne).
 
@@ -243,11 +243,11 @@ docker compose up
 | backend FastAPI + LangGraph + Stockfish embarqué | 8000 | L'agent (Swagger auto pour la démo) |
 | Milvus standalone (+ etcd, minio) | 19530 | Vecteurs |
 | MongoDB | 27017 | Caches, sessions, runs |
-| MLflow | 5000 | Tracking |
+| MLflow | 5001 (hôte) | Tracking — 5000 hôte squatté par AirPlay macOS |
 
-- Seuls 4200 et 8000 exposés à l'hôte ; volumes persistants pour les données.
+- Exposés à l'hôte : 4200 (app), 8000 (API), 19530 (Milvus, pour le job ETL local) et 5001 (MLflow) ; volumes persistants pour les données.
 - Binaire Stockfish arm64 dans l'image backend : pas de service séparé.
-- **Testé sur machine vierge : app utilisable en < 5 min** (`[MESURE]`).
+- **Test d'installation fraîche mesuré : app utilisable en 2 min 09** (reconstruction complète, cache de build vidé ; bibliothèque vectorielle prête à 2 min 28) — critère < 5 min tenu, protocole rejouable `tester-installation.sh`.
 
 ---
 
@@ -270,10 +270,10 @@ Du POC local au service FFE :
 |---|---|---|
 | Données (Lichess, wikis, référentiel) | **0 €** | licences libres (CC0, CC BY-SA) |
 | Moteur Stockfish + embeddings | **0 €** | open source, exécution locale |
-| Recherche vidéos | **0 €** | quota gratuit YouTube, consommation maîtrisée par cache (`[MESURE]`) |
-| LLM (dev + démo) | **≈ 2,3 $** estimés — `[MESURE]` au compteur de tokens | seul poste payant |
+| Recherche vidéos | **0 €** | quota gratuit YouTube — **~3 recherches réelles ≈ 300 unités** sur 10 000/jour, le cache 7 j absorbe le reste |
+| LLM (dev + démo) | **0,00 €** — D1 révisée : qwen3.5:4b local | le poste payant a été supprimé par la mesure (campagne LLM du 22/08) |
 
-**Coût du passage à l'échelle** : le coût marginal d'une réponse est de l'ordre du **centime** (tokens LLM ; le reste est local ou en cache) → `[MESURE]` €/élève/mois calculé à partir des tokens comptés au POC. Postes additionnels : hébergement (UE), supervision — détail dans l'étude de faisabilité jointe.
+**Coût du passage à l'échelle** : le coût marginal d'une réponse est **nul en local** ; si LLM cloud (Haiku 4.5), ≈ **0,25 centime/réponse** (≈ 1 200 tokens entrée + 250 sortie, notebook 05) → **< 0,10 €/élève/mois** à 30 questions/mois. Postes additionnels : hébergement (UE), supervision — détail dans l'étude de faisabilité jointe.
 
 ---
 

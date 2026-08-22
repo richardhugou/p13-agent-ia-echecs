@@ -1,5 +1,5 @@
-# POC agent IA ouvertures d'échecs — socle (étape 1).
-# Les services Milvus (+ etcd, minio), MongoDB et MLflow seront ajoutés aux étapes suivantes.
+# POC agent IA ouvertures d'échecs — étape 2 : api + MongoDB.
+# Milvus (+ etcd, minio) et MLflow seront ajoutés aux étapes suivantes.
 
 services:
   api:
@@ -9,11 +9,23 @@ services:
       - "${API_PORT:-8000}:8000"
     environment:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4200}
+      MONGO_URI: mongodb://mongodb:27017
     env_file:
       - path: .env
         required: false
+    depends_on:
+      - mongodb
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/healthcheck')"]
       interval: 15s
       timeout: 5s
       retries: 3
+
+  mongodb:
+    image: mongo:7
+    container_name: p13-mongodb
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

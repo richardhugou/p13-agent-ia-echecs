@@ -29,7 +29,7 @@ Lecture honnête : **la conception est quasi terminée, le développement n'a pa
 - [x] Sources de données chiffrées, plan EDA/ETL, schémas de stockage → doc 04
 - [x] Architecture technique (graphe LangGraph, contrats API, compose) → doc 05
 - [x] Modèles choisis + métriques (D1 = Haiku 4.5, prix vérifiés) → doc 12
-- [x] Présentation 14 diapos (avec `[MESURE]` à remplir) → livrables/presentation-14-slides.md
+- [x] Présentation 16 diapos (avec `[MESURE]` à remplir) → livrables/presentation-soutenance.md
 - [x] Script démo, questions jury, checklist d'interdépendances → docs 03, 07, 08
 - [~] Décisions D2 (MLflow en compose) et D3 (corpus) : recos posées, à confirmer avec le mentor
 

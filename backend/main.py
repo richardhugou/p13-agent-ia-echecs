@@ -11,7 +11,7 @@ from config import get_settings
 from services import engine
 from services.cache import get_cache
 
-APP_VERSION = "0.3.0"
+APP_VERSION = "0.4.0"
 
 
 @asynccontextmanager

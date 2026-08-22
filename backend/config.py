@@ -11,6 +11,11 @@ class Settings(BaseSettings):
     mongo_uri: str = "mongodb://localhost:27017"
     mongo_db: str = "chessagent"
 
+    milvus_host: str = "localhost"
+    milvus_port: int = 19530
+    embedding_model: str = "qwen3-embedding:0.6b"
+    rag_top_k: int = 5
+
     lichess_explorer_url: str = "https://explorer.lichess.ovh"
     lichess_api_token: str = ""  # requis depuis 2026 : l'explorer répond 401 sans autorisation
     lichess_timeout_s: float = 8.0

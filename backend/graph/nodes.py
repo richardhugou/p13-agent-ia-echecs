@@ -2,7 +2,7 @@
 
 from config import get_settings
 from graph.state import AgentState
-from services import engine, evaluation, lichess, theory
+from services import engine, evaluation, lichess, rag, theory
 from services.board import parse_fen
 
 
@@ -79,8 +79,25 @@ def evaluer_position(state: AgentState) -> dict:
 
 
 def contexte_rag(state: AgentState) -> dict:
-    """Stub É3 : la recherche documentaire Milvus branchera ici. Vide, sans casser le flux."""
-    return {"rag_chunks": []}
+    """La bibliothèque : fiches wiki les plus proches de la question (ou de l'ouverture).
+
+    Requête = la question de l'élève si présente, sinon les idées de l'ouverture
+    identifiée. Ni l'une ni l'autre → rien à chercher. Plan B : bibliothèque
+    injoignable → on continue sans fiches, avec une note d'incident.
+    """
+    question = state.get("question")
+    opening = state.get("opening") or {}
+    if not question and not opening.get("name"):
+        return {"rag_chunks": []}
+    requete = question or f"Idées principales et plans de l'ouverture {opening.get('name')}"
+    try:
+        chunks = rag.search(requete, eco=opening.get("eco"))
+    except rag.RagUnavailable as exc:
+        return {
+            "rag_chunks": [],
+            "errors": state.get("errors", []) + [f"bibliothèque indisponible : {exc}"],
+        }
+    return {"rag_chunks": chunks}
 
 
 def videos(state: AgentState) -> dict:

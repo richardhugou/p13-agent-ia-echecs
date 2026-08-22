@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 from config import get_settings
 from graph.build import get_graph
-from services import engine, evaluation, lichess, theory
+from services import engine, evaluation, lichess, rag, theory
 from services.board import parse_fen
 
 router = APIRouter(prefix="/api/v1")
@@ -59,6 +59,20 @@ def evaluate_position(
     except engine.EngineUnavailable as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     return {"fen": board.fen(), **result, "cached": cached}
+
+
+@router.get("/vector-search")
+def vector_search(
+    q: str = Query(..., description="Question en langage naturel (FR ou EN)"),
+    k: int | None = Query(None, ge=1, le=20, description="Nb de fiches (défaut : config)"),
+    eco: str | None = Query(None, description="Code ECO pour filtrer (ex. C50)"),
+) -> dict:
+    """Recherche sémantique dans la bibliothèque (Milvus), filtre par rayon d'ouverture."""
+    try:
+        results = rag.search(q, eco=eco, k=k)
+    except rag.RagUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    return {"q": q, "rayon_filtre": rag.eco_vers_ouverture(eco), "results": results}
 
 
 class AskRequest(BaseModel):

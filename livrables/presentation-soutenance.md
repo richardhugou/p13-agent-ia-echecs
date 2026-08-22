@@ -247,7 +247,7 @@ docker compose up
 
 - Exposés à l'hôte : 4200 (app), 8000 (API), 19530 (Milvus, pour le job ETL local) et 5001 (MLflow) ; volumes persistants pour les données.
 - Binaire Stockfish arm64 dans l'image backend : pas de service séparé.
-- **Testé sur machine vierge : app utilisable en < 5 min** (`[MESURE]`).
+- **Test d'installation fraîche mesuré : app utilisable en 2 min 09** (reconstruction complète, cache de build vidé ; bibliothèque vectorielle prête à 2 min 28) — critère < 5 min tenu, protocole rejouable `tester-installation.sh`.
 
 ---
 

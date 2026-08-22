@@ -25,13 +25,15 @@ UA = {"User-Agent": "P13-POC-etl/0.1 (richard.hugou@gmail.com)"}
 FR_API = "https://fr.wikipedia.org/w/api.php"
 EN_API = "https://en.wikibooks.org/w/api.php"
 EN_MAX_PAR_OUVERTURE = 12
+EN_MAX_PAUVRES_EN_FR = 18  # française, anglaise, caro_kann
+FR_MAX = 12  # rabotage des grosses catégories : priorité candidats explicites puis titres courts
 
 OUVERTURES = {
     "italienne": {
         "eco": "C50-C54",
         "fr_candidats": [
             "Partie italienne", "Giuoco Piano", "Défense des deux cavaliers",
-            "Gambit Evans", "Partie hongroise", "Gambit Blackburne Shilling",
+            "Gambit Evans", "Gambit Blackburne Shilling",
         ],
         "fr_categories": [],
         "en_prefixes": ["Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4"],
@@ -49,15 +51,15 @@ OUVERTURES = {
         "en_prefixes": ["Chess Opening Theory/1. e4/1...c5"],
     },
     "francaise": {
+        "en_max": 18,
         "eco": "C00-C19",
-        "fr_candidats": [
-            "Défense française", "Variante Winawer", "Variante d'échange de la défense française",
-        ],
+        "fr_candidats": ["Défense française"],
         "fr_categories": [],
         "fr_filtre": "française",
         "en_prefixes": ["Chess Opening Theory/1. e4/1...e6"],
     },
     "caro_kann": {
+        "en_max": 18,
         "eco": "B10-B19",
         "fr_candidats": ["Défense Caro-Kann", "Attaque Panov"],
         "fr_categories": [],
@@ -74,11 +76,12 @@ OUVERTURES = {
         "fr_candidats": ["Défense est-indienne"],
         "fr_categories": ["Catégorie:Défense indienne"],
         "fr_filtre": "est-indienne",
-        "en_prefixes": ["Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7"],
+        "en_prefixes": ["Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6"],
     },
     "anglaise": {
+        "en_max": 18,
         "eco": "A10-A39",
-        "fr_candidats": ["Partie anglaise", "Défense sicilienne inversée"],
+        "fr_candidats": ["Partie anglaise"],
         "fr_categories": [],
         "fr_filtre": "anglaise",
         "en_prefixes": ["Chess Opening Theory/1. c4"],
@@ -147,11 +150,11 @@ def sous_arbre_en(prefixe: str, plafond: int) -> tuple[list[str], int]:
 def principal() -> None:
     manifeste: dict = {
         "meta": {
-            "statut": "brouillon — en attente de signature Richard",
+            "statut": "SIGNÉ par Richard le 2026-08-23 — arbitrages : rabotage FR (12 max), EN 18 pour française/anglaise/caro-kann, est-indienne élargie à 2...g6, candidats absents abandonnés (axe d'amélioration)",
             "genere_le": str(date.today()),
             "methode": "candidats FR vérifiés + catégories filtrées ; sous-arbres EN plafonnés "
                        f"à {EN_MAX_PAR_OUVERTURE} pages, du général au profond",
-            "regle": "pas de manifeste signé, pas d'extraction",
+            "regle": "toute modification du périmètre repasse par une signature",
         },
         "ouvertures": {},
     }
@@ -166,10 +169,14 @@ def principal() -> None:
                          if filtre.lower() in t.lower() or t in cfg["fr_candidats"]]
         fr, absentes = pages_existantes(candidats)
         fr = [t for t in fr if not re.match(r"^(Liste|Lexique)", t)]
+        explicites = set(cfg["fr_candidats"])
+        fr.sort(key=lambda t: (t not in explicites, len(t), t))
+        fr_ecartees = max(0, len(fr) - FR_MAX)
+        fr = sorted(fr[:FR_MAX])
 
         en, en_total = [], 0
         for prefixe in cfg["en_prefixes"]:
-            retenues, total = sous_arbre_en(prefixe, EN_MAX_PAR_OUVERTURE)
+            retenues, total = sous_arbre_en(prefixe, cfg.get("en_max", EN_MAX_PAR_OUVERTURE))
             en += retenues
             en_total += total
 
@@ -179,8 +186,8 @@ def principal() -> None:
             "wikibooks_en": en,
             "en_disponibles_dans_l_arbre": en_total,
         }
-        if absentes:
-            manifeste["ouvertures"][nom]["candidats_absents_a_verifier"] = absentes
+        if fr_ecartees:
+            manifeste["ouvertures"][nom]["fr_ecartees_par_rabotage"] = fr_ecartees
         total_fr += len(fr)
         total_en += len(en)
         print(f"{nom:<14} FR {len(fr):>3} pages · EN {len(en):>3}/{en_total} retenues"

@@ -60,6 +60,8 @@ La boucle produit : jouer → comprendre → dévier → évaluer. Un seul écra
 
 **La clé de jointure de tout le système : le FEN** (position encodée en une ligne de texte) — la seule donnée d'entrée fournie par l'élève.
 
+**Périmètre signé** : manifeste versionné `etl/corpus.yml` — **47 pages FR + 114 EN = 161 retenues** sur 3 251 disponibles (génération assistée, arbitrages tracés, signé le 23/08 ; règle : pas de manifeste signé, pas d'extraction).
+
 **L'EDA (exploration des données) — chaque figure sortira d'un run rejouable** :
 
 | Figure montrée | Ce qu'elle prouve au jury |
@@ -277,7 +279,7 @@ Du POC local au service FFE :
 
 - **Répertoire personnalisé** : l'agent apprend les ouvertures que l'élève travaille et adapte ses recommandations (mémoire par profil).
 - **Mode entraînement actif** : l'agent joue la ligne théorique contre l'élève et le corrige en direct (au lieu de commenter passivement).
-- **Corpus enrichi** : passer de 8–10 ouvertures aux 500 codes ECO ; ajouter les parties commentées de la base FFE.
+- **Corpus enrichi** : passer des 8 ouvertures aux 500 codes ECO ; ajouter les parties commentées de la base FFE et les variantes absentes du wiki FR (Winawer, Partie hongroise… — périmètre réduit assumé au manifeste).
 - **Analyse vidéo → FEN** (partie 2 de l'étude) : indexer les vidéos par position réelle et non par titre — architecture MCP conçue, coûts chiffrés dans l'étude jointe.
 - **Évaluation continue** : élargir le gold set avec les vraies questions des élèves ; boucle de feedback entraîneurs.
 - **Qualité LLM** : A/B Haiku 4.5 vs Sonnet 5 sur les explications FR, juge automatique sur le gold set.

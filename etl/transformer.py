@@ -23,13 +23,26 @@ from pathlib import Path
 
 import chess
 
+import argparse
+
+ARGS = argparse.Namespace(cible=400, maxi=550, recouvrement=0.15, sortie="chunks", naif=False)
+if __name__ == "__main__":
+    _p = argparse.ArgumentParser(description="Transformation paramétrable (Run A/B)")
+    _p.add_argument("--cible", type=int, default=400)
+    _p.add_argument("--maxi", type=int, default=550)
+    _p.add_argument("--recouvrement", type=float, default=0.15)
+    _p.add_argument("--sortie", default="chunks")
+    _p.add_argument("--naif", action="store_true",
+                    help="Run A : page entière, fenêtres fixes, sans sections ni ariane")
+    ARGS = _p.parse_args()
+
 BRUT = Path(__file__).parent / "brut"
-SORTIE = Path(__file__).parent / "chunks"
-CIBLE_TOKENS = 400
-MAX_TOKENS = 550
+SORTIE = Path(__file__).parent / ARGS.sortie
+CIBLE_TOKENS = ARGS.cible
+MAX_TOKENS = ARGS.maxi
 MIN_TOKENS_PAGE = 50
 MIN_TOKENS_CHUNK = 60
-RECOUVREMENT = 0.15
+RECOUVREMENT = ARGS.recouvrement
 JACCARD_SEUIL = 0.9
 
 NOMS = {
@@ -103,7 +116,8 @@ def assembler_chunks(morceaux: list[str]) -> list[str]:
         if est_tokens("\n".join(lot)) >= CIBLE_TOKENS:
             chunks.append("\n".join(lot))
             queue = chunks[-1].split()
-            lot = [" ".join(queue[-max(1, int(len(queue) * RECOUVREMENT)):])]
+            lot = ([" ".join(queue[-max(1, int(len(queue) * RECOUVREMENT)):])]
+                   if RECOUVREMENT > 0 else [])
     reste = "\n".join(lot).strip()
     if reste and est_tokens(reste) >= MIN_TOKENS_CHUNK:
         chunks.append(reste)
@@ -151,12 +165,19 @@ def principal() -> None:
                    if page["lang"] == "en" else None)
         if fen_ref:
             rapport["fen_calcules"] += 1
-        for section, contenu in decouper_sections(texte):
+        sections = [("Page", texte)] if ARGS.naif else decouper_sections(texte)
+        for section, contenu in sections:
             rapport["sections"] += 1
             ariane = f"{NOMS[page['ouverture']]} > {page['titre']} > {section}"
-            for corps in assembler_chunks(morceaux_de_section(contenu)):
+            if ARGS.naif:  # fenêtres fixes en mots, aveugles aux frontières
+                mots = contenu.split()
+                pas = int(CIBLE_TOKENS / 1.33)
+                morceaux = [" ".join(mots[i : i + pas]) for i in range(0, len(mots), pas)]
+            else:
+                morceaux = morceaux_de_section(contenu)
+            for corps in assembler_chunks(morceaux):
                 rapport["chunks_bruts"] += 1
-                texte_fiche = f"{ariane} —\n{corps}"
+                texte_fiche = corps if ARGS.naif else f"{ariane} —\n{corps}"
                 h = hashlib.sha256(
                     re.sub(r"\s+", " ", corps.lower()).encode()).hexdigest()
                 if h in hashes:

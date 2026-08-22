@@ -1,0 +1,44 @@
+# Gold set — 25 questions étiquetées à la main, figées AVANT tout réglage.
+# Règle : ce fichier ne change plus pendant les runs (sinon les comparaisons mentent).
+# attendu = rayon(s) d'ouverture accepté(s) ; pieges → attendu: abstention.
+
+meta:
+  version: 1
+  fige_le: "2026-08-24"
+  composition: "15 directes (FR+EN) · 5 par position (FEN) · 5 pièges (abstention attendue)"
+
+directes:
+  - {q: "Quelles sont les idées principales de la partie italienne ?", attendu: [italienne]}
+  - {q: "Pourquoi le fou vise-t-il f7 dans la partie italienne ?", attendu: [italienne]}
+  - {q: "Quels sont les plans typiques de la défense sicilienne ?", attendu: [sicilienne]}
+  - {q: "What are the main lines of the Sicilian Defence?", attendu: [sicilienne]}
+  - {q: "Faut-il accepter ou refuser le gambit dame ?", attendu: [gambit_dame]}
+  - {q: "Qu'est-ce que la défense slave et comment se joue-t-elle ?", attendu: [gambit_dame]}
+  - {q: "Quelles sont les idées de la partie espagnole ?", attendu: [espagnole]}
+  - {q: "Pourquoi jouer le fou en b5 dans la partie espagnole ?", attendu: [espagnole]}
+  - {q: "Comment les Noirs contre-attaquent-ils dans la défense française ?", attendu: [francaise]}
+  - {q: "Quelle est la structure de pions typique de la défense française ?", attendu: [francaise]}
+  - {q: "Pourquoi la défense Caro-Kann est-elle réputée solide ?", attendu: [caro_kann]}
+  - {q: "What is the main idea behind the Caro-Kann Defence?", attendu: [caro_kann]}
+  - {q: "Quels sont les plans des Noirs dans la défense est-indienne ?", attendu: [est_indienne]}
+  - {q: "Comment répondre à la partie anglaise avec les Noirs ?", attendu: [anglaise]}
+  - {q: "What does White aim for in the English Opening?", attendu: [anglaise]}
+
+par_position:
+  - {fen: "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+     opening_name: "Italian Game", eco: "C50", attendu: [italienne]}
+  - {fen: "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+     opening_name: "Ruy Lopez", eco: "C60", attendu: [espagnole]}
+  - {fen: "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+     opening_name: "Sicilian Defense", eco: "B20", attendu: [sicilienne]}
+  - {fen: "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+     opening_name: "French Defense", eco: "C00", attendu: [francaise]}
+  - {fen: "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 2",
+     opening_name: "Queen's Gambit", eco: "D06", attendu: [gambit_dame]}
+
+pieges:
+  - {q: "Quelles sont les idées de la défense scandinave ?", raison: "hors périmètre signé (abandonnée au manifeste)"}
+  - {q: "Comment jouer le gambit du roi ?", raison: "hors périmètre signé"}
+  - {q: "Quelle est la meilleure recette de crêpes bretonnes ?", raison: "hors sujet total"}
+  - {q: "Qui a gagné le championnat du monde d'échecs en 1972 ?", raison: "échecs, mais hors corpus ouvertures"}
+  - {q: "Explique-moi la règle du hors-jeu au football.", raison: "hors sujet total"}

@@ -202,15 +202,15 @@ Le choix est **réversible** : changer de LLM = changer une variable d'environne
 | Métrique | Cible | Mesuré |
 |---|---|---|
 | Coups illégaux proposés | **0** | `[MESURE]` |
-| recall@5 (gold set 25 questions) | ≥ 0,8 | `[MESURE]` |
+| recall@5 (gold set 25 questions) | ≥ 0,8 | **1,0** (runs MLflow du 24/08) |
 | MRR | — | `[MESURE]` |
 | Abstention correcte sur questions pièges | 5/5 | `[MESURE]` |
 | Citation des sources (réponses RAG) | 100 % | `[MESURE]` |
-| Latence recherche vectorielle p95 | < 100 ms | `[MESURE]` |
+| Latence recherche vectorielle p95 | < 100 ms | **7–11 ms** (à chaud) |
 | Latence agent p95 | < 8 s | `[MESURE]` |
 | Coût LLM total dev+démo | < 5 € | `[MESURE]` |
 
-Tous les chiffres sortent des **runs MLflow** (params, métriques, figures) — aucun chiffre de slide n'a d'autre origine.
+Tous les chiffres sortent des **runs MLflow** (params, métriques, figures) — aucun chiffre de slide n'a d'autre origine. **Capture du cahier d'expériences : `notebooks/figures/04-mlflow-runs.png`** (expérience gold-set-rag, runs A_naif / B_soigne).
 
 ---
 
@@ -219,13 +219,15 @@ Tous les chiffres sortent des **runs MLflow** (params, métriques, figures) — 
 **Run A « naïf »** : chunks 1 000 tokens sans overlap, top-3, pas de filtre.
 **Run B « amélioré »** : chunks 300–500 + overlap 15 %, top-5, filtre scalaire ECO quand l'ouverture est identifiée.
 
-| | Run A | Run B | Δ |
+| | Run A « naïf » | Run B « soigné » | Lecture |
 |---|---|---|---|
-| recall@5 | `[MESURE]` | `[MESURE]` | `[MESURE]` |
-| MRR | `[MESURE]` | `[MESURE]` | `[MESURE]` |
-| Latence p95 | `[MESURE]` | `[MESURE]` | `[MESURE]` |
+| recall@k | 1,0 (k=3) | 1,0 (k=5) | égalité — le gold set v1 mesure le **routage** vers la bonne ouverture, les deux le réussissent |
+| MRR | 1,0 | 1,0 | idem |
+| Marge d'abstention (score légitime min − piège max) | −0,10 (chevauchement) | **−0,04** (chevauchement réduit) | B sépare mieux, mais le piège « adjacent » reste dur pour un seuil seul |
+| Latence recherche p50 | ~4 ms | ~5 ms | équivalentes à chaud |
+| Ce que reçoit le rédacteur | fenêtres brutes de 1 000 tokens | fiches ciblées avec fil d'Ariane et sections | **la vraie différence** — qualitative, à éprouver au gold set v2 (labels fins) |
 
-Autres itérations issues des tests : ajustement du seuil N du routeur théorie/moteur (`[MESURE]` valeur retenue), calibrage profondeur/temps Stockfish pour tenir la latence, prompt de synthèse (abstention propre sur les pièges).
+Enseignement honnête des runs : au niveau « rayon d'ouverture », les deux configurations réussissent — la mesure a montré que le gold set v1 était trop grossier pour les départager, et c'est une découverte en soi. Axes ouverts : gold set v2 à labels fins (page/section), et **défense en profondeur pour l'abstention** (seuil de score + règle d'honnêteté du prompt), le piège « domaine adjacent » ne cédant pas à un seuil seul.
 
 ---
 

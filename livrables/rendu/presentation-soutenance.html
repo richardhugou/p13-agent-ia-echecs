@@ -314,13 +314,16 @@
   <table style="margin-bottom: 16px;">
     <tr><th>Indicateur</th><th>Cible</th><th>Mesuré</th></tr>
     <tr><td>Coups illégaux proposés</td><td><strong>0</strong></td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
-    <tr><td>recall@5 (gold set 25 questions)</td><td>≥ 0,8</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
-    <tr><td>Abstention correcte sur les pièges</td><td>5 / 5</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
-    <tr><td>Réponses RAG sourcées</td><td>100 %</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>recall@5 (gold set 25 questions)</td><td>≥ 0,8</td><td><b>1,0</b> <span class="chip solid">runs MLflow 24/08</span></td></tr>
+    <tr><td>Abstention correcte sur les pièges</td><td>5 / 5</td><td><b>4 / 5</b> — le piège « adjacent » résiste au seuil (diapo suivante)</td></tr>
+    <tr><td>Réponses RAG sourcées</td><td>100 %</td><td><b>100 %</b> — par construction</td></tr>
     <tr><td>Latence agent p95</td><td>&lt; 8 s</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
     <tr><td>Coût LLM total dev + démo</td><td>&lt; 5 €</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
   </table>
-  <p class="body" style="color:#3A5A40; font-weight:600; text-align:center;">Toute valeur affichée ici sortira d'un run MLflow tracé — d'aucun autre endroit.</p>
+  <div class="row" style="align-items:center; margin-top:6px;">
+    <img src="../../notebooks/figures/04-mlflow-runs.png" style="width:56%; border-radius:12px; border:1px solid #7A756C;">
+    <p class="body" style="color:#3A5A40; font-weight:600;">Toute valeur affichée ici sort d'un run MLflow tracé — d'aucun autre endroit. Ci-contre : l'expérience gold-set-rag, runs A_naif / B_soigne.</p>
+  </div>
   <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>13 / 19</span></div>
 </div>
 
@@ -336,10 +339,10 @@
       <p class="body">chunks 300–500 + overlap 15 %<br>top-5, filtre ECO quand l'ouverture est identifiée</p></div>
   </div>
   <table style="margin-bottom: 14px;">
-    <tr><th>Métrique</th><th>Run A</th><th>Run B</th><th>Δ</th></tr>
-    <tr><td>recall@5</td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td></tr>
-    <tr><td>MRR</td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td></tr>
-    <tr><td>Latence p95</td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td><td><span class="chip">à mesurer</span></td></tr>
+    <tr><th>Métrique</th><th>Run A naïf</th><th>Run B soigné</th><th>Lecture</th></tr>
+    <tr><td class="small">recall@k · MRR</td><td class="small">1,0 · 1,0 (k=3)</td><td class="small">1,0 · 1,0 (k=5)</td><td class="small">égalité : le gold set v1 mesure le routage, tous deux le réussissent</td></tr>
+    <tr><td class="small">marge d'abstention</td><td class="small">chevauchement −0,10</td><td class="small"><b>−0,04</b></td><td class="small">B sépare mieux ; le piège « adjacent » résiste au seuil seul</td></tr>
+    <tr><td class="small">ce que reçoit le rédacteur</td><td class="small">fenêtres brutes 1 000 tokens</td><td class="small"><b>fiches ciblées + fil d'Ariane</b></td><td class="small">la vraie différence — gold set v2 à labels fins en axe</td></tr>
   </table>
   <p class="small">Autres itérations mesurées : seuil N du routeur théorie/moteur · profondeur/temps Stockfish · prompt de synthèse (abstention propre).</p>
   <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>14 / 19</span></div>

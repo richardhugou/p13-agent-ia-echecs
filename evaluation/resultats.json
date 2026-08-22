@@ -1,0 +1,577 @@
+{
+  "gold_set_version": 1,
+  "runs": {
+    "A_naif": {
+      "config": {
+        "collection": "openings_kb_naive",
+        "k": 3,
+        "prefixe": false,
+        "filtre": false,
+        "chunking": "fenêtres 1000, sans recouvrement, sans sections ni ariane"
+      },
+      "recall_at_k": 1.0,
+      "mrr": 1.0,
+      "abstention_seuil": 0.512,
+      "abstention_correcte": "4/5",
+      "legitimes_rejetees": 1,
+      "scores_pieges": [
+        0.436,
+        0.564,
+        0.336,
+        0.356,
+        0.409
+      ],
+      "score_legitime_min": 0.461,
+      "latence_ms_p50": 4.3,
+      "latence_ms_p95": 99.6,
+      "details": [
+        {
+          "q": "Quelles sont les idées principales de la partie italienne ?",
+          "attendu": [
+            "italienne"
+          ],
+          "trouvees": [
+            "italienne",
+            "italienne",
+            "francaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Pourquoi le fou vise-t-il f7 dans la partie italienne ?",
+          "attendu": [
+            "italienne"
+          ],
+          "trouvees": [
+            "italienne",
+            "sicilienne",
+            "sicilienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quels sont les plans typiques de la défense sicilienne ?",
+          "attendu": [
+            "sicilienne"
+          ],
+          "trouvees": [
+            "sicilienne",
+            "sicilienne",
+            "francaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "What are the main lines of the Sicilian Defence?",
+          "attendu": [
+            "sicilienne"
+          ],
+          "trouvees": [
+            "sicilienne",
+            "sicilienne",
+            "sicilienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Faut-il accepter ou refuser le gambit dame ?",
+          "attendu": [
+            "gambit_dame"
+          ],
+          "trouvees": [
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Qu'est-ce que la défense slave et comment se joue-t-elle ?",
+          "attendu": [
+            "gambit_dame"
+          ],
+          "trouvees": [
+            "gambit_dame",
+            "gambit_dame",
+            "francaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quelles sont les idées de la partie espagnole ?",
+          "attendu": [
+            "espagnole"
+          ],
+          "trouvees": [
+            "espagnole",
+            "espagnole",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Pourquoi jouer le fou en b5 dans la partie espagnole ?",
+          "attendu": [
+            "espagnole"
+          ],
+          "trouvees": [
+            "espagnole",
+            "espagnole",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Comment les Noirs contre-attaquent-ils dans la défense franç",
+          "attendu": [
+            "francaise"
+          ],
+          "trouvees": [
+            "francaise",
+            "gambit_dame",
+            "sicilienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quelle est la structure de pions typique de la défense franç",
+          "attendu": [
+            "francaise"
+          ],
+          "trouvees": [
+            "francaise",
+            "italienne",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Pourquoi la défense Caro-Kann est-elle réputée solide ?",
+          "attendu": [
+            "caro_kann"
+          ],
+          "trouvees": [
+            "caro_kann",
+            "francaise",
+            "est_indienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "What is the main idea behind the Caro-Kann Defence?",
+          "attendu": [
+            "caro_kann"
+          ],
+          "trouvees": [
+            "caro_kann",
+            "caro_kann",
+            "caro_kann"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quels sont les plans des Noirs dans la défense est-indienne ",
+          "attendu": [
+            "est_indienne"
+          ],
+          "trouvees": [
+            "est_indienne",
+            "est_indienne",
+            "est_indienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Comment répondre à la partie anglaise avec les Noirs ?",
+          "attendu": [
+            "anglaise"
+          ],
+          "trouvees": [
+            "anglaise",
+            "sicilienne",
+            "anglaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "What does White aim for in the English Opening?",
+          "attendu": [
+            "anglaise"
+          ],
+          "trouvees": [
+            "anglaise",
+            "anglaise",
+            "anglaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Italian Game",
+          "attendu": [
+            "italienne"
+          ],
+          "trouvees": [
+            "italienne",
+            "italienne",
+            "italienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Ruy Lopez",
+          "attendu": [
+            "espagnole"
+          ],
+          "trouvees": [
+            "espagnole",
+            "espagnole",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Sicilian Defense",
+          "attendu": [
+            "sicilienne"
+          ],
+          "trouvees": [
+            "sicilienne",
+            "sicilienne",
+            "sicilienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture French Defense",
+          "attendu": [
+            "francaise"
+          ],
+          "trouvees": [
+            "francaise",
+            "italienne",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Queen's Gambit",
+          "attendu": [
+            "gambit_dame"
+          ],
+          "trouvees": [
+            "gambit_dame",
+            "italienne",
+            "sicilienne"
+          ],
+          "rank": 1
+        }
+      ]
+    },
+    "B_soigne": {
+      "config": {
+        "collection": "openings_kb",
+        "k": 5,
+        "prefixe": true,
+        "filtre": true,
+        "chunking": "sections 300-500, recouvrement 15 %, fil d'Ariane"
+      },
+      "recall_at_k": 1.0,
+      "mrr": 1.0,
+      "abstention_seuil": 0.638,
+      "abstention_correcte": "4/5",
+      "legitimes_rejetees": 1,
+      "scores_pieges": [
+        0.619,
+        0.659,
+        0.486,
+        0.548,
+        0.514
+      ],
+      "score_legitime_min": 0.618,
+      "latence_ms_p50": 4.7,
+      "latence_ms_p95": 7.1,
+      "details": [
+        {
+          "q": "Quelles sont les idées principales de la partie italienne ?",
+          "attendu": [
+            "italienne"
+          ],
+          "trouvees": [
+            "italienne",
+            "italienne",
+            "italienne",
+            "italienne",
+            "italienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Pourquoi le fou vise-t-il f7 dans la partie italienne ?",
+          "attendu": [
+            "italienne"
+          ],
+          "trouvees": [
+            "italienne",
+            "italienne",
+            "sicilienne",
+            "sicilienne",
+            "italienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quels sont les plans typiques de la défense sicilienne ?",
+          "attendu": [
+            "sicilienne"
+          ],
+          "trouvees": [
+            "sicilienne",
+            "sicilienne",
+            "sicilienne",
+            "sicilienne",
+            "sicilienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "What are the main lines of the Sicilian Defence?",
+          "attendu": [
+            "sicilienne"
+          ],
+          "trouvees": [
+            "sicilienne",
+            "sicilienne",
+            "francaise",
+            "sicilienne",
+            "sicilienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Faut-il accepter ou refuser le gambit dame ?",
+          "attendu": [
+            "gambit_dame"
+          ],
+          "trouvees": [
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Qu'est-ce que la défense slave et comment se joue-t-elle ?",
+          "attendu": [
+            "gambit_dame"
+          ],
+          "trouvees": [
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quelles sont les idées de la partie espagnole ?",
+          "attendu": [
+            "espagnole"
+          ],
+          "trouvees": [
+            "espagnole",
+            "espagnole",
+            "espagnole",
+            "espagnole",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Pourquoi jouer le fou en b5 dans la partie espagnole ?",
+          "attendu": [
+            "espagnole"
+          ],
+          "trouvees": [
+            "espagnole",
+            "espagnole",
+            "espagnole",
+            "espagnole",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Comment les Noirs contre-attaquent-ils dans la défense franç",
+          "attendu": [
+            "francaise"
+          ],
+          "trouvees": [
+            "francaise",
+            "francaise",
+            "francaise",
+            "caro_kann",
+            "gambit_dame"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quelle est la structure de pions typique de la défense franç",
+          "attendu": [
+            "francaise"
+          ],
+          "trouvees": [
+            "francaise",
+            "italienne",
+            "italienne",
+            "francaise",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Pourquoi la défense Caro-Kann est-elle réputée solide ?",
+          "attendu": [
+            "caro_kann"
+          ],
+          "trouvees": [
+            "caro_kann",
+            "caro_kann",
+            "caro_kann",
+            "caro_kann",
+            "caro_kann"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "What is the main idea behind the Caro-Kann Defence?",
+          "attendu": [
+            "caro_kann"
+          ],
+          "trouvees": [
+            "caro_kann",
+            "caro_kann",
+            "caro_kann",
+            "caro_kann",
+            "caro_kann"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Quels sont les plans des Noirs dans la défense est-indienne ",
+          "attendu": [
+            "est_indienne"
+          ],
+          "trouvees": [
+            "est_indienne",
+            "est_indienne",
+            "francaise",
+            "est_indienne",
+            "est_indienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Comment répondre à la partie anglaise avec les Noirs ?",
+          "attendu": [
+            "anglaise"
+          ],
+          "trouvees": [
+            "anglaise",
+            "francaise",
+            "sicilienne",
+            "sicilienne",
+            "anglaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "What does White aim for in the English Opening?",
+          "attendu": [
+            "anglaise"
+          ],
+          "trouvees": [
+            "anglaise",
+            "anglaise",
+            "italienne",
+            "italienne",
+            "anglaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Italian Game",
+          "attendu": [
+            "italienne"
+          ],
+          "trouvees": [
+            "italienne",
+            "italienne",
+            "italienne",
+            "italienne",
+            "italienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Ruy Lopez",
+          "attendu": [
+            "espagnole"
+          ],
+          "trouvees": [
+            "espagnole",
+            "espagnole",
+            "espagnole",
+            "espagnole",
+            "espagnole"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Sicilian Defense",
+          "attendu": [
+            "sicilienne"
+          ],
+          "trouvees": [
+            "sicilienne",
+            "sicilienne",
+            "sicilienne",
+            "sicilienne",
+            "sicilienne"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture French Defense",
+          "attendu": [
+            "francaise"
+          ],
+          "trouvees": [
+            "francaise",
+            "francaise",
+            "francaise",
+            "francaise",
+            "francaise"
+          ],
+          "rank": 1
+        },
+        {
+          "q": "Idées principales et plans de l'ouverture Queen's Gambit",
+          "attendu": [
+            "gambit_dame"
+          ],
+          "trouvees": [
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame",
+            "gambit_dame"
+          ],
+          "rank": 1
+        }
+      ]
+    }
+  }
+}

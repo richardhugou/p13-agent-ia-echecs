@@ -1,0 +1,64 @@
+<div class="coach">
+
+  <div class="entete">
+    <ng-container *ngIf="reponse?.in_theory !== null && reponse">
+      <span class="badge" [class.theorie]="reponse.in_theory" [class.moteur]="!reponse.in_theory">
+        {{ reponse.in_theory ? 'En théorie' : 'Hors théorie' }}
+      </span>
+      <span class="ouverture" *ngIf="reponse.opening">
+        {{ reponse.opening.name }} <span class="eco">{{ reponse.opening.eco }}</span>
+      </span>
+      <span class="eval" *ngIf="!reponse.in_theory && reponse.engine_eval">{{ evalTexte }}</span>
+    </ng-container>
+    <mat-spinner *ngIf="chargement" diameter="22"></mat-spinner>
+  </div>
+
+  <div class="carte coups" *ngIf="reponse && reponse.theory_moves.length > 0">
+    <p class="titre-carte">Coups recommandés par la théorie
+      <span class="sous-titre">{{ reponse.total_games | number }} parties de maîtres</span>
+    </p>
+    <div class="coup" *ngFor="let coup of reponse.theory_moves.slice(0, 5)">
+      <span class="san">{{ coup.san }}</span>
+      <span class="jauge"><span class="rempli" [style.width.%]="(coup.games / maxGames) * 100"></span></span>
+      <span class="parties">{{ coup.games | number }}</span>
+    </div>
+    <p class="reference" *ngIf="reponse.top_games.length > 0">
+      Partie de référence : {{ reponse.top_games[0].white }} – {{ reponse.top_games[0].black }}
+      ({{ reponse.top_games[0].year }})
+    </p>
+  </div>
+
+  <div class="carte reponse" *ngIf="reponse?.answer">
+    <p class="texte">{{ reponse!.answer }}</p>
+    <p class="sources" *ngIf="reponse!.sources.length > 0">
+      <mat-icon inline>menu_book</mat-icon>
+      <span *ngFor="let source of reponse!.sources; let dernier = last">{{ source }}<ng-container *ngIf="!dernier"> · </ng-container></span>
+    </p>
+  </div>
+
+  <div class="question">
+    <input type="text" [(ngModel)]="question" (keyup.enter)="poserQuestion()"
+           placeholder="Pose ta question sur cette position… (ex. pourquoi le fou vise f7 ?)" />
+    <button mat-flat-button color="primary" (click)="poserQuestion()" [disabled]="chargement">
+      Demander
+    </button>
+  </div>
+
+  <div class="videos" *ngIf="reponse && reponse.videos.length > 0">
+    <a class="video" *ngFor="let video of reponse.videos" [href]="video.url" target="_blank" rel="noopener">
+      <mat-icon>play_circle</mat-icon>
+      <span class="infos">
+        <span class="titre-video">{{ video.titre }}</span>
+        <span class="meta">{{ video.chaine }} · {{ duree(video.duree_s) }}</span>
+      </span>
+    </a>
+  </div>
+
+  <p class="incident" *ngIf="reponse && reponse.errors.length > 0">
+    Certaines sources étaient indisponibles — réponse en mode dégradé.
+  </p>
+  <p class="incident" *ngIf="erreurReseau">
+    L'agent est injoignable — vérifie que le backend tourne (demarrer.sh).
+  </p>
+
+</div>

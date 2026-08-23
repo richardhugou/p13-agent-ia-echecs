@@ -55,9 +55,10 @@ def test_mode_none_renvoie_le_gabarit(monkeypatch) -> None:
 
 def test_mode_ollama_corps_llm_et_sources_par_construction(monkeypatch) -> None:
     monkeypatch.setattr(syn, "get_settings", lambda: _settings("ollama"))
-    monkeypatch.setattr(syn.llm, "generate", lambda system, user: "Salut ! Voici la théorie.")
+    monkeypatch.setattr(syn.llm, "generate", lambda system, user: "Salut ! voici la théorie.")
     result = syn.synthese(ETAT_THEORIE)
-    assert result["answer"].startswith("Salut !")
+    # règle 6 + garde-fou code : la salutation du LLM est retirée, ce n'est pas une discussion
+    assert result["answer"].startswith("Voici la théorie.")
     # la ligne Sources est ajoutée par le code, jamais par le LLM
     assert "Sources : Base masters — Lichess Opening Explorer (CC0)" in result["answer"]
 

@@ -8,6 +8,7 @@ synthèse ne choisit JAMAIS un coup — elle rédige à partir des faits de l'é
 """
 
 import json
+import re
 
 from config import get_settings
 from graph.notation import annoter_san
@@ -20,7 +21,15 @@ On te donne des FAITS vérifiés sur une position. Règles absolues :
 2. N'ajoute AUCUNE explication stratégique de ton cru : présente les faits, rien de plus.
 3. Si les faits sont vides ou insuffisants, dis honnêtement que tu ne peux pas répondre.
 4. Rédige 3 à 5 phrases en français simple, tutoie l'élève, reste encourageant.
-5. N'écris PAS de ligne « Sources » : elle est ajoutée automatiquement après toi."""
+5. N'écris PAS de ligne « Sources » : elle est ajoutée automatiquement après toi.
+6. Ce n'est PAS une conversation : ne salue jamais (« Salut », « Bonjour »...),
+   ne te présente pas — entre directement dans l'analyse de la position."""
+
+# Le LLM local n'obéit pas toujours à la règle 6 : le code, si (garanti par construction).
+_SALUTATIONS = re.compile(
+    r"^(salut|bonjour|coucou|hello|hey|bonsoir)\s*(à toi|jeune joueur|champion(ne)?)?\s*[!,.:]*\s*",
+    re.IGNORECASE,
+)
 
 
 def _eval_en_mots(engine_eval: dict) -> str:
@@ -146,6 +155,9 @@ def synthese(state: AgentState) -> dict:
 
     try:
         corps = llm.generate(PROMPT_COACH, _faits_annotes(state)).strip()
+        corps_net = _SALUTATIONS.sub("", corps).strip()
+        if corps_net:  # on ne garde le nettoyage que s'il reste une vraie réponse
+            corps = corps_net[0].upper() + corps_net[1:]
     except llm.LLMUnavailable as exc:
         return {
             **gabarit,

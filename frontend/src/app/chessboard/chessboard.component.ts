@@ -403,11 +403,12 @@ public currentMoveIndex = 0;
     return this.isBoardLocked || (this.camp === 'blanc' && !this.horsTheorie);
   }
 
-  /** Les suggestions du coach s'affichent SUR le plateau (flèches vertes) — puis,
-   *  après un temps de lecture, l'agent joue la réponse adverse si c'est son trait. */
+  /** Les suggestions du coach s'affichent SUR le plateau : case de départ teintée en
+   *  semi-transparent, case d'arrivée en solide — puis, après un temps de lecture,
+   *  l'agent joue la réponse adverse si c'est son trait. */
   public montrerSuggestions(ucis: string[]): void {
     if (ucis.length) {
-      this.boardManager.drawMoves(ucis);
+      this.boardManager.highlightMoves(ucis);
     } else {
       this.boardManager.clearDrawings();
     }

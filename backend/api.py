@@ -65,7 +65,9 @@ def evaluate_position(
 @router.get("/engine-move")
 def calculate_engine_move(
     fen: str = Query(..., description="Position FEN complète"),
-    elo: int | None = Query(None, ge=800, le=3000, description="Niveau Elo cible (défaut : sans limite)"),
+    elo: int | None = Query(
+        None, ge=800, le=3000, description="Niveau Elo cible (défaut : sans limite)"
+    ),
     depth: int | None = Query(None, ge=1, le=30, description="Profondeur de recherche"),
 ) -> dict:
     """Calcul du coup joué par Stockfish avec calibration Elo optionnelle."""

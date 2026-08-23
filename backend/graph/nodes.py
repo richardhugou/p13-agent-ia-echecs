@@ -90,9 +90,15 @@ def contexte_rag(state: AgentState) -> dict:
     opening = state.get("opening") or {}
     if not question and not opening.get("name"):
         return {"rag_chunks": []}
+    # Règle des rayons signés (décision du 26/08) : le corpus n'est consulté que dans un
+    # rayon établi — par la position, sinon par le nom d'ouverture dans la question.
+    # Hors des 8 rayons du manifeste → zéro fiche : une citation trompeuse est impossible.
+    rayon = rag.eco_vers_ouverture(opening.get("eco")) or rag.rayon_depuis_question(question)
+    if not rayon:
+        return {"rag_chunks": [], "rag_hors_bibliotheque": True}
     requete = question or f"Idées principales et plans de l'ouverture {opening.get('name')}"
     try:
-        chunks = rag.search(requete, eco=opening.get("eco"))
+        chunks = rag.search(requete, rayon=rayon)
     except rag.RagUnavailable as exc:
         return {
             "rag_chunks": [],

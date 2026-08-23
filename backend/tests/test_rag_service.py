@@ -56,16 +56,29 @@ def test_search_sans_eco_sans_filtre(monkeypatch) -> None:
     assert fake.dernier_filtre == ""
 
 
-def test_seuil_abstention_ecarte_les_fiches_hors_sujet(monkeypatch) -> None:
-    # Décision du 26/08 (notebook 07) : sous 0,63 la fiche n'atteint jamais le rédacteur —
-    # les scores encadrent le cas réel mesuré (scandinave 0,619 bloquée, Ruy Lopez 0,641 passe).
-    fake = FakeMilvus(distances=[0.712, 0.641, 0.619, 0.486])
+def test_seuil_filet_ecarte_les_fiches_hors_sujet(monkeypatch) -> None:
+    # Décision du 26/08 (notebook 07) : le filet 0,58 coupe les hors-sujet grossiers
+    # (pièges mesurés ≤ 0,548) sans toucher les questions réelles (démo 0,629).
+    fake = FakeMilvus(distances=[0.712, 0.629, 0.548, 0.486])
     monkeypatch.setattr(rag, "_milvus", lambda: fake)
     monkeypatch.setattr(rag, "_embed_question", lambda q: [0.0])
-    scores = [fiche["score"] for fiche in rag.search("idées de la défense scandinave ?")]
-    assert scores == [0.712, 0.641]  # 0,619 et 0,486 écartées par le seuil
+    scores = [fiche["score"] for fiche in rag.search("pourquoi joue-t-on 3.Fc4 ?")]
+    assert scores == [0.712, 0.629]  # 0,548 et 0,486 écartées par le filet
     brut = rag.search("la même, vue diagnostic", score_min=0.0)
     assert len(brut) == 4  # score_min=0.0 : /vector-search garde les scores bruts visibles
+
+
+def test_rayon_depuis_question() -> None:
+    # La règle des rayons signés : le nom d'ouverture dans la question établit le rayon.
+    depuis = rag.rayon_depuis_question
+    assert depuis("Pourquoi le fou vise-t-il f7 dans la partie italienne ?") == "italienne"
+    assert depuis("What are the main lines of the Sicilian Defence?") == "sicilienne"
+    assert depuis("Qu'est-ce que la défense slave ?") == "gambit_dame"
+    assert depuis("Faut-il accepter le Queen's Gambit ?") == "gambit_dame"
+    assert depuis("Quelles sont les idées de la défense scandinave ?") is None
+    assert depuis("Comment jouer le gambit du roi ?") is None
+    assert depuis("Quelle est la meilleure recette de crêpes bretonnes ?") is None
+    assert depuis(None) is None
 
 
 def test_search_indisponible(monkeypatch) -> None:

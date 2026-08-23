@@ -24,6 +24,7 @@ class AgentState(TypedDict, total=False):
 
     # Produit par les stubs (É3/É4) puis leurs vraies implémentations
     rag_chunks: list[dict]
+    rag_hors_bibliotheque: bool  # ouverture hors des 8 rayons signés → abstention corpus
     videos: list[dict]
 
     # Produit par la synthèse

@@ -9,7 +9,7 @@ client = TestClient(app)
 
 def test_ask_theorie(monkeypatch) -> None:
     monkeypatch.setattr(nodes.theory, "masters_with_cache", lambda board: (ITALIENNE, False))
-    monkeypatch.setattr(nodes.rag, "search", lambda requete, eco=None: [])
+    monkeypatch.setattr(nodes.rag, "search", lambda requete, eco=None, rayon=None: [])
     monkeypatch.setattr(nodes.service_videos, "rechercher", lambda terme, maxi=3: [])
     response = client.post("/api/v1/agent/ask", json={"fen": START_FEN})
     assert response.status_code == 200

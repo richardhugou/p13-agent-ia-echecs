@@ -1,0 +1,53 @@
+name: Déploiement Hugging Face
+
+# La vitrine se déploie toute seule : chaque push sur main pousse le dépôt vers le
+# Space (secrets HF_TOKEN + HF_SPACE) ; Hugging Face reconstruit l'image Docker.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deployer:
+    name: Pousser vers le Space
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assembler le dépôt du Space
+        run: |
+          mkdir -p /tmp/espace
+          rsync -a --exclude '.git' --exclude 'frontend/node_modules' \
+            --exclude 'frontend/dist' --exclude 'frontend/.angular' ./ /tmp/espace/
+          cp space/Dockerfile /tmp/espace/Dockerfile
+          cp space/README-espace.md /tmp/espace/README.md
+
+      - name: Vérifier que le Space existe
+        id: espace
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ secrets.HF_SPACE }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $HF_TOKEN"             "https://huggingface.co/api/spaces/${HF_SPACE}")
+          if [ "$code" != "200" ]; then
+            echo "::notice::Space ${HF_SPACE} introuvable (HTTP $code) — déploiement sauté. Créer le Space (Docker, requiert HF PRO) puis relancer."
+            echo "present=non" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=oui" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pousser vers Hugging Face
+        if: steps.espace.outputs.present == 'oui'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ secrets.HF_SPACE }}
+        run: |
+          cd /tmp/espace
+          git init -b main
+          git config user.name "Richard Hugou"
+          git config user.email "richard.hugou@gmail.com"
+          git add -A
+          git commit -m "Déploiement automatique depuis GitHub (${GITHUB_SHA::7})"
+          git push --force "https://trikwi:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main

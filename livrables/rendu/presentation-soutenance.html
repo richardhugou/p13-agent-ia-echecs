@@ -73,85 +73,114 @@
   <div class="footer"><span>Cavalier Data × FFE</span><span>cadrage mission — docs/01</span><span>2 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 3 — Démonstration ═══════════ -->
+<!-- ═══════════ DIAPO 3 - Démonstration ═══════════ -->
 <div class="slide">
   <div class="kicker">Le produit</div>
   <h1>L'application en action</h1>
-  <div style="text-align:center; margin-bottom: 10px;">
-    <img src="captures/ui-conseils-italienne.png" style="width: 79%; border-radius: 14px; border: 1px solid #7A756C;">
+  <div class="row" style="align-items: center; justify-content: center; margin-bottom: 8px;">
+    <img src="captures/ui-conseils-italienne.png" style="width: 77%; border-radius: 14px; border: 1px solid #7A756C;">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding-left: 14px;">
+      <img src="captures/qr-code-video.svg" style="width: 145px; height: 145px; border-radius: 12px; border: 1px solid #7A756C; background: #ffffff; padding: 6px;">
+      <span class="small" style="font-size: 11.5px; margin-top: 6px; color: #3A5A40; font-weight: 600; text-align: center;">Vidéo Loom</span>
+    </div>
   </div>
-  <p class="body" style="text-align:center;"><strong>▶ Vidéo de démonstration (3-4 coups, ~45 s)</strong> <span class="small">loom.com/share/821b854d…3c3</span><br>Puis l'écran, à regarder : camp, ouvertures, coups des maîtres <strong>« Fc5 (fou f8) »</strong> avec statistiques et cases teintées, explication <strong>sourcée</strong>, vidéos.</p>
+  <p class="body" style="text-align:center;"><strong>▶ Vidéo de démonstration (3-4 coups, ~45 s)</strong> <span class="small">loom.com/share/821b854d6676475bb82cb1830448a3c3</span><br>Écran unique : camp, modes, coups des maîtres <strong>« Fc5 (fou f8) »</strong> avec statistiques et cases teintées, explication <strong>sourcée</strong>, vidéos.</p>
   <div class="footer"><span>Cavalier Data × FFE</span><span>capture de l'application livrée</span><span>3 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 4 — Le parcours utilisateur ═══════════ -->
+<!-- ═══════════ DIAPO 4 - Le parcours utilisateur ═══════════ -->
 <div class="slide">
   <div class="kicker">Le produit · Le parcours</div>
-  <h1>Le parcours de l'élève — un seul, suivi jusqu'au bout</h1>
-  <div class="row" style="align-items:center; margin-bottom: 6px;">
-    <img src="captures/ui-accueil.png" style="width: 50%; border-radius: 12px; border: 1px solid #7A756C;">
-    <div class="grow body" style="line-height: 1.6;">
-      <p><span class="num">1.</span> Léa dit <strong>qui elle est</strong> — « je joue les Blancs » : un seul jeu de pièces, son point de vue.</p>
-      <p><span class="num">2.</span> Elle choisit <strong>son point de départ</strong> : l'Italienne, ou une position libre.</p>
-      <p><span class="num">3.</span> <strong>L'agent joue les coups de l'adversaire</strong> — les plus joués par les maîtres, jamais un choix de LLM. Elle joue les siens ; une erreur ? « Annuler le coup ».</p>
-      <p><span class="num">4.</span> <strong>Hors théorie, l'agent le signale</strong> et lui laisse la main.</p>
-      <p><span class="num">5.</span> Position prête → <strong>« Lancer l'IA »</strong> : coups + statistiques <strong>et flèches sur l'échiquier</strong>, explication <strong>sourcée</strong>, vidéos, question libre.</p>
-      <p><span class="num">6.</span> Sur un coup douteux : <strong>évaluation objective du moteur</strong>.</p>
+  <h1>Le parcours de l'élève : un scénario suivi jusqu'au bout</h1>
+  <div class="row" style="align-items:center; margin-bottom: 8px;">
+    <img src="captures/ui-accueil.png" style="width: 48%; border-radius: 12px; border: 1px solid #7A756C;">
+    <div class="grow body" style="line-height: 1.6; padding-left: 12px;">
+      <p><span class="num">1.</span> <strong>Choix du camp</strong> : « je joue les Blancs » (un seul jeu de pièces, point de vue joueur).</p>
+      <p><span class="num">2.</span> <strong>Point de départ</strong> : l'Italienne (parmi 8 ouvertures du manifeste), ou position libre.</p>
+      <p><span class="num">3.</span> <strong>Réponse adverse automatique</strong> : l'agent joue le coup le plus joué par les maîtres.</p>
+      <p><span class="num">4.</span> <strong>Détection hors théorie</strong> : signalement immédiat et passage de main.</p>
+      <p><span class="num">5.</span> <strong>Demande d'analyse (« Demander à Chessbot »)</strong> : coups + stats, flèches, explication sourcée, vidéos.</p>
+      <p><span class="num">6.</span> <strong>Évaluation tactique</strong> : calcul objectif Stockfish sur coup douteux (-1,47 cp).</p>
     </div>
   </div>
-  <p class="small" style="text-align:center;">À aucun moment le système n'invente : il va chercher, il assemble, il cite.</p>
+  <p class="small" style="text-align:center; color: #3A5A40; font-weight: 500;">Les faits proviennent des outils spécialisés ; le LLM intervient uniquement pour formuler la réponse.</p>
   <div class="footer"><span>Cavalier Data × FFE</span><span>capture de l'application livrée</span><span>4 / 13</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 5 — Architecture (composants) ═══════════ -->
 <div class="slide">
   <div class="kicker">L'architecture · 1/2</div>
-  <h1>Qui communique avec qui — et pourquoi</h1>
+  <h1>Qui communique avec qui : et pourquoi</h1>
   <svg viewBox="0 0 1160 470" style="width: 96%; margin: 0 auto 6px; display: block;" role="img">
-    <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#7A756C"/></marker></defs>
+    <defs>
+      <marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#7A756C"/></marker>
+    </defs>
+    
+    <!-- Service transverse : MongoDB -->
+    <rect x="40" y="98" width="290" height="58" rx="16" fill="#F3EEE4" stroke="#7A756C" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="185" y="122" text-anchor="middle" font-size="15" font-weight="600" fill="#1C1B18">MongoDB : cache applicatif</text>
+    <text x="185" y="142" text-anchor="middle" font-size="12" fill="#7A756C">théorie, évaluations et métadonnées</text>
+    <line x1="330" y1="127" x2="410" y2="127" stroke="#7A756C" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="340,123 332,127 340,131" fill="#7A756C"/>
+    <polygon points="400,123 408,127 400,131" fill="#7A756C"/>
+    <text x="370" y="118" text-anchor="middle" font-size="10.5" fill="#7A756C">cache</text>
+
+    <!-- Client -->
     <rect x="420" y="8" width="320" height="54" rx="18" fill="#F3EEE4"/>
-    <text x="580" y="30" text-anchor="middle" font-size="16" font-weight="600" fill="#1C1B18">Léa — navigateur (Angular)</text>
-    <text x="580" y="50" text-anchor="middle" font-size="12.5" fill="#7A756C">où l'élève interagit : échiquier + panneau coach</text>
+    <text x="580" y="30" text-anchor="middle" font-size="16" font-weight="600" fill="#1C1B18">Léa : navigateur (Angular)</text>
+    <text x="580" y="50" text-anchor="middle" font-size="12.5" fill="#7A756C">interface élève : échiquier + panneau coach</text>
     <line x1="580" y1="62" x2="580" y2="96" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
     <text x="596" y="84" font-size="12.5" fill="#7A756C">position (FEN) / réponse</text>
-    <rect x="390" y="100" width="380" height="54" rx="18" fill="#F0E6D2"/>
-    <text x="580" y="122" text-anchor="middle" font-size="16" font-weight="600" fill="#2A2011">FastAPI + LangGraph — l'orchestrateur</text>
-    <text x="580" y="142" text-anchor="middle" font-size="12.5" fill="#7A756C">qui décide quelle étape exécuter, avec quel outil</text>
-    <line x1="470" y1="154" x2="215" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
-    <line x1="560" y1="154" x2="510" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
-    <line x1="650" y1="154" x2="785" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
-    <line x1="720" y1="154" x2="1010" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
-    <rect x="60" y="222" width="290" height="54" rx="18" fill="#BFE3C3"/>
-    <text x="205" y="244" text-anchor="middle" font-size="15.5" font-weight="600" fill="#0B2211">Lichess — la théorie</text>
-    <text x="205" y="263" text-anchor="middle" font-size="12.5" fill="#0B2211">que jouent les maîtres ici ? (2 M+ parties)</text>
-    <rect x="370" y="222" width="280" height="54" rx="18" fill="#BFE3C3"/>
-    <text x="510" y="244" text-anchor="middle" font-size="15.5" font-weight="600" fill="#0B2211">Stockfish — le moteur</text>
-    <text x="510" y="263" text-anchor="middle" font-size="12.5" fill="#0B2211">que vaut la position hors théorie ?</text>
-    <rect x="670" y="222" width="230" height="54" rx="18" fill="#BFE3C3"/>
-    <text x="785" y="244" text-anchor="middle" font-size="15.5" font-weight="600" fill="#0B2211">Milvus — la bibliothèque</text>
-    <text x="785" y="263" text-anchor="middle" font-size="12.5" fill="#0B2211">où chercher les connaissances ?</text>
-    <rect x="920" y="222" width="185" height="54" rx="18" fill="#BFE3C3"/>
-    <text x="1012" y="244" text-anchor="middle" font-size="15.5" font-weight="600" fill="#0B2211">YouTube</text>
-    <text x="1012" y="263" text-anchor="middle" font-size="12.5" fill="#0B2211">quelle ressource proposer ?</text>
-    <line x1="205" y1="276" x2="500" y2="352" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
-    <line x1="510" y1="276" x2="545" y2="348" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
-    <line x1="785" y1="276" x2="620" y2="350" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+    <!-- Orchestrateur -->
+    <rect x="410" y="100" width="340" height="54" rx="18" fill="#F0E6D2"/>
+    <text x="580" y="122" text-anchor="middle" font-size="16" font-weight="600" fill="#2A2011">FastAPI + LangGraph : orchestrateur</text>
+    <text x="580" y="142" text-anchor="middle" font-size="12.5" fill="#7A756C">routage déterministe et exécution des nœuds</text>
+
+    <!-- Flèches vers outils -->
+    <line x1="470" y1="154" x2="205" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <line x1="550" y1="154" x2="505" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <line x1="630" y1="154" x2="780" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <line x1="710" y1="154" x2="1005" y2="218" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+    <!-- Outils spécialisés -->
+    <rect x="50" y="222" width="300" height="54" rx="18" fill="#BFE3C3"/>
+    <text x="200" y="244" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">Lichess : théorie</text>
+    <text x="200" y="263" text-anchor="middle" font-size="12" fill="#0B2211">coups et stats des maîtres (2 M+ parties)</text>
+
+    <rect x="365" y="222" width="280" height="54" rx="18" fill="#BFE3C3"/>
+    <text x="505" y="244" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">Stockfish : moteur</text>
+    <text x="505" y="263" text-anchor="middle" font-size="12" fill="#0B2211">évaluation objective de la position</text>
+
+    <rect x="660" y="222" width="240" height="54" rx="18" fill="#BFE3C3"/>
+    <text x="780" y="244" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">Milvus : base vectorielle</text>
+    <text x="780" y="263" text-anchor="middle" font-size="12" fill="#0B2211">recherche sémantique des fiches</text>
+
+    <rect x="915" y="222" width="195" height="54" rx="18" fill="#BFE3C3"/>
+    <text x="1012" y="244" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">YouTube : ressources</text>
+    <text x="1012" y="263" text-anchor="middle" font-size="12" fill="#0B2211">vidéos par ouverture ciblée</text>
+
+    <!-- Convergence vers LLM -->
+    <line x1="200" y1="276" x2="500" y2="352" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <line x1="505" y1="276" x2="545" y2="348" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <line x1="780" y1="276" x2="620" y2="350" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
     <line x1="1012" y1="276" x2="680" y2="356" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
-    <rect x="420" y="352" width="320" height="54" rx="18" fill="#FFDAD2"/>
-    <text x="580" y="374" text-anchor="middle" font-size="15.5" font-weight="600" fill="#4a1206">LLM local (Ollama) — le rédacteur</text>
-    <text x="580" y="393" text-anchor="middle" font-size="12.5" fill="#4a1206">transforme ces faits en explication — ne décide jamais</text>
+
+    <!-- LLM Rédacteur -->
+    <rect x="410" y="352" width="340" height="54" rx="18" fill="#FFDAD2"/>
+    <text x="580" y="374" text-anchor="middle" font-size="15.5" font-weight="600" fill="#4a1206">LLM local (Ollama) : rédaction</text>
+    <text x="580" y="393" text-anchor="middle" font-size="12" fill="#4a1206">formule la réponse (ne décide jamais d'un coup)</text>
+
+    <!-- Sortie -->
     <line x1="580" y1="406" x2="580" y2="432" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar2)"/>
     <rect x="455" y="434" width="250" height="34" rx="17" fill="#FCF9F4" stroke="#3A5A40" stroke-width="2.5"/>
     <text x="580" y="456" text-anchor="middle" font-size="15" font-weight="600" fill="#1C1B18">Réponse sourcée</text>
-    <rect x="60" y="352" width="260" height="54" rx="18" fill="#F3EEE4"/>
-    <text x="190" y="374" text-anchor="middle" font-size="15.5" font-weight="600" fill="#1C1B18">MongoDB — la mémoire</text>
-    <text x="190" y="393" text-anchor="middle" font-size="12.5" fill="#7A756C">que met-on en cache ? (théorie, évals, vidéos)</text>
   </svg>
-  <p class="small" style="text-align:center;">Le <b>FEN</b> — la position en une ligne de texte — est la langue commune de toutes les briques. Le routeur est <b>déterministe</b>. Chaque brique a un plan B.</p>
+  <p class="small" style="text-align:center;">Le <b>FEN</b> (position standardisée) est la clé pivot entre toutes les briques. Le routeur est <b>déterministe</b>. Chaque brique dispose d'un repli.</p>
   <div class="footer"><span>Cavalier Data × FFE</span><span>architecture implémentée — documentation-technique.md</span><span>5 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 8 — L'orchestration ═══════════ -->
+<!-- ═══════════ DIAPO 6 — L'orchestration ═══════════ -->
 <div class="slide">
   <div class="kicker">L'architecture · 2/2</div>
   <h1>L'orchestration : le chemin d'une position</h1>
@@ -174,19 +203,19 @@
     <path d="M 830 86 C 845 105, 850 118, 852 140" fill="none" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
     <text x="866" y="118" font-size="15" fill="#993C1D" font-weight="600">non</text>
     <rect x="330" y="146" width="300" height="52" rx="20" fill="#BFE3C3"/>
-    <text x="480" y="177" text-anchor="middle" font-size="17" fill="#0B2211">Coups théoriques — Lichess</text>
+    <text x="480" y="177" text-anchor="middle" font-size="17" fill="#0B2211">Coups théoriques : Lichess</text>
     <rect x="710" y="146" width="290" height="52" rx="20" fill="#BFE3C3"/>
-    <text x="855" y="177" text-anchor="middle" font-size="17" fill="#0B2211">Évaluation — Stockfish</text>
+    <text x="855" y="177" text-anchor="middle" font-size="17" fill="#0B2211">Évaluation : Stockfish</text>
     <path d="M 440 198 C 350 235, 260 255, 200 268" fill="none" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
     <path d="M 790 198 C 560 260, 350 265, 215 273" fill="none" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
     <rect x="20" y="276" width="300" height="52" rx="20" fill="#BFE3C3"/>
-    <text x="170" y="307" text-anchor="middle" font-size="17" fill="#0B2211">Contexte documentaire — Milvus</text>
+    <text x="170" y="307" text-anchor="middle" font-size="17" fill="#0B2211">Contexte documentaire : Milvus</text>
     <line x1="320" y1="302" x2="358" y2="302" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
     <rect x="362" y="276" width="220" height="52" rx="20" fill="#BFE3C3"/>
-    <text x="472" y="307" text-anchor="middle" font-size="17" fill="#0B2211">Vidéos — YouTube</text>
+    <text x="472" y="307" text-anchor="middle" font-size="17" fill="#0B2211">Vidéos : YouTube</text>
     <line x1="582" y1="302" x2="620" y2="302" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
     <rect x="624" y="276" width="210" height="52" rx="20" fill="#FFDAD2"/>
-    <text x="729" y="307" text-anchor="middle" font-size="17" fill="#4a1206">Synthèse — LLM</text>
+    <text x="729" y="307" text-anchor="middle" font-size="17" fill="#4a1206">Synthèse : LLM</text>
     <line x1="834" y1="302" x2="872" y2="302" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar)"/>
     <rect x="876" y="276" width="240" height="52" rx="20" fill="#FCF9F4" stroke="#3A5A40" stroke-width="2.5"/>
     <text x="996" y="307" text-anchor="middle" font-size="17" font-weight="600" fill="#1C1B18">Réponse sourcée</text>
@@ -196,15 +225,15 @@
   <div class="footer"><span>Cavalier Data × FFE</span><span>backend/graph — 65 tests verts</span><span>6 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 6 — La base vectorielle ═══════════ -->
+<!-- ═══════════ DIAPO 7 — La base documentaire ═══════════ -->
 <div class="slide">
-  <div class="kicker">La construction · 1/2 — Le cœur documentaire</div>
-  <h1>Pourquoi une base vectorielle ?</h1>
-  <p class="body" style="margin-bottom: 16px;">Léa demande : <em>« pourquoi le fou vise f7 ? »</em> — aucun mot-clé ne relie sa question à la page « Giuoco Piano ». Il faut chercher par le <strong>sens</strong>. La base vectorielle est la <strong>mémoire documentaire</strong> de l'agent.</p>
+  <div class="kicker">La base vectorielle</div>
+  <h1>La base documentaire : retrouver une information par son sens</h1>
+  <p class="body" style="margin-bottom: 14px;"><strong>Exemple de recherche sémantique</strong> : <em>« pourquoi le fou vise f7 ? »</em> (aucun mot-clé exact ne relie la question à la page « Giuoco Piano »).</p>
   <svg viewBox="0 0 1160 250" style="width: 92%; display:block; margin: 0 auto 12px;" role="img">
     <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#7A756C"/></marker></defs>
     <rect x="10" y="90" width="220" height="60" rx="16" fill="#F3EEE4"/>
-    <text x="120" y="116" text-anchor="middle" font-size="14.5" fill="#1C1B18">question de l'élève</text>
+    <text x="120" y="116" text-anchor="middle" font-size="14.5" fill="#1C1B18">question utilisateur</text>
     <text x="120" y="136" text-anchor="middle" font-size="12" fill="#7A756C">« pourquoi le fou vise f7 ? »</text>
     <line x1="230" y1="120" x2="280" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
     <rect x="284" y="90" width="170" height="60" rx="16" fill="#F0E6D2"/>
@@ -213,7 +242,7 @@
     <line x1="454" y1="120" x2="512" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
     <text x="483" y="106" text-anchor="middle" font-size="12" fill="#3A5A40" font-weight="600">cosinus</text>
     <rect x="516" y="55" width="250" height="130" rx="16" fill="#BFE3C3"/>
-    <text x="641" y="83" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">MILVUS — 477 fiches</text>
+    <text x="641" y="83" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">MILVUS : 477 fiches</text>
     <text x="641" y="110" text-anchor="middle" font-size="13" fill="#0B2211">fiche « Partie italienne »&nbsp;&nbsp;0,66</text>
     <text x="641" y="132" text-anchor="middle" font-size="13" fill="#0B2211">fiche « Giuoco Piano »&nbsp;&nbsp;0,66</text>
     <text x="641" y="154" text-anchor="middle" font-size="13" fill="#0B2211">fiche « Partie italienne »&nbsp;&nbsp;0,65</text>
@@ -226,118 +255,161 @@
     <text x="1090" y="116" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1C1B18">explication</text>
     <text x="1090" y="134" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1C1B18">sourcée</text>
   </svg>
-  <p class="body" style="margin-bottom: 8px;">Les 477 fiches (FR + EN, dans le <strong>même espace de sens</strong>) sont vectorisées une fois ; chaque question l'est à la volée ; la <strong>similarité cosinus</strong> mesure l'angle entre les deux (1 = même sujet, 0 = sans rapport). La recherche se fait <strong>dans le rayon de l'ouverture jouée uniquement</strong> — hors bibliothèque : zéro fiche, réponse honnête.</p>
-  <p class="small">Mesuré : recherche <b>7–11 ms</b> · séparation sujet/hors-sujet 0,29 → <b>0,50</b> (notebook 02) · le détail (modèle, dimensions, index) : documentation technique.</p>
+  <p class="body" style="margin-bottom: 8px;">Les 477 fiches (FR + EN, dans le <strong>même espace vectoriel 1024d</strong>) sont indexées une fois. La recherche par similarité cosinus s'effectue <strong>dans le rayon de l'ouverture active</strong> : hors bibliothèque, zéro fiche transmise.</p>
+  <p class="small">Performances mesurées : recherche <b>7–11 ms</b> · séparation sémantique cible/hors-sujet portée de 0,29 à <b>0,50</b> (notebook 02).</p>
   <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>7 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 7 — La connaissance ═══════════ -->
+<!-- ═══════════ DIAPO 8 — Construction de la base documentaire ═══════════ -->
 <div class="slide">
-  <div class="kicker">La construction · 2/2</div>
-  <h1>Comment j'ai construit la connaissance</h1>
+  <div class="kicker">Les données</div>
+  <h1>Construction de la base documentaire</h1>
   <div class="row" style="align-items:center; margin-bottom: 8px;">
-    <div style="flex: 0 0 44%;" class="body">
-      <p style="margin-bottom: 12px;"><strong>4 besoins, 4 sources</strong> : nommer l'ouverture (référentiel CC0) · voir ce que jouent les maîtres (Lichess) · expliquer les idées (Wikipédia FR + Wikibooks EN) · proposer une vidéo (YouTube, métadonnées seules).</p>
-      <p style="margin-bottom: 12px;"><strong>Le pipeline</strong> (rejouable, idempotent) :<br><span class="mono">extraction → nettoyage → fiches → vecteurs → Milvus</span></p>
-      <p>Le périmètre est <strong>signé avant extraction</strong> (manifeste versionné) — et chaque exécution produit son rapport chiffré : <b>156 pages extraites → 477 fiches</b>, 95 FEN de référence calculés / 0 échec, 1 doublon écarté.</p>
+    <div style="flex: 0 0 46%;" class="body">
+      <p style="margin-bottom: 12px;"><strong>4 sources pour 4 fonctions</strong> :<br>
+      • Nomenclature : référentiel <span class="mono">chess-openings</span> (CC0)<br>
+      • Coups & stats maîtres : API Lichess (2 M+ parties, CC0)<br>
+      • Corpus encyclopédique : Wikipédia FR + Wikibooks EN (CC BY-SA)<br>
+      • Ressources complémentaires : YouTube (métadonnées seules)</p>
+      <p style="margin-bottom: 12px;"><strong>Pipeline ETL rejouable et idempotent</strong> :<br><span class="mono">extraction (périmètre signé) → nettoyage → fiches → vecteurs → Milvus</span></p>
+      <p class="small">Périmètre validé par manifeste versionné : <b>156 pages extraites → 477 fiches structurées</b> (95 FEN de référence calculés, 0 échec).</p>
     </div>
     <div class="grow" style="text-align:center;">
       <img src="../../notebooks/figures/01-entonnoir-corpus.png" style="width: 96%; border-radius: 10px; border: 1px solid #7A756C;">
-      <p class="small">L'entonnoir réel du corpus — figure générée par le notebook 03 : 3 251 pages disponibles → 161 retenues → 477 fiches.</p>
+      <p class="small">Entonnoir réel du corpus (notebook 03) : 3 251 pages disponibles → 161 retenues → 477 fiches.</p>
     </div>
   </div>
   <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml (signé)</span><span>8 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 9 — Ce que j'ai mesuré ═══════════ -->
+<!-- ═══════════ DIAPO 9 — Résultats et performances ═══════════ -->
 <div class="slide">
-  <div class="kicker">La preuve</div>
-  <h1>Ce que j'ai mesuré</h1>
+  <div class="kicker">Mesures et validation</div>
+  <h1>Résultats et performances</h1>
   <div class="row" style="align-items:flex-start;">
     <table style="width: 52%;">
-      <tr><th></th><th>Résultat</th></tr>
-      <tr><td>Coups illégaux affichés</td><td><b>0 / 56</b></td></tr>
-      <tr><td>recall@5 (gold set 25 questions)</td><td><b>1,0</b></td></tr>
-      <tr><td>Abstention sur les pièges</td><td><b>5 / 5</b> — par construction</td></tr>
-      <tr><td>Réponses sourcées</td><td><b>100 %</b> — garanti par le code</td></tr>
+      <tr><th>Indicateur</th><th>Résultat mesuré</th></tr>
+      <tr><td>Coups illégaux en sortie</td><td><b>0 / 56</b> (scénario e2e complet)</td></tr>
+      <tr><td>recall@5 (Gold Set 25 questions)</td><td><b>1,0</b> (runs A/B sous MLflow)</td></tr>
+      <tr><td>Abstention sur les pièges</td><td><b>5 / 5</b> (filtrage déterministe par rayon)</td></tr>
+      <tr><td>Réponses sourcées</td><td><b>100 %</b> (garanti par le pipeline)</td></tr>
       <tr><td>Recherche vectorielle p95</td><td><b>7–11 ms</b></td></tr>
-      <tr><td>Latence agent p95</td><td><b>6,3 s</b> local (LLM compris) · <b>0,96 s</b> en ligne (sans LLM)</td></tr>
-      <tr><td>Coût LLM du POC</td><td><b>0 €</b></td></tr>
+      <tr><td>Latence agent p95</td><td><b>6,3 s</b> local (avec LLM) · <b>0,96 s</b> en ligne (gabarit)</td></tr>
+      <tr><td>Coût LLM du POC</td><td><b>0,00 €</b> (inférence locale sur l'hôte)</td></tr>
     </table>
     <div class="grow" style="text-align:center;">
       <img src="../../notebooks/figures/06-latences-agent.png" style="width: 100%; border-radius: 10px; border: 1px solid #7A756C;">
-      <p class="small">Les latences réelles du scénario de démo (notebook 05, 3 répétitions par position) — LLM local compris.</p>
+      <p class="small">Latences mesurées sur le scénario de démo (notebook 05, 3 répétitions par position).</p>
     </div>
   </div>
   <div class="row" style="margin-top: 10px; margin-bottom: 6px;">
-    <div class="card grow"><div class="stitle">Local — poste complet (LLM qwen local)</div>
-      <p class="small">p50 <b>2,7 s</b> · p95 <b>6,3 s</b> — la rédaction LLM domine la latence</p></div>
-    <div class="card key grow"><div class="stitle">En ligne — vitrine HF (gabarit, sans LLM)</div>
-      <p class="small">p50 <b>0,8 s</b> · p95 <b>0,96 s</b> — la réponse sourcée passe <b>sous la seconde</b> · même scénario, même protocole (notebook 05 §3 bis) · trikwi-p13-agent-echecs.hf.space</p></div>
+    <div class="card grow"><div class="stitle">Local : poste complet (LLM local Qwen 3.5)</div>
+      <p class="small">p50 <b>2,7 s</b> · p95 <b>6,3 s</b> : la rédaction LLM domine la latence</p></div>
+    <div class="card key grow"><div class="stitle">En ligne : vitrine HF (gabarit sans LLM)</div>
+      <p class="small">p50 <b>0,8 s</b> · p95 <b>0,96 s</b> : réponse sous la seconde · trikwi-p13-agent-echecs.hf.space</p></div>
   </div>
-  <p class="body" style="text-align:center; margin-top: 8px;">Le POC atteint ses objectifs fonctionnels et reste assez rapide pour un usage interactif. <span class="small">Chaque chiffre vient d'un notebook exécuté ou d'un run MLflow versionné.</span></p>
   <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 10 — Une amélioration guidée par la mesure ═══════════ -->
+<!-- ═══════════ DIAPO 10 — Les principaux choix techniques ═══════════ -->
 <div class="slide">
-  <div class="kicker">La preuve · La démarche</div>
-  <h1>Des décisions guidées par la mesure</h1>
-  <div class="body" style="line-height: 1.7; margin-bottom: 14px;">
-    <p style="margin-bottom: 12px;"><span class="num">1.</span> <strong>Le choix du LLM</strong> — plan initial : API payante. Le banc de mesure (4 modèles locaux) a montré qu'un modèle de 3,2 Go répond en 3–7 s en bon français → <b>local, 0 €</b>. La décision a été <em>révisée par les chiffres</em>.</p>
-    <p style="margin-bottom: 12px;"><span class="num">2.</span> <strong>Le chunking</strong> — version A (fenêtres de 1 000, top-3) contre version B (fiches 300–500 avec contexte, top-5, filtre par ouverture) : même score de routage… donc l'étalon était <b>trop facile</b> — c'est une découverte, pas un échec ; l'étalon v2 est l'axe suivant.</p>
-    <p><span class="num">3.</span> <strong>L'abstention</strong> — une question hors corpus citait des sources voisines (mesuré). Aucun seuil ne sépare (0,618 vs 0,619 à un millième !) → <b>règle déterministe</b> : le corpus n'est consulté que dans le rayon de l'ouverture jouée ou nommée. Vérifié : <b>5/5 pièges bloqués, 0 question légitime sacrifiée</b>.</p>
+  <div class="kicker">Ingénierie IA</div>
+  <h1>Les principaux choix techniques</h1>
+  <table style="margin-bottom: 24px; margin-top: 10px;">
+    <tr><th>Choix d'architecture</th><th>Alternative évaluée</th><th>Décision et justification technique</th></tr>
+    <tr><td><strong>Modèle LLM local vs API</strong></td><td class="small">API cloud payante</td><td class="small">Modèle local Qwen 3.5 (3,2 Go RAM) retenu : <b>0 € de coût</b>, latence 3–7 s, souveraineté des données</td></tr>
+    <tr><td><strong>Structure documentaire</strong></td><td class="small">Chunks bruts 1 000 tokens</td><td class="small">Fiches 300–500 tokens avec fil d'Ariane, section et métadonnées scalaires (ECO, FEN)</td></tr>
+    <tr><td><strong>Gestion du hors-sujet</strong></td><td class="small">Seuil cosinus seul</td><td class="small">Filtrage déterministe par rayon d'ouverture + seuil filet à 0,58 (<b>5/5 pièges bloqués</b>)</td></tr>
+  </table>
+  <div class="card wood" style="padding: 16px 24px; text-align: center;">
+    <p class="body" style="font-weight: 500;">Chaque choix d'architecture a été comparé et validé sur des bancs de mesure reproductibles.</p>
   </div>
-  <p class="small" style="text-align:center;">L'histoire complète de chaque décision (données, figures, tests) : documentation technique + annexes C-D.</p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 04 · 05 · 07 — versionnés</span><span>10 / 13</span></div>
+  <p class="small" style="text-align:center; margin-top: 14px;">Détails complets des bancs d'essais : documentation technique et annexes C-D.</p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 04 · 05 · 07</span><span>10 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 11 — Déploiement + coûts ═══════════ -->
+<!-- ═══════════ DIAPO 11 — Déploiement et coûts ═══════════ -->
 <div class="slide">
-  <div class="kicker">Le déploiement · Les coûts</div>
-  <h1>Un POC reproductible — et ce qu'il coûte</h1>
-  <div class="card" style="background:#EDE7DA; font-family: 'SF Mono', Menlo, monospace; font-size: 22px; text-align:center; padding: 14px; border-radius: 16px; margin-bottom: 16px;">$ ./demarrer.sh &nbsp;&nbsp;<span style="font-size:14px; color:#7A756C;">7 conteneurs + le modèle local — installation fraîche mesurée : <b>app utilisable en 2 min 09</b> · vitrine publique auto-déployée (GitHub Actions → HF) : <b>trikwi-p13-agent-echecs.hf.space</b></span></div>
+  <div class="kicker">Déploiement et infrastructure</div>
+  <h1>Déploiement et coûts</h1>
+  <div class="row" style="align-items: stretch; margin-bottom: 16px;">
+    <div class="card grow" style="border: 2px solid #3A5A40;">
+      <div class="stitle" style="color:#3A5A40; font-size:18px;">LOCAL : POC complet</div>
+      <p class="body" style="margin-top: 8px;">• <b>7 conteneurs Docker</b> (<span class="mono">docker compose up</span> / <span class="mono">./demarrer.sh</span>)<br>
+      • Modèle LLM local sur l'hôte (Ollama)<br>
+      • Installation fraîche mesurée : <b>prête en 2 min 09</b></p>
+    </div>
+    <div class="card key grow" style="border: 2px solid #3A5A40;">
+      <div class="stitle" style="color:#0B2211; font-size:18px;">EN LIGNE : Démonstrateur public</div>
+      <p class="body" style="margin-top: 8px;">• <b>Hugging Face Spaces</b> (mono-conteneur Docker)<br>
+      • Pipeline CI/CD <b>GitHub Actions</b> (déploiement automatique sur push main)<br>
+      • Accès direct : <span class="mono">trikwi-p13-agent-echecs.hf.space</span></p>
+    </div>
+  </div>
   <div class="row" style="align-items: stretch;">
-    <div class="card grow"><div class="stitle">POC : 0 €</div>
-      <p class="body">données libres (CC0, CC BY-SA) · Stockfish et embeddings open source · LLM local — <b>le poste payant a été supprimé par la mesure</b> · YouTube : ~300 unités réelles sur 10 000/jour</p></div>
-    <div class="card grow"><div class="stitle">Passage cloud</div>
-      <p class="body">≈ <b>0,25 centime / réponse</b> (option Haiku, tokens comptés) → <b>&lt; 0,10 €/élève/mois</b> à 30 questions/mois</p></div>
-    <div class="card grow"><div class="stitle">À industrialiser</div>
-      <p class="body">hébergement UE (public mineur, RGPD) · stockage · supervision · montée en charge — détail dans l'étude jointe</p></div>
+    <div class="card wood grow">
+      <div class="stitle">Coût du POC : 0,00 €</div>
+      <p class="small">Données libres (CC0, CC BY-SA), composants open source, hébergement local sans frais d'API.</p>
+    </div>
+    <div class="card wood grow">
+      <div class="stitle">Projection Cloud : ~0,0025 € / requête (0,25 centime)</div>
+      <p class="small">Option Claude Haiku mesurée : &lt; 0,10 € par élève et par mois pour 30 analyses complètes.</p>
+    </div>
   </div>
-  <p class="body" style="text-align:center; margin-top: 12px;">Le coût du POC est volontairement faible : les briques principales sont open source et locales. Le principal poste variable à terme est la génération LLM, si elle est externalisée.</p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>tester-installation.sh · notebook 05</span><span>11 / 13</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>tester-installation.sh · space/Dockerfile</span><span>11 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 12 — L'analyse vidéo (partie 2) ═══════════ -->
+<!-- ═══════════ DIAPO 12 — Perspective : analyse vidéo ═══════════ -->
 <div class="slide">
-  <div class="kicker">La perspective · Partie 2</div>
-  <h1>Et si la connaissance était dans une vidéo ?</h1>
-  <p class="body" style="margin-bottom: 14px;">La demande d'Alan : indexer les vidéos <strong>par position</strong>, pas par titre — <em>« cette position est expliquée à 4 min 32 »</em>. <strong>C'est une étude</strong> : rien de ce système n'est développé, c'est volontaire et conforme à la commande — voilà comment le POC <em>pourrait évoluer</em>.</p>
-  <div style="text-align:center; font-family: 'SF Mono', Menlo, monospace; font-size: 17px; line-height: 2.0; margin-bottom: 14px;">
-    vidéo &nbsp;→&nbsp; images extraites &nbsp;→&nbsp; détection de l'échiquier &nbsp;→&nbsp; position → <b>FEN</b> &nbsp;→&nbsp; <span style="color:#3A5A40; font-weight:700;">l'agent existant</span>
+  <div class="kicker">Perspective · Partie 2</div>
+  <h1>Perspective : analyse vidéo</h1>
+  <div style="text-align:center; font-family: 'SF Mono', Menlo, monospace; font-size: 16px; margin-bottom: 16px; background: #F0E6D2; padding: 8px 16px; border-radius: 12px;">
+    vidéo → extraction d'images → détection échiquier → position <b>FEN</b> → <span style="color:#3A5A40; font-weight:700;">agent existant</span>
   </div>
-  <div class="body" style="line-height: 1.7; margin-bottom: 12px;">
-    <p style="margin-bottom: 10px;"><strong>Ce n'est pas un deuxième agent</strong> : la vidéo devient des positions FEN — la même clé que tout le POC. Les capacités d'analyse sont exposées en <strong>MCP</strong> : des serveurs d'outils indépendants que tout agent futur de la FFE peut appeler.</p>
-    <p style="margin-bottom: 10px;">Bénéfice chiffré : ≈ <b>0,10–0,15 €/vidéo</b> contre 7,50–15 € à la main (<b>×50 à ×100</b>). <strong>La limite dure est juridique</strong> (CGU : jamais les fichiers) → MVP : licences Creative Commons + transcripts d'abord, vision 2D ; le 3D — le seul vrai entraînement de modèle du projet — attendra les chiffres du pilote.</p>
-    <p>Build MVP <b>15–20 k€</b> · opex ~100–150 $/mois à 1 000 vidéos/mois · roadmap avec critères go/no-go chiffrés.</p>
+  <div class="row" style="align-items: stretch; margin-bottom: 14px;">
+    <div class="card grow">
+      <div class="stitle">1. Faisabilité</div>
+      <p class="small">Détection visuelle 2D sur screencasts et reconstruction FEN validée par python-chess.</p>
+    </div>
+    <div class="card grow">
+      <div class="stitle">2. Intégration MCP</div>
+      <p class="small">Architecture modulaire (4 serveurs FastMCP) réutilisant directement le moteur et la base vectorielle du POC.</p>
+    </div>
+    <div class="card grow">
+      <div class="stitle">3. Stratégie MVP</div>
+      <p class="small">Transcripts et vidéos sous licence Creative Commons (sécurisation juridique CGU YouTube).</p>
+    </div>
   </div>
-  <p class="small" style="text-align:center;">Livrables joints : note bénéfices/limites (9 pages) · schéma d'architecture MCP · étude de faisabilité et coûts.</p>
+  <div class="card wood" style="padding: 12px 20px; text-align: center;">
+    <p class="small" style="font-weight: 600; color: #2A2011;">Étude technique réalisée (note de cadrage, architecture MCP, modèle de coûts) : développement hors périmètre du POC.</p>
+  </div>
   <div class="footer"><span>Cavalier Data × FFE</span><span>note-benefices-limites.md · etude-faisabilite-couts.md</span><span>12 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 13 — Conclusion ═══════════ -->
+<!-- ═══════════ DIAPO 13 — Ce que le POC démontre ═══════════ -->
 <div class="slide">
-  <div style="margin-top: 55px;">
-    <div class="kicker" style="text-align:center;">Conclusion</div>
-    <div class="card key" style="max-width: 780px; margin: 0 auto 26px; text-align:center; font-size: 26px; font-weight: 500; padding: 30px;">
-      La promesse : un retour de niveau entraîneur, à la demande.
+  <div style="margin-top: 30px;">
+    <div class="kicker" style="text-align:center;">Bilan</div>
+    <h1 style="text-align:center; font-size: 34px; margin-bottom: 20px;">Ce que le POC démontre</h1>
+    <div class="row" style="align-items: stretch; margin-bottom: 20px;">
+      <div class="card grow">
+        <div class="stitle" style="color:#3A5A40;">Agent fonctionnel</div>
+        <p class="small">Reconnaissance théorique immédiate, bascule moteur sur sortie de théorie, explications sourcées.</p>
+      </div>
+      <div class="card key grow">
+        <div class="stitle" style="color:#0B2211;">Déjà intégré (Bonus)</div>
+        <p class="small">Mode Robot Stockfish avec niveau Elo ajustable (1200 à 2200) et mode saisie libre avec relais Chessbot.</p>
+      </div>
+      <div class="card grow">
+        <div class="stitle" style="color:#3A5A40;">Déploiement éprouvé</div>
+        <p class="small">Initialisation locale en 2 min 09 et vitrine publique déployée sur Hugging Face Spaces.</p>
+      </div>
+      <div class="card wood grow">
+        <div class="stitle" style="color:#2A2011;">Prochaines évolutions</div>
+        <p class="small">Phase pilote espoirs FFE, serveurs d'outils MCP pour l'analyse vidéo, extension aux 500 codes ECO.</p>
+      </div>
     </div>
-    <p style="text-align:center;" class="body"><b>Démontré et mesuré</b> : 0/56 coup illégal · abstention 5/5 · 100 % sourcé · p95 6,3 s (0,96 s en ligne) · 0 € de LLM · installation 2 min 09</p>
-    <p style="text-align:center; margin-top: 10px;" class="body"><b>Limites assumées</b> : 8 ouvertures (manifeste signé) · gold set v1 grossier (v2 en axe) · exécution locale</p>
-    <p style="text-align:center; margin-top: 10px;" class="body"><b>La suite</b> : groupe pilote avant les championnats d'Europe · industrialisation · MVP analyse vidéo · mode entraînement actif</p>
-    <p style="text-align:center; font-size: 21px; margin-top: 24px;">→ <strong>Démo en direct</strong></p>
-    <p style="text-align:center; font-size: 22px; font-weight: 500; margin-top: 22px;">Merci — place aux questions <span style="color:#3A5A40;">♘</span></p>
+    <p style="text-align:center; font-size: 22px; font-weight: 500; margin-top: 24px;">→ <strong>Place à la démonstration en direct et aux échanges</strong></p>
   </div>
   <div class="footer"><span>Cavalier Data × FFE</span><span>le dépôt public · documentation-technique.md</span><span>13 / 13</span></div>
 </div>

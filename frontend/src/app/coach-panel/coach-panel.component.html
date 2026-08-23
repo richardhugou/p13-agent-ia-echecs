@@ -3,30 +3,47 @@
   <div class="config">
     <div class="ligne camp">
       <span class="etiquette">Tu joues :</span>
-      <button class="pilule" [class.actif]="camp === 'blanc'" (click)="choisirCamp('blanc')">♙ les Blancs</button>
-      <button class="pilule" [class.actif]="camp === 'noir'" (click)="choisirCamp('noir')">♟ les Noirs</button>
+      <button class="pilule" [class.actif]="camp === 'blanc'" [disabled]="partieCommencee" (click)="choisirCamp('blanc')">♙ les Blancs</button>
+      <button class="pilule" [class.actif]="camp === 'noir'" [disabled]="partieCommencee" (click)="choisirCamp('noir')">♟ les Noirs</button>
     </div>
-    <div class="ligne">
-      <span class="etiquette">Travailler une ouverture :</span>
+    <div class="ligne mode">
+      <span class="etiquette">Parcours :</span>
+      <button class="pilule" [class.actif]="mode === 'guide'" [disabled]="partieCommencee" (click)="choisirMode('guide')">Guidé</button>
+      <button class="pilule" [class.actif]="mode === 'simulation'" [disabled]="partieCommencee" (click)="choisirMode('simulation')">Simulation</button>
+      <button class="pilule" [class.actif]="mode === 'robot'" [disabled]="partieCommencee" (click)="choisirMode('robot')">Robot Elo</button>
+      <button class="pilule" [class.actif]="mode === 'libre'" [disabled]="partieCommencee" (click)="choisirMode('libre')">Saisie libre</button>
+    </div>
+    <div class="ligne" *ngIf="mode === 'guide' || mode === 'simulation'">
+      <span class="etiquette">{{ mode === 'guide' ? 'Ouverture cible :' : 'Position de référence :' }}</span>
       <span class="pilules">
         <button class="pilule" *ngFor="let o of ouvertures" [class.actif]="ouvertureActive === o.nom"
-                (click)="choisirOuverture(o)">{{ o.nom }}</button>
+                [disabled]="partieCommencee" (click)="choisirOuverture(o)">{{ o.nom }}</button>
+      </span>
+    </div>
+    <div class="ligne" *ngIf="mode === 'robot'">
+      <span class="etiquette">Niveau Stockfish :</span>
+      <span class="pilules">
+        <button class="pilule" *ngFor="let e of elosDisponibles" [class.actif]="eloRobot === e.elo"
+                [disabled]="partieCommencee" (click)="choisirElo(e.elo)">{{ e.label }} ({{ e.elo }})</button>
       </span>
     </div>
     <div class="ligne actions">
-      <button mat-flat-button color="primary" class="lancer" (click)="lancerIA()" [disabled]="chargement">
-        Lancer l'IA sur cette position
+      <button mat-flat-button color="primary" class="lancer" (click)="lancerIA()" [disabled]="chargement || (!estAuTourDuJoueur && mode !== 'libre')">
+        Demander à Chessbot
+      </button>
+      <button mat-flat-button color="accent" class="relay" *ngIf="mode === 'libre'" (click)="declencherRelais()" [disabled]="chargement">
+        Chessbot relay
       </button>
       <button mat-stroked-button (click)="annulerCoup.emit()" [disabled]="chargement">↶ Annuler le coup</button>
     </div>
   </div>
 
+  <p class="incident" *ngIf="!chargement && !estAuTourDuJoueur && mode !== 'libre'">
+    {{ mode === 'robot' ? 'Stockfish (' + eloRobot + ' Elo) réfléchit…' : "L'agent joue le coup de l'adversaire…" }}
+  </p>
+
   <div class="carte accueil" *ngIf="!reponse && !chargement && !erreurReseau">
-    <p class="texte">Salut, je suis ton coach d'ouvertures ! Dis-moi <strong>qui tu joues</strong>,
-    choisis une ouverture à travailler (ou joue directement) : <strong>je joue les coups de ton
-    adversaire</strong> — les plus joués par les maîtres. Une erreur ? « Annuler le coup ».
-    Quand ta position est prête, appuie sur <strong>« Lancer l'IA »</strong> — je te dirai ce que
-    jouent les maîtres, pourquoi, et avec quelles vidéos progresser.</p>
+    <p class="texte">{{ messageAccueil }}</p>
   </div>
 
   <div class="entete">
@@ -67,9 +84,9 @@
 
   <div class="question">
     <input type="text" [(ngModel)]="question" (keyup.enter)="poserQuestion()"
-           placeholder="Pose ta question sur cette position… (ex. pourquoi le fou vise f7 ?)" />
+           placeholder="Question à Chessbot… (ex. pourquoi le fou vise f7 ?)" />
     <button mat-flat-button color="primary" (click)="poserQuestion()" [disabled]="chargement || !question.trim()">
-      Demander
+      Demander à Chessbot
     </button>
   </div>
 

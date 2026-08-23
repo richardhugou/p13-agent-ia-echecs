@@ -1,8 +1,9 @@
-# Vitrine Hugging Face Space — le POC en UN conteneur (variante dégradée assumée) :
-#   front Angular servi par FastAPI · Milvus Lite embarqué (corpus pré-vectorisé) ·
-#   embeddings sentence-transformers CPU (même modèle Qwen3-Embedding-0.6B) ·
-#   synthèse en gabarit déterministe (pas de LLM) · Stockfish Debian · sans MongoDB.
-# La version complète (7 conteneurs + LLM local) reste le docker compose du dépôt.
+# Stack complète Hugging Face Space (GPU NVIDIA T4 / CPU) :
+#   - Front Angular compilé servi directement par FastAPI
+#   - Moteur Stockfish embarqué
+#   - Base vectorielle Milvus Lite intégrée (corpus 477 fiches pré-vectorisées)
+#   - Modèle d'embedding Qwen3-Embedding-0.6B local
+#   - Serveur LLM Ollama avec modèle Qwen pré-embarqué (accélération CUDA T4 automatique)
 
 # ── Étage 1 : compiler le front Angular ──
 FROM node:22-slim AS front
@@ -12,44 +13,57 @@ RUN npm ci
 COPY frontend/ .
 RUN npm run build
 
-# ── Étage 2 : l'API + le corpus + le modèle d'embedding ──
+# ── Étage 2 : API + Stockfish + Ollama GPU + Milvus ──
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends stockfish \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    stockfish \
+    curl \
+    ca-certificates \
+    procps \
     && rm -rf /var/lib/apt/lists/*
+
+# Installation du binaire officiel Ollama avec support CUDA
+RUN curl -fsSL https://ollama.com/install.sh | sh
 
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     PYTHONUNBUFFERED=1 \
     STOCKFISH_PATH=/usr/games/stockfish \
-    HF_HOME=/app/hf-cache
+    HF_HOME=/app/hf-cache \
+    OLLAMA_MODELS=/app/ollama_models
 
 COPY backend/pyproject.toml backend/uv.lock ./
 RUN uv sync --frozen --no-install-project --no-dev
 
 COPY backend/ .
-# ATTENTION à l'ordre : uv sync purge tout paquet hors lock — les extras du mode
-# vitrine s'installent donc APRÈS le sync final.
 RUN uv sync --frozen --no-dev \
     && uv pip install "sentence-transformers>=3.0" milvus-lite
 
-# Le modèle d'embedding entre dans l'image : pas de téléchargement au démarrage
+# Préchargement du modèle d'embedding dans l'image
 RUN uv run --no-sync python -c "from sentence_transformers import SentenceTransformer; \
 SentenceTransformer('Qwen/Qwen3-Embedding-0.6B', device='cpu')"
+
+# Pré-téléchargement du modèle LLM dans l'image
+RUN mkdir -p /app/ollama_models \
+    && (ollama serve & PID=$!; sleep 4; ollama pull qwen3.5:4b || ollama pull qwen2.5:3b; kill $PID || true)
+
 COPY space/corpus_export.json.gz /app/corpus_export.json.gz
 COPY --from=front /app/dist/chess-board /app/static
+COPY space/entrypoint.sh /app/entrypoint.sh
 
-# Les Spaces exécutent le conteneur sous un utilisateur arbitraire
-RUN chmod -R a+rwX /app
+RUN chmod +x /app/entrypoint.sh && chmod -R a+rwX /app
 
 ENV MILVUS_LITE_PATH=/tmp/openings.db \
     EMBED_PROVIDER=local \
     SERVE_FRONT=1 \
     CORPUS_EXPORT=/app/corpus_export.json.gz \
-    LLM_PROVIDER=none \
+    LLM_PROVIDER=ollama \
+    LLM_MODEL=qwen3.5:4b \
+    OLLAMA_BASE_URL=http://127.0.0.1:11434 \
     MONGO_URI=mongodb://127.0.0.1:1/ \
     CORS_ORIGINS=*
 
 EXPOSE 7860
-CMD ["uv", "run", "--no-sync", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
+ENTRYPOINT ["/app/entrypoint.sh"]

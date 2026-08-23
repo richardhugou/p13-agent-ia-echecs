@@ -62,6 +62,21 @@ def evaluate_position(
     return {"fen": board.fen(), **result, "cached": cached}
 
 
+@router.get("/engine-move")
+def calculate_engine_move(
+    fen: str = Query(..., description="Position FEN complète"),
+    elo: int | None = Query(None, ge=800, le=3000, description="Niveau Elo cible (défaut : sans limite)"),
+    depth: int | None = Query(None, ge=1, le=30, description="Profondeur de recherche"),
+) -> dict:
+    """Calcul du coup joué par Stockfish avec calibration Elo optionnelle."""
+    board = _parse_or_400(fen)
+    try:
+        res = engine.best_move(board, elo=elo, depth=depth)
+    except engine.EngineUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    return {"fen": board.fen(), **res}
+
+
 @router.get("/videos")
 def videos_pour_ouverture(
     opening: str = Query(..., description="Nom d'ouverture (FR de préférence)"),

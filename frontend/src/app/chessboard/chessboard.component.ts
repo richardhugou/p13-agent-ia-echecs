@@ -12,7 +12,7 @@ import { Chart } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { CommonModule } from '@angular/common';
 import { CoachPanelComponent } from '../coach-panel/coach-panel.component';
-import { API } from '../agent.service';
+import { AgentService, API } from '../agent.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,6 +39,20 @@ interface BoardState {
   fen: string;
   pgn: string;
 }
+
+/** Lignes de départ minimales : elles donnent une direction à l'adversaire sans
+ *  déplacer le plateau ni contraindre le coup de l'élève. Après cette amorce,
+ *  Lichess retrouve la théorie réelle depuis la position obtenue. */
+const LIGNES_GUIDE: Record<string, string[]> = {
+  'Italienne': ['e2e4', 'e7e5', 'g1f3', 'b8c6', 'f1c4'],
+  'Espagnole': ['e2e4', 'e7e5', 'g1f3', 'b8c6', 'f1b5'],
+  'Sicilienne': ['e2e4', 'c7c5'],
+  'Française': ['e2e4', 'e7e6'],
+  'Caro-Kann': ['e2e4', 'c7c6'],
+  'Gambit dame': ['d2d4', 'd7d5', 'c2c4'],
+  'Est-indienne': ['d2d4', 'g8f6', 'c2c4', 'g7g6'],
+  'Anglaise': ['c2c4'],
+};
 
 // ========== COMPONENT ==========
 
@@ -142,12 +156,12 @@ export class ChessBoardComponent implements OnInit, AfterViewInit {
 
   // ========== CONSTRUCTOR ==========
   constructor(
-
     private cdr: ChangeDetectorRef,
     private http: HttpClient,
     private breakpointObserver: BreakpointObserver,
     private fb: UntypedFormBuilder,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private agentService: AgentService
   ) {
     this.initializeForm();
   }
@@ -370,9 +384,18 @@ public currentMoveIndex = 0;
   // ========== PARCOURS COACH (retours mentor) ==========
 
   private plateauInverse = false;
+  private readonly fenInitial = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  private ligneGuide: string[] = [];
   public camp: 'blanc' | 'noir' | null = null;
+  public modeJeu: 'guide' | 'simulation' | 'robot' | 'libre' = 'guide';
+  public eloRobot = 1500;
   public horsTheorie = false;
   private adversaireEnCours = false;
+
+  /** Les choix de parcours ne changent plus une partie déjà commencée. */
+  public get partieCommencee(): boolean {
+    return this.fen !== this.fenInitial;
+  }
 
   /** L'élève dit qui il est : le plateau se tourne vers lui, l'agent joue le camp adverse. */
   public choisirCamp(camp: 'blanc' | 'noir'): void {
@@ -385,45 +408,81 @@ public currentMoveIndex = 0;
     this.jouerAdversaireSiBesoin();
   }
 
+  public definirMode(mode: 'guide' | 'simulation' | 'robot' | 'libre'): void {
+    this.modeJeu = mode;
+    if (mode === 'libre') {
+      this.horsTheorie = false;
+    }
+  }
+
+  public definirElo(elo: number): void {
+    this.eloRobot = elo;
+  }
+
+  /** Passe la main à Chessbot pour reprendre l'analyse et le jeu depuis la position actuelle. */
+  public activerRelaisChessbot(): void {
+    this.modeJeu = 'guide';
+    this.jouerAdversaireSiBesoin();
+  }
+
+  /** L'ouverture cible est un contrat léger : elle guide les premiers coups de
+   *  l'adversaire, mais ne force jamais une position ni un coup de l'élève. */
+  public definirObjectifGuide(nom: string | null): void {
+    this.ligneGuide = nom ? (LIGNES_GUIDE[nom] ?? []) : [];
+  }
+
   /** Le sélecteur d'ouverture pose la position de référence sur l'échiquier. */
   public chargerPosition(fen: string): void {
     this.boardManager.setFEN(fen);
     this.fen = fen;
     this.horsTheorie = false;
-    // l'agent ne répond PAS tout de suite : l'élève lit d'abord les conseils
-    // et les flèches (montrerSuggestions déclenchera la réponse adverse).
+    // La position de référence peut être au trait de l'adversaire : il joue alors
+    // immédiatement son coup Lichess. Aucun conseil ne s'affiche pour ses pièces.
+    setTimeout(() => this.jouerAdversaireSiBesoin(), 0);
   }
 
-  /** Un seul jeu de pièces : l'élève ne bouge que SON camp. Les pièces adverses ne se
-   *  déverrouillent qu'à la sortie de théorie, pour saisir le coup réel de l'adversaire. */
+  /** Un seul jeu de pièces : l'élève ne bouge que SON camp (sauf en saisie libre). */
   public get verrouBlanches(): boolean {
-    return this.isBoardLocked || (this.camp === 'noir' && !this.horsTheorie);
+    if (this.isBoardLocked) {
+      return true;
+    }
+    if (this.modeJeu === 'libre') {
+      return false;
+    }
+    return (this.camp === 'noir' && !this.horsTheorie);
   }
 
   public get verrouNoires(): boolean {
-    return this.isBoardLocked || (this.camp === 'blanc' && !this.horsTheorie);
+    if (this.isBoardLocked) {
+      return true;
+    }
+    if (this.modeJeu === 'libre') {
+      return false;
+    }
+    return (this.camp === 'blanc' && !this.horsTheorie);
   }
 
   /** Les suggestions du coach s'affichent SUR le plateau : case de départ teintée en
    *  semi-transparent, case d'arrivée en solide — puis, après un temps de lecture,
    *  l'agent joue la réponse adverse si c'est son trait. */
   public montrerSuggestions(ucis: string[]): void {
-    if (ucis.length) {
+    const traitBlanc = this.fen.includes(' w ');
+    const estAuTourDuJoueur = !!this.camp && (this.camp === 'blanc') === traitBlanc;
+    if (ucis.length && estAuTourDuJoueur) {
       this.boardManager.highlightMoves(ucis);
     } else {
       this.boardManager.clearDrawings();
     }
-    setTimeout(() => this.jouerAdversaireSiBesoin(), 2000);
   }
 
   /**
-   * L'agent joue les coups de l'adversaire (retour mentor) : quand c'est le trait
-   * du camp adverse, il joue le coup le PLUS JOUÉ par les maîtres (API /moves —
-   * même source de vérité que le panneau, jamais un choix de LLM). Position sans
-   * théorie → il s'arrête et le signale : à l'élève d'annuler ou de lancer l'IA.
+   * L'agent joue les coups de l'adversaire :
+   * - En mode robot : coup calculé par Stockfish avec calibration Elo.
+   * - En mode guidé / simulation : coup Lichess Masters ou coup guide.
+   * - En mode libre : pas de coup automatique (l'élève joue les deux camps).
    */
   private jouerAdversaireSiBesoin(): void {
-    if (!this.camp || this.adversaireEnCours) {
+    if (!this.camp || this.adversaireEnCours || this.modeJeu === 'libre') {
       return;
     }
     const traitBlanc = this.fen.includes(' w ');
@@ -431,6 +490,35 @@ public currentMoveIndex = 0;
       return; // c'est à l'élève de jouer
     }
     this.adversaireEnCours = true;
+
+    if (this.modeJeu === 'robot') {
+      this.agentService.getEngineMove(this.fen, this.eloRobot).subscribe({
+        next: (res) => {
+          if (res?.uci) {
+            setTimeout(() => {
+              this.boardManager.move(res.uci);
+              this.adversaireEnCours = false;
+              this.cdr.detectChanges();
+            }, 600);
+          } else {
+            this.adversaireEnCours = false;
+          }
+        },
+        error: () => {
+          this.adversaireEnCours = false;
+        },
+      });
+      return;
+    }
+
+    const coupGuide = this.prochainCoupGuide();
+    if (coupGuide) {
+      setTimeout(() => {
+        this.boardManager.move(coupGuide);
+        this.adversaireEnCours = false;
+      }, 900);
+      return;
+    }
     this.http.get<any>(`${API}/moves`, { params: { fen: this.fen } })
       .subscribe({
         next: (data) => {
@@ -453,6 +541,35 @@ public currentMoveIndex = 0;
       });
   }
 
+  private normaliserFen(fen: string): string {
+    return (fen || '').trim().split(/\s+/).slice(0, 2).join(' ');
+  }
+
+  /** Retourne le prochain coup adverse de la ligne cible uniquement si tous les
+   *  coups déjà joués y correspondent. Une déviation laisse donc immédiatement
+   *  Lichess puis Stockfish reprendre la main. */
+  private prochainCoupGuide(): string | null {
+    if (!this.ligneGuide.length) {
+      return null;
+    }
+    const chess = new Chess();
+    const fenNormalise = this.normaliserFen(this.fen);
+    for (let index = 0; index < this.ligneGuide.length; index += 1) {
+      const uci = this.ligneGuide[index];
+      const traitBlanc = chess.fen().includes(' w ');
+      const coupAppartientALAgent = (this.camp === 'blanc') !== traitBlanc;
+      if (this.normaliserFen(chess.fen()) === fenNormalise && coupAppartientALAgent) {
+        return uci;
+      }
+      try {
+        chess.move({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci.slice(4, 5) || undefined });
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
+
   /** Une erreur se corrige d'un clic. En mode entraînement, on retire LA PAIRE de coups
    *  (la réponse de l'agent + le coup de l'élève), sinon l'agent rejouerait aussitôt. */
   public annulerDernierCoup(): void {
@@ -473,6 +590,7 @@ public currentMoveIndex = 0;
     this.resetComponentState();
     this.loadGameDataForInitialPosition();
     this.fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    this.ligneGuide = [];
   }
 
   
@@ -501,8 +619,21 @@ public selectNextMove(): void {
 
   // ========== BOARD SIZE MANAGEMENT ==========
 
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.setBoardSize();
+  }
+
   private setBoardSize(): void {
-    this.size = window.innerWidth * (window.innerHeight > window.innerWidth ? 0.92 : 0.24);
+    const largeur = window.innerWidth;
+    const hauteur = window.innerHeight;
+    if (largeur < 960) {
+      this.size = Math.min(largeur * 0.92, hauteur * 0.55);
+    } else {
+      // Échiquier grand format équilibré face au panneau
+      const cible = Math.min(largeur * 0.44, hauteur * 0.72);
+      this.size = Math.max(460, Math.min(680, Math.round(cible)));
+    }
     this.cdr.detectChanges();
   }
 

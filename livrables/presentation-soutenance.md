@@ -21,169 +21,181 @@ Ce que l'IA doit savoir faire pour elle : (1) proposer les coups reconnus par la
 
 ---
 
-## Diapo 3 — L'application en action *(la vidéo d'abord)*
+## Diapo 3 - L'application en action *(la vidéo d'abord)*
 
-**→ Vidéo de démonstration (3-4 coups, ~45 s)** : Léa choisit son camp, travaille l'Italienne, reçoit les conseils, sort de la théorie — l'agent bascule sur le moteur.
-*Lien : https://www.loom.com/share/821b854d6676475bb82cb1830448a3c3*
+**-> Vidéo de démonstration (3-4 coups, ~45 s)** : Léa choisit son camp, travaille l'Italienne, reçoit les conseils, sort de la théorie : l'agent bascule sur le moteur.
+*Lien vidéo : https://www.loom.com/share/821b854d6676475bb82cb1830448a3c3*
 
-Visuel : la capture réelle `rendu/captures/ui-conseils-italienne.png` en grand (≈ 70 % de la diapo) — l'écran unique : camp, ouvertures, coups des maîtres « Fc5 (fou f8) » avec statistiques et cases teintées, explication sourcée, vidéos.
+Visuels :
+- Capture réelle `rendu/captures/ui-conseils-italienne.png` (écran unique : camp, modes, coups des maîtres « Fc5 (fou f8) », explication sourcée, vidéos).
+- QR Code ## Diapo 4 - Le parcours de l'élève (fonctionnel)
+
+Un seul parcours, suivi jusqu'au bout : Léa travaille l'Italienne avec les Blancs :
+
+1. **Choix du camp** : « je joue les Blancs » (un seul jeu de pièces, point de vue du joueur).
+2. **Point de départ** : l'Italienne (parmi les 8 ouvertures du manifeste), ou position libre.
+3. **Réponse adverse automatique** : l'agent joue le coup Lichess Masters le plus fréquent. L'élève joue son coup ; « Annuler le coup » retire la paire en cas d'erreur.
+4. **Détection hors théorie** : signalement immédiat et passage de main à l'élève.
+5. **Déclenchement explicite (« Demander à Chessbot »)** : coups théoriques avec statistiques, flèches sur l'échiquier, explication sourcée, vidéos pédagogiques.
+6. **Évaluation tactique** : sur coup douteux, bascule automatique sur le moteur Stockfish.
+
+Visuel : capture réelle `rendu/captures/ui-accueil.png`.
+*Les faits proviennent des outils spécialisés ; le LLM intervient uniquement pour formuler la réponse.*
 
 ---
 
-## Diapo 4 — Le parcours de l'élève (fonctionnel)
-
-Un seul parcours, suivi jusqu'au bout — Léa travaille l'Italienne avec les Blancs :
-
-1. **Elle dit qui elle est** : « je joue les Blancs » — un seul jeu de pièces, son point de vue.
-2. **Elle choisit son point de départ** : l'Italienne (parmi les 8 ouvertures), ou une position libre.
-3. **L'agent joue les coups de l'adversaire** — les plus joués par les maîtres, jamais un choix de LLM ; elle joue les siens. Une erreur ? « Annuler le coup » retire la paire.
-4. **Hors théorie, l'agent le signale** et lui laisse la main : annuler, ou analyser.
-5. **Position prête → « Lancer l'IA »** : coups des maîtres avec statistiques **et flèches sur l'échiquier**, explication **avec sources cliquables**, vidéos — et une question libre si elle veut.
-6. **Sur un coup douteux**, l'agent change d'outil : **évaluation objective du moteur**.
-
-Capture : `rendu/captures/ui-accueil.png` (l'accueil qui explique ce parcours). À aucun moment le système n'invente : il va chercher, il assemble, il cite.
-
----
-
-## Diapo 5 — L'architecture : qui communique avec qui, et pourquoi
+## Diapo 5 - L'architecture : qui communique avec qui, et pourquoi
 
 Schéma de composants (l'architecture réellement implémentée) :
 
 ```
-Léa (navigateur) → ANGULAR (échiquier + panneau coach)
+                         ┌───────────────┐
+                         │   MONGODB     │  (cache applicatif : théorie,
+                         │ cache/mémoire │   évaluations, vidéos)
+                         └───────▲───────┘
+                                 ┆ (lecture / écriture)
+Léa (navigateur) -> ANGULAR (échiquier + panneau coach)
                         ↕ position (FEN) / réponse
-                   FASTAPI + LANGGRAPH (l'orchestrateur : qui décide quelle étape exécuter)
-        ┌──────────────┼──────────────┐
-     LICHESS       STOCKFISH       MILVUS          + YOUTUBE (ressource pédagogique)
-   (que jouent    (que vaut la    (où chercher     + MONGODB (que met-on en cache)
-   les maîtres ?)  position ?)     les connaissances ?)
-        └──────────────┼──────────────┘
-                   LLM local (comment transformer ces informations en explication ?)
-                        ↓
-                 RÉPONSE SOURCÉE
+                   FASTAPI + LANGGRAPH (orchestrateur : routage et exécution)
+        ┌──────────────┬──────────────┬──────────────┐
+     LICHESS       STOCKFISH       MILVUS         YOUTUBE
+   (théorie &      (moteur &     (recherche      (ressource
+   stats masters)   éval obj.)    vectorielle)   pédagogique)
+        └──────────────┴──────────────┴──────────────┘
+                               ↓
+                   LLM local (formulation de la réponse sourcée)
+                               ↓
+                         RÉPONSE SOURCÉE
 ```
 
-Chaque boîte répond à une question — et **le FEN** (la position en une ligne de texte) est la langue commune qui circule entre toutes. Le **routeur est déterministe** (un seuil de parties, pas un avis de LLM) et **chaque brique a un plan B** (dégradation propre, observée en réel).
+Chaque boîte répond à une fonction précise. Le **FEN** (notation standard de position) est la clé pivot qui circule entre toutes les briques. Le **routeur est déterministe** (seuil de parties masters) et **chaque brique dispose d'un mécanisme de repli** (mode dégradé testé en conditions réelles).
 
 ---
 
-## Diapo 6 — L'orchestration : le chemin d'une position
+## Diapo 6 - L'orchestration : le chemin d'une position
 
-*(le graphe de décision — celui du code)*
+Graphe d'exécution LangGraph (implémenté dans `backend/graph/`) :
 
 ```
-position (FEN) → valider → identifier l'ouverture → en théorie ?
-      oui → LICHESS (coups des maîtres + stats)      non → STOCKFISH (évaluation objective)
-                     → contexte documentaire (Milvus, rayon de l'ouverture) → vidéos
-                     → LLM : rédige et cite — IL NE CHOISIT JAMAIS UN COUP
+position (FEN) -> valider -> identifier l'ouverture -> en théorie ?
+      oui -> LICHESS (coups des maîtres + stats)      non -> STOCKFISH (évaluation objective)
+                     -> contexte documentaire (Milvus, rayon de l'ouverture) -> vidéos
+                     -> LLM : rédige et cite (aucun choix de coup délégué au modèle)
 ```
 
-Un seul parcours à raconter : Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs statistiques → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie → le moteur mesure (−1,47) au lieu de réciter.
+Déroulement nominal : coup 3.Fc4 -> Italienne identifiée -> en théorie -> statistiques Lichess Fc5/Cf6 -> extraction des fiches du rayon Italienne -> vidéos YouTube -> synthèse sourcée.
+Sur coup hors théorie (ex : 4.g4?!) -> évaluation chiffrée du moteur Stockfish (-1,47 cp).
 
 ---
 
-## Diapo 7 — La base vectorielle, expliquée
+## Diapo 7 - La base documentaire : retrouver une information par son sens
 
-**Le problème** : Léa demande « pourquoi le fou vise f7 ? » — aucun mot-clé ne relie sa question à la page « Giuoco Piano ». Il faut chercher par le **sens**.
+**Exemple de recherche sémantique** : « pourquoi le fou vise f7 ? » (aucun mot-clé exact ne relie la question à la page « Giuoco Piano »).
 
-**Comment on indexe** (une fois) :
-1. 161 pages encyclopédiques (Wikipédia FR + Wikibooks EN, licences libres, périmètre signé) → **477 fiches** de 300-500 mots ;
-2. chaque fiche passe dans un **modèle d'embedding** → un vecteur de **1 024 nombres** qui encode son sens — français et anglais dans le même espace ;
-3. les vecteurs sont rangés dans **Milvus**, la base spécialisée qui sait chercher « le plus proche » très vite.
+**Mécanisme d'indexation** :
+1. 161 pages encyclopédiques (Wikipédia FR + Wikibooks EN, licences libres) -> **477 fiches structurées** de 300 à 500 mots.
+2. Vectorisation via un **modèle d'embedding multilingue** (`qwen3-embedding:0.6b`) -> vecteurs de **1 024 dimensions** partageant le même espace sémantique FR/EN.
+3. Stockage et indexation dans **Milvus** (index HNSW, métrique cosinus).
 
-**Comment on cherche** (à chaque question) : la question devient un vecteur à son tour → **similarité cosinus** (l'angle entre les deux vecteurs : 1 = même sujet, 0 = sans rapport) → les 5 fiches les plus proches, **dans le rayon de l'ouverture jouée uniquement** → transmises au rédacteur avec leurs sources.
+**Mécanisme de recherche** :
+- Vectorisation de la requête utilisateur à la volée.
+- Recherche par similarité cosinus restreinte au **rayon de l'ouverture active**.
+- Transmission des 5 fiches les plus proches au générateur avec leurs URLs sources.
 
-**Mesuré** : recherche en **7–11 ms** sur 477 fiches ; le réglage des requêtes fait passer la séparation sujet/hors-sujet de 0,29 à **0,50** ; une question hors bibliothèque → **zéro fiche, réponse honnête** (« ma bibliothèque ne couvre pas cette ouverture »).
-
----
-
-## Diapo 8 — Comment j'ai construit la connaissance
-
-Pour répondre, l'agent s'appuie sur **4 sources complémentaires** :
-
-| Besoin | Source |
-|---|---|
-| Nommer l'ouverture | le référentiel `chess-openings` (CC0) |
-| Voir ce que jouent les maîtres | l'API Lichess (2 M+ parties) |
-| Expliquer les idées | la base documentaire vectorielle (Wikipédia FR + Wikibooks EN, CC BY-SA) |
-| Donner une ressource pédagogique | YouTube (métadonnées seules) |
-
-La base documentaire est **construite par un pipeline rejouable** : extraction (périmètre signé) → nettoyage → découpage en fiches → vectorisation → Milvus.
-
-**Le visuel de cette diapo est la figure réelle du notebook 03** (`notebooks/figures/01-entonnoir-corpus.png`) : **3 251 pages disponibles → 161 retenues (manifeste signé) → 477 fiches** — avec 95 FEN de référence calculés, 0 échec, 1 doublon écarté.
+**Performances mesurées** : temps de recherche de **7 à 11 ms** sur 477 fiches ; séparation sémantique cible/hors-sujet portée de 0,29 à **0,50** ; filtrage hors-rayon garantissant l'absence d'hallucination de source.
 
 ---
 
-## Diapo 9 — Ce que j'ai mesuré
+## Diapo 8 - Construction de la base documentaire
 
-| Ce qu'on promet à Léa | Cible | Mesuré |
+**4 sources pour 4 fonctions** :
+
+| Fonction | Source | Format / Licence |
 |---|---|---|
-| Jamais un coup illégal | 0 | **0 sur 56 coups affichés** (scénario complet rejoué) |
-| Une réponse rapide | p95 < 8 s | **6,3 s** (médiane 2,7 s — rédaction LLM locale comprise) |
-| Toujours ses sources | 100 % | **100 % — garanti par le code**, pas par le LLM |
-| Ne jamais inventer hors sujet | abstention 5/5 pièges | **5/5 — par construction** (règle des rayons) |
-| Recherche documentaire instantanée | < 100 ms | **7–11 ms** |
+| Nomenclature des ouvertures | Référentiel `chess-openings` | TSV / CC0 |
+| Coups et statistiques des maîtres | API Lichess Explorer | JSON / CC0 (2 M+ parties) |
+| Connaissances encyclopédiques | Wikipédia FR + Wikibooks EN | Fiches vectorisées / CC BY-SA |
+| Recommandations pédagogiques | YouTube Data API v3 | Métadonnées seules / CGU respectées |
 
-**La vue en deux — local vs en ligne** (même scénario, même protocole, notebook 05 §3 bis) :
+**Pipeline de traitement (ETL rejouable et idempotent)** :
+`extraction (périmètre signé) -> nettoyage -> découpage en fiches -> vectorisation -> chargement Milvus`
 
-| | **Local** (poste complet, LLM qwen local) | **En ligne** (vitrine HF, gabarit sans LLM) |
+Visuel : graphique réel du notebook 03 (`notebooks/figures/01-entonnoir-corpus.png`) illustrant l'entonnoir :
+**3 251 pages disponibles -> 161 retenues (manifeste signé) -> 477 fiches** (95 FEN de référence calculés, 0 échec).
+
+---
+
+## Diapo 9 - Résultats et performances
+
+| Indicateur clé | Cible | Résultat mesuré |
 |---|---|---|
-| p50 · p95 | 2,7 s · **6,3 s** | 0,8 s · **0,96 s** |
-| Lecture | la rédaction LLM domine la latence | sans LLM, la réponse sourcée est **sous la seconde** |
+| Coups illégaux en sortie | 0 | **0 sur 56 coups testés** (scénario e2e complet) |
+| Recall@5 (Gold Set 25 questions) | >= 0,80 | **1,0** (runs A/B tracés dans MLflow) |
+| Abstention sur questions pièges | 5 / 5 | **5 / 5** (filtrage déterministe par rayon) |
+| Réponses avec sources valides | 100 % | **100 %** (garanti par le pipeline d'assemblage) |
+| Latence de recherche vectorielle | < 100 ms | **7 à 11 ms** (p95) |
+| Latence globale de réponse | p95 < 8 s | **6,3 s** local (avec LLM) / **0,96 s** en ligne (gabarit) |
+| Coût d'inférence LLM du POC | 0 € | **0,00 €** (exécution locale sur l'hôte) |
 
-**Un mot de théorie LLM** (pourquoi ces garde-fous) : un modèle de langage prédit le mot suivant — il est fait pour être *plausible*, pas pour être *vrai*. D'où l'architecture : les faits viennent de systèmes vérifiables, le LLM **met en mots** des faits qu'on lui annote (« Fc5 — le Fou va en c5 »), à basse température, avec un gabarit déterministe en repli.
-
----
-
-## Diapo 10 — Une amélioration guidée par la mesure
-
-Trois exemples de décisions prises **par la mesure** (le détail : documentation technique + notebooks versionnés) :
-
-1. **Le choix du LLM** : plan initial = API payante ; le banc de mesure (4 modèles locaux) a montré qu'un modèle de 3,2 Go répond en 3-7 s en bon français → **local, 0 €**. La décision a été *révisée par les chiffres*.
-2. **Le gold set** : 25 questions étiquetées, figées avant tout réglage. Résultat 1,0 partout → l'étalon était trop facile — c'est une découverte, pas un échec ; l'étalon v2 est l'axe suivant.
-3. **L'abstention** : une question hors corpus faisait citer des sources voisines (mesuré). Un seuil de score ne sépare pas (0,618 vs 0,619 à un millième !) → **règle déterministe** : le corpus n'est consulté que dans le rayon de l'ouverture jouée ou nommée. Vérifié : 5/5 pièges bloqués, aucune question légitime sacrifiée.
-
-Discipline : chaque chiffre de ce deck sort d'un notebook exécuté ou d'un run MLflow versionné — aucun d'ailleurs.
+Visuel : graphique des latences réelles du notebook 05 (`notebooks/figures/06-latences-agent.png`).
 
 ---
 
-## Diapo 11 — Le déploiement et les coûts
+## Diapo 10 - Les principaux choix techniques
 
-```
-./demarrer.sh          # ou : docker compose up
-```
+| Choix d'architecture | Alternative évaluée | Décision et justification technique |
+|---|---|---|
+| **Modèle LLM local** | API managée payante | Modèle local Qwen 3.5 (3,2 Go RAM) retenu : coût 0 €, latence 3-7 s, souveraineté des données |
+| **Structure documentaire** | Chunks bruts 1 000 tokens | Fiches 300-500 tokens avec fil d'Ariane, section et métadonnées scalaires (ECO, FEN) |
+| **Gestion du hors-sujet** | Seuil de score cosinus seul | Filtrage déterministe par rayon d'ouverture + seuil filet à 0,58 (5/5 pièges bloqués) |
 
-7 conteneurs + le modèle local sur l'hôte. Volumes persistants, secrets en variables d'environnement, CI verte. **Installation fraîche mesurée : application utilisable en 2 min 09** (bibliothèque prête à 2 min 28, protocole rejouable). **Et une vitrine publique auto-déployée** (GitHub Actions → Hugging Face Space, un conteneur, gabarit sans LLM) : https://trikwi-p13-agent-echecs.hf.space
-
-**Combien ça coûte ?** POC : **0 € de consommation** (données libres, briques open source, LLM local — le poste payant a été supprimé par la mesure). Passage cloud : ≈ **0,25 centime/réponse** (option Haiku mesurée) → < 0,10 €/élève/mois. À industrialiser : hébergement UE (public mineur), stockage, supervision, montée en charge — détail dans l'étude jointe.
-
----
-
-## Diapo 12 — Et si la connaissance était dans une vidéo ? (partie 2)
-
-La demande d'Alan : indexer les vidéos **par position**, pas par titre — « cette position est expliquée à 4 min 32 ». **C'est une étude : rien de ce système n'est développé, c'est volontaire et conforme à la commande** — voilà comment le POC *pourrait évoluer*.
-
-```
-vidéo → images extraites → détection de l'échiquier → position → FEN → l'AGENT EXISTANT
-```
-
-**Ce n'est pas un deuxième agent** : le principe est de transformer la vidéo en positions FEN — la même clé que tout le POC — exploitables par l'agent déjà construit. Les capacités d'analyse sont exposées en **MCP** : des serveurs d'outils indépendants que tout agent futur de la FFE peut appeler.
-
-- Bénéfice chiffré : ≈ **0,10–0,15 €/vidéo** contre 7,50–15 € à la main (×50-100).
-- **La limite dure est juridique** (CGU : jamais les fichiers) → MVP : licences Creative Commons + transcripts d'abord, vision 2D ; le 3D attendra les chiffres du pilote.
-- Build MVP **15–20 k€** · opex ~100–150 $/mois à 1 000 vidéos/mois · roadmap avec critères go/no-go.
-
-Livrables joints : note bénéfices/limites (9 p.), schéma MCP, étude de faisabilité et coûts.
+*Chaque choix d'architecture a été comparé et validé sur des bancs de mesure reproductibles.*
 
 ---
 
-## Diapo 13 — Conclusion : démontré, limites, suite
+## Diapo 11 - Déploiement et coûts
 
-**Démontré et mesuré** : la boucle jouer → comprendre → dévier → évaluer fonctionne (0/56 coup illégal · abstention 5/5 · 100 % sourcé · p95 6,1 s · 0 € · installation 2 min 09).
-**Limites assumées** : 8 ouvertures (manifeste signé), gold set v1 grossier (v2 en axe), exécution locale.
-**La suite** : groupe pilote d'élèves avant les championnats d'Europe ; industrialisation (architecture inchangée, redimensionnée) ; MVP analyse vidéo ; mode entraînement actif (l'agent joue l'adversaire) ; corpus élargi vers les 500 codes ECO.
+### 1. Environnement Local (POC complet)
+- **Architecture** : 7 conteneurs orchestrés (`docker-compose.yml` / `./demarrer.sh`) + modèle Ollama sur l'hôte.
+- **Déploiement** : Volumes persistants, secrets isolés via `.env`, initialisation complète en **2 min 09**.
 
-**→ Démo en direct.** *(Annexes et documentation technique à disposition.)*
+### 2. Environnement En ligne (Démonstrateur public)
+- **Plateforme** : Hugging Face Spaces (mono-conteneur Docker, gabarit déterministe sans GPU).
+- **Intégration continue** : Pipeline CI/CD GitHub Actions (`push main -> déploiement automatique sur le Space`).
+- **Accès public** : https://trikwi-p13-agent-echecs.hf.space
+
+### 3. Modèle économique
+- **Coût du POC** : **0,00 €** (données libres, modèles open source, hébergement local).
+- **Projection cloud managé** : ~**0,0025 € / requête (0,25 centime)** (option Claude Haiku mesurée, < 0,10 € / élève / mois).
+
+---
+
+## Diapo 12 - Perspective : analyse vidéo (Partie 2)
+
+**Objectif de l'étude** : indexer les vidéos pédagogiques par position d'échiquier exacte (horodatage au coup près).
+
+```
+vidéo -> extraction d'images -> détection de l'échiquier -> position FEN -> agent existant
+```
+
+1. **Faisabilité** : Reconnaissance visuelle 2D sur screencasts et conversion des positions en FEN validées par `python-chess`.
+2. **Intégration MCP** : Architecture modulaire reposant sur 4 serveurs d'outils FastMCP réutilisant directement le moteur et la base vectorielle du POC.
+3. **Stratégie MVP** : Exploitation prioritaire des transcripts et vidéos sous licence Creative Commons pour respecter les CGU de diffusion.
+4. **Chiffrage** : Build MVP estimé à **15-20 k€** (30-40 j-h) ; coût de traitement automatisé de **0,10 à 0,15 € / vidéo** (facteur x50 à x100 vs indexation manuelle).
+
+*Étude d'ingénierie réalisée (note détaillée, schéma d'architecture MCP, modèle de coûts) : développement hors périmètre du POC.*
+
+---
+
+## Diapo 13 - Ce que le POC démontre
+
+- **Objectif du POC** : fournir un accompagnement pédagogique disponible à la demande.
+- **Agent fonctionnel** : Reconnaissance théorique immédiate, bascule moteur sur sortie de théorie, explications sourcées.
+- **Déjà intégré (Dépassement du périmètre)** : Mode Robot Stockfish avec niveau Elo paramétrable (1200 à 2200) et mode saisie libre avec relais Chessbot.
+- **Déploiement éprouvé** : Initialisation locale en 2 min 09 et démonstrateur public en ligne sur Hugging Face Spaces.
+- **Prochaines évolutions** : Phase pilote auprès des jeunes espoirs FFE, serveurs d'outils MCP pour l'analyse vidéo, extension du corpus aux 500 codes ECO.
+
+**-> Place à la démonstration en direct et aux échanges.**
 
 ---
 ---

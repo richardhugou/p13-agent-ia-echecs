@@ -36,7 +36,15 @@ export const OUVERTURES: { nom: string; fen: string }[] = [
 export class CoachPanelComponent implements OnInit {
   ouvertures = OUVERTURES;
   camp: 'blanc' | 'noir' = 'blanc';
+  mode: 'guide' | 'simulation' | 'robot' | 'libre' = 'guide';
   ouvertureActive = '';
+  elosDisponibles = [
+    { label: 'Débutant', elo: 1200 },
+    { label: 'Intermédiaire', elo: 1500 },
+    { label: 'Club', elo: 1800 },
+    { label: 'Maître', elo: 2200 },
+  ];
+  eloRobot = 1500;
 
   chargement = false;
   erreurReseau = false;
@@ -45,8 +53,15 @@ export class CoachPanelComponent implements OnInit {
 
   fenCourant = '';
 
+  /** Dès qu'un coup a été joué, on fige les choix qui définissent le scénario. */
+  @Input() partieCommencee = false;
+
   @Output() campChoisi = new EventEmitter<'blanc' | 'noir'>();
+  @Output() modeChoisi = new EventEmitter<'guide' | 'simulation' | 'robot' | 'libre'>();
+  @Output() eloChoisi = new EventEmitter<number>();
   @Output() ouvertureChoisie = new EventEmitter<string>();
+  @Output() objectifGuide = new EventEmitter<string | null>();
+  @Output() relaisChessbot = new EventEmitter<void>();
   @Output() annulerCoup = new EventEmitter<void>();
   /** Les coups suggérés (UCI) — l'échiquier les dessine en flèches. */
   @Output() suggestions = new EventEmitter<string[]>();
@@ -61,27 +76,91 @@ export class CoachPanelComponent implements OnInit {
 
   /** Lien profond de démo : #ouverture=Italienne déroule le parcours tout seul. */
   ngOnInit(): void {
+    // Le parcours par défaut commence vraiment avec les Blancs.
+    this.campChoisi.emit(this.camp);
+    this.modeChoisi.emit(this.mode);
+    this.eloChoisi.emit(this.eloRobot);
     const balise = window.location.hash.match(/#ouverture=([^&]+)/);
     if (balise) {
       const nom = decodeURIComponent(balise[1]).toLowerCase();
       const ouverture = this.ouvertures.find((o) => o.nom.toLowerCase() === nom);
       if (ouverture) {
+        // Le lien de démo conserve son raccourci vers une position de référence ;
+        // l'entrée normale, elle, reste en mode guidé et ne force rien.
+        this.mode = 'simulation';
+        this.modeChoisi.emit(this.mode);
         setTimeout(() => this.choisirOuverture(ouverture), 300); // l'échiquier doit être prêt
       }
     }
   }
 
   choisirCamp(camp: 'blanc' | 'noir'): void {
+    if (this.partieCommencee) {
+      return;
+    }
     this.camp = camp;
     this.campChoisi.emit(camp);
   }
 
-  /** Le sélecteur d'entrée : la position de référence s'installe et les conseils arrivent. */
+  choisirMode(mode: 'guide' | 'simulation' | 'robot' | 'libre'): void {
+    if (this.partieCommencee) {
+      return;
+    }
+    this.mode = mode;
+    this.ouvertureActive = '';
+    this.objectifGuide.emit(null);
+    this.modeChoisi.emit(mode);
+  }
+
+  choisirElo(elo: number): void {
+    if (this.partieCommencee) {
+      return;
+    }
+    this.eloRobot = elo;
+    this.eloChoisi.emit(elo);
+  }
+
+  declencherRelais(): void {
+    this.relaisChessbot.emit();
+  }
+
+  /** Guidé : l'ouverture est un objectif, le plateau reste au départ.
+   *  Simulation : l'ouverture charge une position de référence. */
   choisirOuverture(ouverture: { nom: string; fen: string }): void {
+    if (this.partieCommencee) {
+      return;
+    }
     this.ouvertureActive = ouverture.nom;
-    this.fenCourant = ouverture.fen;
-    this.ouvertureChoisie.emit(ouverture.fen);
-    this.lancerIA();
+    if (this.mode === 'simulation') {
+      this.objectifGuide.emit(null);
+      this.fenCourant = ouverture.fen;
+      this.ouvertureChoisie.emit(ouverture.fen);
+    } else {
+      this.objectifGuide.emit(ouverture.nom);
+    }
+  }
+
+  /** Les recommandations sont réservées au camp de l'élève, jamais à l'agent adverse. */
+  get estAuTourDuJoueur(): boolean {
+    const traitBlanc = this.fenCourant.includes(' w ');
+    return (this.camp === 'blanc') === traitBlanc;
+  }
+
+  get messageAccueil(): string {
+    if (!this.partieCommencee) {
+      if (this.mode === 'robot') {
+        return `Joue contre le robot Stockfish calibré à ${this.eloRobot} Elo.`;
+      }
+      if (this.mode === 'libre') {
+        return 'Saisie libre : joue les coups des deux camps. Clique sur « Chessbot relay » pour passer la main à Chessbot.';
+      }
+      return this.mode === 'guide'
+        ? 'Choisis une ouverture cible, puis joue ton premier coup. Le plateau reste au départ.'
+        : 'Choisis une ouverture pour charger une position de référence avant le premier coup.';
+    }
+    return this.estAuTourDuJoueur
+      ? 'À toi de jouer. Tu peux jouer un coup ou demander une analyse à Chessbot.'
+      : "Chessbot joue le coup de l'adversaire…";
   }
 
   /** Le déclencheur unique : l'élève valide sa position, PUIS demande les conseils. */

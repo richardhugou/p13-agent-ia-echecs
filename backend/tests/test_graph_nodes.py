@@ -106,23 +106,53 @@ def test_seuil_exact_du_routeur(monkeypatch, total, attendu) -> None:
 def test_contexte_rag_requete_depuis_ouverture(monkeypatch) -> None:
     recu = {}
 
-    def espion(requete, eco=None):
-        recu.update(requete=requete, eco=eco)
+    def espion(requete, eco=None, rayon=None):
+        recu.update(requete=requete, rayon=rayon)
         return [{"text": "x", "source_url": "u"}]
 
     monkeypatch.setattr(nodes.rag, "search", espion)
     out = nodes.contexte_rag({"opening": {"name": "Italian Game", "eco": "C50"}})
     assert out["rag_chunks"][0]["source_url"] == "u"
-    assert "Italian Game" in recu["requete"] and recu["eco"] == "C50"
+    assert "Italian Game" in recu["requete"] and recu["rayon"] == "italienne"
 
 
 def test_contexte_rag_question_prioritaire(monkeypatch) -> None:
     recu = {}
-    monkeypatch.setattr(
-        nodes.rag, "search", lambda requete, eco=None: recu.update(requete=requete) or []
-    )
+
+    def espion(requete, eco=None, rayon=None):
+        recu.update(requete=requete)
+        return []
+
+    monkeypatch.setattr(nodes.rag, "search", espion)
     nodes.contexte_rag({"question": "pourquoi f7 ?", "opening": {"name": "X", "eco": "C50"}})
     assert recu["requete"] == "pourquoi f7 ?"
+
+
+def test_regle_des_rayons_hors_bibliotheque(monkeypatch) -> None:
+    # Décision du 26/08 : ouverture identifiée HORS des 8 rayons signés → zéro fiche,
+    # une citation trompeuse est impossible par construction (mesuré aux notebooks 05/07).
+    def interdit(*a, **k):
+        raise AssertionError("hors bibliothèque : le corpus ne doit pas être consulté")
+
+    monkeypatch.setattr(nodes.rag, "search", interdit)
+    etat = {
+        "question": "Comment jouer le gambit du roi ?",
+        "opening": {"name": "King's Gambit", "eco": "C30"},
+    }
+    out = nodes.contexte_rag(etat)
+    assert out == {"rag_chunks": [], "rag_hors_bibliotheque": True}
+
+
+def test_regle_des_rayons_nom_dans_la_question(monkeypatch) -> None:
+    # Pas de position utile, mais l'élève nomme l'ouverture → le rayon vient de la question.
+    recu = {}
+    monkeypatch.setattr(
+        nodes.rag,
+        "search",
+        lambda requete, eco=None, rayon=None: recu.update(rayon=rayon) or [],
+    )
+    nodes.contexte_rag({"question": "Quels sont les plans typiques de la défense sicilienne ?"})
+    assert recu["rayon"] == "sicilienne"
 
 
 def test_contexte_rag_rien_a_chercher(monkeypatch) -> None:
@@ -134,7 +164,7 @@ def test_contexte_rag_rien_a_chercher(monkeypatch) -> None:
 
 
 def test_contexte_rag_indisponible(monkeypatch) -> None:
-    def boom(requete, eco=None):
+    def boom(requete, eco=None, rayon=None):
         raise nodes.rag.RagUnavailable("Milvus éteint")
 
     monkeypatch.setattr(nodes.rag, "search", boom)

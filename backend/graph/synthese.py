@@ -124,6 +124,12 @@ def _faits_annotes(state: AgentState) -> str:
             {"extrait": c["text"].split("—\n", 1)[-1].strip()[:300], "source": c["source_url"]}
             for c in chunks[:3]
         ]
+    if state.get("rag_hors_bibliotheque"):
+        faits["bibliotheque"] = (
+            "Cette ouverture n'est pas couverte par ma bibliothèque documentaire "
+            "(8 ouvertures au POC) : le dire honnêtement, ne rien inventer dessus, "
+            "s'appuyer uniquement sur les statistiques et le moteur."
+        )
     if state.get("errors"):
         faits["sources_indisponibles"] = state["errors"]
     if state.get("question"):

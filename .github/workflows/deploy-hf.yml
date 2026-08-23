@@ -48,6 +48,9 @@ jobs:
           git init -b main
           git config user.name "Richard Hugou"
           git config user.email "richard.hugou@gmail.com"
+          # Hugging Face exige Git LFS pour les fichiers binaires
+          git lfs install --local
+          git lfs track "*.png" "*.gz" "*.jpg" "*.pdf" "*.zip"
           git add -A
           git commit -m "Déploiement automatique depuis GitHub (${GITHUB_SHA::7})"
           git push --force "https://trikwi:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main

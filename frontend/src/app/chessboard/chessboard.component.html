@@ -36,7 +36,8 @@
           <app-coach-panel [fen]="fen"
                            (campChoisi)="choisirCamp($event)"
                            (ouvertureChoisie)="chargerPosition($event)"
-                           (annulerCoup)="annulerDernierCoup()"></app-coach-panel>
+                           (annulerCoup)="annulerDernierCoup()"
+                           (suggestions)="montrerSuggestions($event)"></app-coach-panel>
         </div>
 
         <!-- Section Échiquier -->
@@ -57,8 +58,8 @@
                   [dragDisabled]="isBoardLocked" 
                   [drawDisabled]="drawDisabled"
                   [darkTileColor]="darkTileColor"
-                  [lightDisabled]="isBoardLocked"
-                  [darkDisabled]="isBoardLocked"
+                  [lightDisabled]="verrouBlanches"
+                  [darkDisabled]="verrouNoires"
                   [pieceIcons]="icons"
                   [freeMode]="freeMode">
                 </ngx-chess-board>

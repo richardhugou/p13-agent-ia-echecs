@@ -18,6 +18,8 @@ import {
     NotationProcessorFactory, NotationType,
 } from './engine/board-state-provider/board-loader/notation-processors/notation-processor-factory';
 import { ClickUtils } from './engine/click/click-utils';
+import { DrawPoint } from './engine/drawing-tools/draw-point';
+import { Arrow } from './engine/drawing-tools/shapes/arrow';
 import { EngineFacade } from './engine/engine-facade';
 import { MoveChange } from './engine/outputs/move-change/move-change';
 import { HistoryMove } from './history-move-provider/history-move';
@@ -168,6 +170,35 @@ export class NgxChessBoardComponent
             this.boardRef.nativeElement.getBoundingClientRect().left,
             this.boardRef.nativeElement.getBoundingClientRect().top
         );
+    }
+
+    /** Draws suggestion arrows for the given UCI moves (e.g. ['f8c5']) — programmatic
+     *  counterpart of the right-click drawing tool. Clears previous drawings first. */
+    drawMoves(ucis: string[], color: 'red' | 'green' | 'blue' | 'orange' = 'green'): void {
+        this.engineFacade.drawProvider.clear();
+        const sq = this.engineFacade.heightAndWidth / 8;
+        const reversed = this.engineFacade.board.reverted;
+        const center = (square: string): DrawPoint => {
+            let col = square.charCodeAt(0) - 97;
+            let row = 8 - parseInt(square.charAt(1), 10);
+            if (reversed) {
+                col = 7 - col;
+                row = 7 - row;
+            }
+            return new DrawPoint(col * sq + sq / 2, row * sq + sq / 2, color);
+        };
+        for (const uci of ucis) {
+            if (uci && uci.length >= 4) {
+                const arrow = new Arrow();
+                arrow.start = center(uci.substring(0, 2));
+                arrow.end = center(uci.substring(2, 4));
+                this.engineFacade.drawProvider.addArrow(arrow);
+            }
+        }
+    }
+
+    clearDrawings(): void {
+        this.engineFacade.drawProvider.clear();
     }
 
     reverse(): void {

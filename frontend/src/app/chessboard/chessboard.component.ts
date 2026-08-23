@@ -311,6 +311,7 @@ parseEvaluationToCentipawns(evaluation: string): number {
     this.currentIndex = 0;
     this.fenSubject.next(this.fen);
     this.fenUpdateSubject.next(this.fen);
+    this.boardManager.clearDrawings(); // la position a changé : les suggestions sont périmées
     this.jouerAdversaireSiBesoin(); // l'agent répond si c'est le trait du camp adverse
   }
  public loadNextPosition(): void {
@@ -388,7 +389,29 @@ public currentMoveIndex = 0;
     this.boardManager.setFEN(fen);
     this.fen = fen;
     this.horsTheorie = false;
-    this.jouerAdversaireSiBesoin();
+    // l'agent ne répond PAS tout de suite : l'élève lit d'abord les conseils
+    // et les flèches (montrerSuggestions déclenchera la réponse adverse).
+  }
+
+  /** Un seul jeu de pièces : l'élève ne bouge que SON camp. Les pièces adverses ne se
+   *  déverrouillent qu'à la sortie de théorie, pour saisir le coup réel de l'adversaire. */
+  public get verrouBlanches(): boolean {
+    return this.isBoardLocked || (this.camp === 'noir' && !this.horsTheorie);
+  }
+
+  public get verrouNoires(): boolean {
+    return this.isBoardLocked || (this.camp === 'blanc' && !this.horsTheorie);
+  }
+
+  /** Les suggestions du coach s'affichent SUR le plateau (flèches vertes) — puis,
+   *  après un temps de lecture, l'agent joue la réponse adverse si c'est son trait. */
+  public montrerSuggestions(ucis: string[]): void {
+    if (ucis.length) {
+      this.boardManager.drawMoves(ucis);
+    } else {
+      this.boardManager.clearDrawings();
+    }
+    setTimeout(() => this.jouerAdversaireSiBesoin(), 2000);
   }
 
   /**

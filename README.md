@@ -15,6 +15,7 @@ Le script fait tout : Ollama vérifié/démarré + modèles téléchargés, `.en
 Équivalent manuel : copier `.env.example` en `.env` (remplir `LICHESS_API_TOKEN`, requis pour la théorie ; `YOUTUBE_API_KEY`, optionnel) puis `docker compose up -d --build`.
 
 - **Application** : http://localhost:4200 · **API (Swagger)** : http://localhost:8000/docs · **MLflow** : http://localhost:5001
+- **Démo en ligne** (vitrine mono-conteneur, gabarit sans LLM, auto-déployée par GitHub Actions) : https://trikwi-p13-agent-echecs.hf.space
 - Test d'installation fraîche (`./tester-installation.sh`, images construites et cache de build supprimés) : app utilisable en **2 min 09**, bibliothèque vectorielle prête à **2 min 28** — critère < 5 min tenu.
 
 ### Remplir la bibliothèque (une fois, ~10 min)
@@ -85,4 +86,4 @@ Gitflow simplifié : `main` (stable, démo) ← `develop` (intégration) ← `fe
 
 ## Limites connues du POC
 
-8 ouvertures couvertes (manifeste signé) ; pas d'authentification ; exécution locale uniquement ; le seuil d'abstention (`RAG_SCORE_MIN=0.63`, décidé sur données — notebook 07) bloque 4 pièges sur 5, le dernier repose sur la règle d'honnêteté du prompt ; le système d'analyse vidéo (partie 2) est une étude, non implémentée — voir `livrables/`.
+8 ouvertures couvertes (manifeste signé) ; pas d'authentification ; la vitrine en ligne est une variante dégradée assumée (gabarit sans LLM, sans cache) — la version complète s'exécute en local ; l'abstention tient par la **règle des rayons signés** + seuil filet `RAG_SCORE_MIN=0.58` (5/5 pièges par construction, notebooks 05/07) ; le système d'analyse vidéo (partie 2) est une étude, non implémentée — voir `livrables/`.

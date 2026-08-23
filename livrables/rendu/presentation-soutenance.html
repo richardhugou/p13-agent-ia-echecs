@@ -261,13 +261,19 @@
       <tr><td>Abstention sur les pièges</td><td><b>5 / 5</b> — par construction</td></tr>
       <tr><td>Réponses sourcées</td><td><b>100 %</b> — garanti par le code</td></tr>
       <tr><td>Recherche vectorielle p95</td><td><b>7–11 ms</b></td></tr>
-      <tr><td>Latence agent p95</td><td><b>6,1 s</b> (médiane 4,5 s)</td></tr>
+      <tr><td>Latence agent p95</td><td><b>6,3 s</b> local (LLM compris) · <b>0,96 s</b> en ligne (sans LLM)</td></tr>
       <tr><td>Coût LLM du POC</td><td><b>0 €</b></td></tr>
     </table>
     <div class="grow" style="text-align:center;">
       <img src="../../notebooks/figures/06-latences-agent.png" style="width: 100%; border-radius: 10px; border: 1px solid #7A756C;">
       <p class="small">Les latences réelles du scénario de démo (notebook 05, 3 répétitions par position) — LLM local compris.</p>
     </div>
+  </div>
+  <div class="row" style="margin-top: 10px; margin-bottom: 6px;">
+    <div class="card grow"><div class="stitle">Local — poste complet (LLM qwen local)</div>
+      <p class="small">p50 <b>2,7 s</b> · p95 <b>6,3 s</b> — la rédaction LLM domine la latence</p></div>
+    <div class="card key grow"><div class="stitle">En ligne — vitrine HF (gabarit, sans LLM)</div>
+      <p class="small">p50 <b>0,8 s</b> · p95 <b>0,96 s</b> — la réponse sourcée passe <b>sous la seconde</b> · même scénario, même protocole (notebook 05 §3 bis) · trikwi-p13-agent-echecs.hf.space</p></div>
   </div>
   <p class="body" style="text-align:center; margin-top: 8px;">Le POC atteint ses objectifs fonctionnels et reste assez rapide pour un usage interactif. <span class="small">Chaque chiffre vient d'un notebook exécuté ou d'un run MLflow versionné.</span></p>
   <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 13</span></div>
@@ -290,7 +296,7 @@
 <div class="slide">
   <div class="kicker">Le déploiement · Les coûts</div>
   <h1>Un POC reproductible — et ce qu'il coûte</h1>
-  <div class="card" style="background:#EDE7DA; font-family: 'SF Mono', Menlo, monospace; font-size: 22px; text-align:center; padding: 14px; border-radius: 16px; margin-bottom: 16px;">$ ./demarrer.sh &nbsp;&nbsp;<span style="font-size:14px; color:#7A756C;">7 conteneurs + le modèle local — installation fraîche mesurée : <b>app utilisable en 2 min 09</b>, bibliothèque prête à 2 min 28</span></div>
+  <div class="card" style="background:#EDE7DA; font-family: 'SF Mono', Menlo, monospace; font-size: 22px; text-align:center; padding: 14px; border-radius: 16px; margin-bottom: 16px;">$ ./demarrer.sh &nbsp;&nbsp;<span style="font-size:14px; color:#7A756C;">7 conteneurs + le modèle local — installation fraîche mesurée : <b>app utilisable en 2 min 09</b> · vitrine publique auto-déployée (GitHub Actions → HF) : <b>trikwi-p13-agent-echecs.hf.space</b></span></div>
   <div class="row" style="align-items: stretch;">
     <div class="card grow"><div class="stitle">POC : 0 €</div>
       <p class="body">données libres (CC0, CC BY-SA) · Stockfish et embeddings open source · LLM local — <b>le poste payant a été supprimé par la mesure</b> · YouTube : ~300 unités réelles sur 10 000/jour</p></div>
@@ -327,7 +333,7 @@
     <div class="card key" style="max-width: 780px; margin: 0 auto 26px; text-align:center; font-size: 26px; font-weight: 500; padding: 30px;">
       La promesse : un retour de niveau entraîneur, à la demande.
     </div>
-    <p style="text-align:center;" class="body"><b>Démontré et mesuré</b> : 0/56 coup illégal · abstention 5/5 · 100 % sourcé · p95 6,1 s · 0 € de LLM · installation 2 min 09</p>
+    <p style="text-align:center;" class="body"><b>Démontré et mesuré</b> : 0/56 coup illégal · abstention 5/5 · 100 % sourcé · p95 6,3 s (0,96 s en ligne) · 0 € de LLM · installation 2 min 09</p>
     <p style="text-align:center; margin-top: 10px;" class="body"><b>Limites assumées</b> : 8 ouvertures (manifeste signé) · gold set v1 grossier (v2 en axe) · exécution locale</p>
     <p style="text-align:center; margin-top: 10px;" class="body"><b>La suite</b> : groupe pilote avant les championnats d'Europe · industrialisation · MVP analyse vidéo · mode entraînement actif</p>
     <p style="text-align:center; font-size: 21px; margin-top: 24px;">→ <strong>Démo en direct</strong></p>

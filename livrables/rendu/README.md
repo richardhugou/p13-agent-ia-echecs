@@ -9,5 +9,5 @@ Les fichiers HTML sont la source ; le PDF se régénère en une commande (Chrome
 
 | Fichier | Contenu | Contenu maître |
 |---|---|---|
-| `presentation-soutenance.html` | le deck 19 diapos (design « échiquier boisé ») | `livrables/presentation-soutenance.md` |
+| `presentation-soutenance.html` | le deck v2 : 13 diapos + 5 annexes (design « échiquier boisé », structure mentor : fonctionnel → architecture → déploiement) | `livrables/presentation-soutenance.md` |
 | `manuel-prive.html` | le manuel pédagogique 45 pages | autonome |

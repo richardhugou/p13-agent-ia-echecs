@@ -12,6 +12,7 @@ import { Chart } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { CommonModule } from '@angular/common';
 import { CoachPanelComponent } from '../coach-panel/coach-panel.component';
+import { API } from '../agent.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -430,7 +431,7 @@ public currentMoveIndex = 0;
       return; // c'est à l'élève de jouer
     }
     this.adversaireEnCours = true;
-    this.http.get<any>('http://localhost:8000/api/v1/moves', { params: { fen: this.fen } })
+    this.http.get<any>(`${API}/moves`, { params: { fen: this.fen } })
       .subscribe({
         next: (data) => {
           const meilleur = data?.moves?.[0];

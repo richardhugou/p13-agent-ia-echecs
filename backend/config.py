@@ -15,6 +15,15 @@ class Settings(BaseSettings):
     milvus_port: int = 19530
     embedding_model: str = "qwen3-embedding:0.6b"
     rag_top_k: int = 5
+    # Mode vitrine (Hugging Face Space, mono-conteneur) — sans effet en local :
+    # milvus_uri non vide = Milvus Lite (fichier embarqué) au lieu du serveur ;
+    # embed_provider "local" = sentence-transformers CPU au lieu d'Ollama ;
+    # serve_front = FastAPI sert aussi l'Angular compilé ; corpus_export = le
+    # corpus pré-vectorisé chargé au premier démarrage.
+    milvus_uri: str = ""
+    embed_provider: str = "ollama"
+    serve_front: bool = False
+    corpus_export: str = ""
     # Seuil filet (décision du 26/08, notebook 07) : sous ce score, une fiche n'est pas
     # transmise au rédacteur. La 1re ligne de défense est la règle des rayons signés
     # (nœud contexte_rag) ; le filet coupe les hors-sujet grossiers DANS un rayon.

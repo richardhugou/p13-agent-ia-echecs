@@ -37,6 +37,12 @@ app.add_middleware(
 
 app.include_router(router)
 
+# ── Mode vitrine (Hugging Face Space) : corpus embarqué + front servi par FastAPI ──
+_settings = get_settings()
+if _settings.corpus_export:
+    from services import rag, vitrine
+
+    vitrine.charger_corpus_si_vide(rag._milvus(), _settings.corpus_export)
 
 @app.get("/api/v1/healthcheck")
 def healthcheck() -> dict:
@@ -48,3 +54,10 @@ def healthcheck() -> dict:
         "fastapi": pkg_version("fastapi"),
         "mongo_cache": "ok" if get_cache().ok else "off",
     }
+
+
+# Déclaré en DERNIER : le montage « / » ne doit avaler que ce qu'aucune route ne prend.
+if _settings.serve_front:
+    from fastapi.staticfiles import StaticFiles
+
+    app.mount("/", StaticFiles(directory="static", html=True), name="front")

@@ -38,8 +38,9 @@ export interface ReponseAgent {
   errors: string[];
 }
 
-/** L'API du POC — même hôte, port 8000 (CORS ouvert sur localhost:4200). */
-const API = 'http://localhost:8000/api/v1';
+/** L'API du POC : en local le front (4200) parle à l'API (8000) ; sur le Space
+ *  Hugging Face (mode vitrine), front et API partagent l'origine → URL relative. */
+export const API = window.location.port === '4200' ? 'http://localhost:8000/api/v1' : '/api/v1';
 
 @Injectable({ providedIn: 'root' })
 export class AgentService {

@@ -119,10 +119,17 @@ La base documentaire est **construite par un pipeline rejouable** : extraction (
 | Ce qu'on promet à Léa | Cible | Mesuré |
 |---|---|---|
 | Jamais un coup illégal | 0 | **0 sur 56 coups affichés** (scénario complet rejoué) |
-| Une réponse rapide | p95 < 8 s | **6,1 s** (médiane 4,5 s — rédaction LLM locale comprise) |
+| Une réponse rapide | p95 < 8 s | **6,3 s** (médiane 2,7 s — rédaction LLM locale comprise) |
 | Toujours ses sources | 100 % | **100 % — garanti par le code**, pas par le LLM |
 | Ne jamais inventer hors sujet | abstention 5/5 pièges | **5/5 — par construction** (règle des rayons) |
 | Recherche documentaire instantanée | < 100 ms | **7–11 ms** |
+
+**La vue en deux — local vs en ligne** (même scénario, même protocole, notebook 05 §3 bis) :
+
+| | **Local** (poste complet, LLM qwen local) | **En ligne** (vitrine HF, gabarit sans LLM) |
+|---|---|---|
+| p50 · p95 | 2,7 s · **6,3 s** | 0,8 s · **0,96 s** |
+| Lecture | la rédaction LLM domine la latence | sans LLM, la réponse sourcée est **sous la seconde** |
 
 **Un mot de théorie LLM** (pourquoi ces garde-fous) : un modèle de langage prédit le mot suivant — il est fait pour être *plausible*, pas pour être *vrai*. D'où l'architecture : les faits viennent de systèmes vérifiables, le LLM **met en mots** des faits qu'on lui annote (« Fc5 — le Fou va en c5 »), à basse température, avec un gabarit déterministe en repli.
 
@@ -146,7 +153,7 @@ Discipline : chaque chiffre de ce deck sort d'un notebook exécuté ou d'un run 
 ./demarrer.sh          # ou : docker compose up
 ```
 
-7 conteneurs + le modèle local sur l'hôte. Volumes persistants, secrets en variables d'environnement, CI verte. **Installation fraîche mesurée : application utilisable en 2 min 09** (bibliothèque prête à 2 min 28, protocole rejouable).
+7 conteneurs + le modèle local sur l'hôte. Volumes persistants, secrets en variables d'environnement, CI verte. **Installation fraîche mesurée : application utilisable en 2 min 09** (bibliothèque prête à 2 min 28, protocole rejouable). **Et une vitrine publique auto-déployée** (GitHub Actions → Hugging Face Space, un conteneur, gabarit sans LLM) : https://trikwi-p13-agent-echecs.hf.space
 
 **Combien ça coûte ?** POC : **0 € de consommation** (données libres, briques open source, LLM local — le poste payant a été supprimé par la mesure). Passage cloud : ≈ **0,25 centime/réponse** (option Haiku mesurée) → < 0,10 €/élève/mois. À industrialiser : hébergement UE (public mineur), stockage, supervision, montée en charge — détail dans l'étude jointe.
 

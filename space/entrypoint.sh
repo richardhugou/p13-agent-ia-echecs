@@ -27,10 +27,10 @@ done
 if [ $COUNT -lt $MAX_RETRIES ]; then
     echo "Serveur Ollama opérationnel."
     # Si le modèle cible n'est pas encore présent, on s'assure qu'il est disponible
-    MODEL_NAME="${LLM_MODEL:-qwen2.5:3b}"
+    MODEL_NAME="${LLM_MODEL:-qwen3.5:4b}"
     if ! ollama list | grep -q "${MODEL_NAME%%:*}"; then
         echo "Téléchargement du modèle ${MODEL_NAME}..."
-        ollama pull "${MODEL_NAME}" || echo "Impossible de télécharger ${MODEL_NAME}, bascule sur gabarit si nécessaire."
+        ollama pull "${MODEL_NAME}" || ollama pull "qwen2.5:3b" || echo "Impossible de télécharger ${MODEL_NAME}, bascule sur gabarit si nécessaire."
     fi
 fi
 

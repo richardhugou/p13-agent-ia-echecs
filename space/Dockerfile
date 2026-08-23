@@ -47,7 +47,7 @@ SentenceTransformer('Qwen/Qwen3-Embedding-0.6B', device='cpu')"
 
 # Pré-téléchargement du modèle LLM dans l'image
 RUN mkdir -p /app/ollama_models \
-    && (ollama serve & PID=$!; sleep 4; ollama pull qwen2.5:3b; kill $PID || true)
+    && (ollama serve & PID=$!; sleep 4; ollama pull qwen3.5:4b || ollama pull qwen2.5:3b; kill $PID || true)
 
 COPY space/corpus_export.json.gz /app/corpus_export.json.gz
 COPY --from=front /app/dist/chess-board /app/static
@@ -60,7 +60,7 @@ ENV MILVUS_LITE_PATH=/tmp/openings.db \
     SERVE_FRONT=1 \
     CORPUS_EXPORT=/app/corpus_export.json.gz \
     LLM_PROVIDER=ollama \
-    LLM_MODEL=qwen2.5:3b \
+    LLM_MODEL=qwen3.5:4b \
     OLLAMA_BASE_URL=http://127.0.0.1:11434 \
     MONGO_URI=mongodb://127.0.0.1:1/ \
     CORS_ORIGINS=*

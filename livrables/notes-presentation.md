@@ -1,4 +1,4 @@
-# Notes de présentation — soutenance P13 (deck v2 : 13 diapos + annexes)
+# Notes de présentation — soutenance P13 (deck v3 : 13 diapos + annexes)
 
 > **Budget** : ~15 min de présentation + 8 min de démo (script : `docs/08-script-demo.md`) + questions.
 > **Rituel avant d'entrer** : pile démarrée la veille (`./demarrer.sh`), scénario déroulé une fois (caches chauds), onglets prêts (app 4200, Swagger 8000/docs, MLflow 5001), vidéo de démo chargée, notifications coupées.
@@ -21,37 +21,34 @@ Dérouler le tableau ligne par ligne, toujours du point de vue de Léa : elle di
 **Phrase clé** : « À aucun moment le système n'invente : il va chercher, il assemble, il cite. »
 **Transition** : « Comment c'est construit ? Voici l'architecture. »
 
-## Diapo 5 — L'architecture *(2 min 30 — prendre le temps)*
-Suivre le schéma du regard avec le jury, brique par brique, **en donnant l'intérêt de chacune** :
-- « La position est **validée** (aucune position illégale n'entre) puis l'ouverture est identifiée. »
-- « Le **routeur** décide : en théorie → **Lichess**, la vérité statistique de 2 millions de parties ; hors théorie → **Stockfish**, une évaluation objective pour n'importe quelle position. C'est un seuil déterministe, pas un avis de LLM : testable à 100 %. »
-- « La **base vectorielle** apporte le "pourquoi" documentaire — diapo suivante, elle le mérite. »
-- « **YouTube** : des vidéos — il y a toujours quelque chose à proposer, même général. »
-- « Le **LLM local rédige**. Il ne choisit jamais un coup, il met en mots. »
-- « **MongoDB cache tout** : rapidité, et résilience — chaque brique a un plan B, on l'a observé en conditions réelles. »
+## Diapo 5 — L'architecture : qui communique avec qui *(2 min — prendre le temps)*
+Suivre le schéma de composants du regard, boîte par boîte — **chaque boîte répond à une question** :
+- « Léa interagit dans **Angular** ; sa position part en FEN vers **FastAPI**, où **LangGraph** décide quelle étape exécuter. »
+- « **Lichess** répond à "que jouent les maîtres ici ?" ; **Stockfish** à "que vaut la position hors théorie ?" ; **Milvus** à "où chercher les connaissances ?" ; **YouTube** à "quelle ressource proposer ?" ; **MongoDB** à "que met-on en cache ?". »
+- « Et le **LLM local** transforme ces faits en explication — il ne décide jamais. »
+Fermer : « Le FEN est la langue commune de toutes les briques ; le routeur est déterministe ; chaque brique a un plan B — observé en conditions réelles. »
 
 ## Diapo 6 — La base vectorielle *(2 min — le mentor nous attend ici)*
-**Définir avant de décrire** : « Une base vectorielle, c'est une base qui range les textes par leur *sens*. Pourquoi ? Parce que "pourquoi le fou vise f7" ne partage aucun mot-clé avec la page qui l'explique. »
-Puis les deux temps du schéma : **indexer** (477 fiches → chacune devient un vecteur de 1 024 nombres — français et anglais dans le même espace) et **chercher** (la question devient un vecteur, la **similarité cosinus** mesure l'angle entre les deux : 1 = même sujet, 0 = sans rapport ; on prend les 5 plus proches, dans le rayon de l'ouverture jouée uniquement).
-Fermer sur les chiffres : 7–11 ms, séparation 0,29 → 0,50, et « question hors bibliothèque → zéro fiche, réponse honnête ».
+**Définir avant de décrire** : « Une base vectorielle range les textes par leur *sens* — c'est la mémoire documentaire de l'agent. Pourquoi ? Parce que "pourquoi le fou vise f7" ne partage aucun mot avec la page qui l'explique. »
+Suivre le flux du schéma : question → **embedding** (un vecteur) → **similarité cosinus** (l'angle : 1 = même sujet, 0 = sans rapport) → les fiches les plus proches, dans le rayon de l'ouverture jouée → le LLM rédige et cite. Fermer sur les chiffres : 7–11 ms, séparation 0,29 → 0,50, hors bibliothèque → zéro fiche, réponse honnête.
 
-## Diapo 7 — Le déploiement *(1 min)*
-« Une commande. Sept conteneurs plus le modèle local. Et parce qu'une promesse d'installation ne vaut que mesurée : machine nettoyée, chrono — **application utilisable en 2 min 09**, protocole rejouable versionné. »
+## Diapo 7 — Comment j'ai construit la connaissance *(1 min 30)*
+« Quatre besoins, quatre sources — et pour la bibliothèque, un pipeline rejouable : extraction, nettoyage, fiches, vecteurs, Milvus. Deux disciplines : le périmètre est **signé avant extraction**, et chaque exécution produit son rapport chiffré. » Montrer l'entonnoir (figure réelle du notebook 03) : 3 251 → 161 → 477.
 
-## Diapo 8 — Performances et fiabilité *(1 min 30)*
-Dérouler la colonne « Mesuré » du tableau — chaque ligne est une promesse à Léa tenue. Puis le mot de théorie (le mentor l'a demandé) : « Un LLM prédit le mot suivant : il est fait pour être *plausible*, pas pour être *vrai*. Toute l'architecture découle de cette phrase : les faits viennent d'ailleurs, le LLM met en mots des faits qu'on lui annote. »
+## Diapo 8 — L'orchestration : le chemin d'une position *(1 min 30)*
+Raconter UN parcours sur le graphe : « Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs stats → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie, le moteur mesure au lieu de réciter. » **Insister : le LLM ne choisit jamais un coup.**
 
-## Diapo 9 — La démarche *(1 min 30)*
-« Trois moments où la mesure a **changé ma décision** » — raconter court : le LLM (le plan initial est tombé devant les chiffres du local), le gold set (1,0 partout = étalon trop facile : une découverte), l'abstention (un seuil ne sépare pas 0,618 de 0,619 → une règle déterministe : 5/5 pièges, zéro sacrifice). Fermer : « aucun chiffre de ce deck n'existe en dehors d'un notebook ou d'un run versionné. »
+## Diapo 9 — Ce que j'ai mesuré *(1 min 30)*
+Dérouler la colonne « Résultat » — chaque ligne est une promesse à Léa tenue — et montrer la figure réelle des latences (notebook 05). Le mot de théorie LLM (le mentor l'a demandé) : « Un LLM prédit le mot suivant : il est fait pour être *plausible*, pas pour être *vrai*. Toute l'architecture découle de cette phrase. » Fermer : « Le POC atteint ses objectifs et reste assez rapide pour un usage interactif. »
 
-## Diapo 10 — Coûts *(45 s — seule diapo de coûts)*
-« Le POC a coûté 0 € en services — le poste payant prévu a été supprimé par la mesure. À l'échelle : moins de 10 centimes par élève et par mois si on passait au cloud. Les vrais postes d'industrialisation sont l'hébergement UE et la supervision. »
+## Diapo 10 — Des décisions guidées par la mesure *(1 min 30)*
+« Trois moments où la mesure a **changé ma décision** » — raconter court : le LLM (le plan initial est tombé devant les chiffres du local), le chunking/gold set (même score partout = étalon trop facile : une découverte), l'abstention (un seuil ne sépare pas 0,618 de 0,619 → une règle déterministe : 5/5 pièges, zéro sacrifice). Fermer : « aucun chiffre de ce deck n'existe en dehors d'un notebook ou d'un run versionné. »
 
-## Diapo 11 — Partie 2 : l'étude d'analyse vidéo *(2 min — c'est un livrable demandé, ne pas l'écraser)*
-« La demande : indexer les vidéos par **position**, pas par titre — "cette position est expliquée à 4 min 32". Trois choses à retenir : le bénéfice est chiffré (×50 à ×100 contre l'indexation humaine) ; **la limite dure est juridique** — les CGU interdisent de stocker les vidéos, donc le MVP se fait sur les licences Creative Commons et les transcripts d'abord ; l'architecture est en **MCP** : quatre serveurs d'outils réutilisables par tout agent futur de la FFE, et un pipeline batch assumé pour la masse. Build MVP 15-20 k€, opex ~100 $/mois, et une roadmap avec des critères d'arrêt chiffrés. L'étude complète est jointe. »
+## Diapo 11 — Déploiement et coûts *(1 min 30)*
+« Une commande. Sept conteneurs plus le modèle local — et parce qu'une promesse d'installation ne vaut que mesurée : machine nettoyée, chrono, **2 min 09**. Côté coûts : le POC a coûté 0 € en services — le poste payant prévu a été supprimé par la mesure ; en cloud, moins de 10 centimes par élève et par mois. Les vrais postes d'industrialisation : hébergement UE et supervision. »
 
-## Diapo 12 — Pistes *(30 s)*
-En choisir deux à l'oral : le gold set v2 (la suite de la leçon de mesure) et le MVP analyse vidéo. « Le reste est listé. »
+## Diapo 12 — Et si la connaissance était dans une vidéo ? *(2 min — c'est un livrable demandé, ne pas l'écraser)*
+« La demande : indexer les vidéos par **position** — "cette position est expliquée à 4 min 32". L'idée maîtresse : **ce n'est pas un deuxième agent** — la vidéo devient des positions FEN, la même clé que tout le POC, exploitables par l'agent existant. Trois choses à retenir : le bénéfice chiffré (×50 à ×100 contre l'indexation humaine) ; **la limite dure est juridique** (CGU : jamais les fichiers → MVP sur Creative Commons + transcripts d'abord) ; l'architecture en **MCP** — des serveurs d'outils réutilisables par tout agent futur de la FFE, avec un pipeline batch assumé. Build 15-20 k€, opex ~100 $/mois, roadmap avec critères d'arrêt. L'étude complète est jointe. »
 
 ## Diapo 13 — Conclusion → démo *(30 s puis démo en direct)*
 « La promesse : un retour de niveau entraîneur, à la demande — et chaque objectif est mesuré et tenu. Je vous propose maintenant de le voir en vrai. » → Démo (`docs/08-script-demo.md`) : choix du camp → Italienne par le sélecteur → question libre → 4.g4?! bascule moteur. Si le jury est curieux : la question scandinave — l'agent répond « ma bibliothèque est vide pour ce sujet, je ne peux pas t'expliquer » : l'honnêteté en direct.

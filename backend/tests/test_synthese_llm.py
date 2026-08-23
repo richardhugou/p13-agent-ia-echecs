@@ -35,6 +35,21 @@ def test_annoter_san() -> None:
     assert annoter_san("e8=Q") == "e8=Q — le pion va en e8 et devient une Dame"
 
 
+def test_champ_des_possibles_se_resserre() -> None:
+    # Le resserrement est calculé par le CODE, pas estimé par le LLM (déterminisme).
+    moves = [{"san": "e4", "games": 60}, {"san": "d4", "games": 30}, {"san": "h4", "games": 1}]
+    large = syn._champ_des_possibles(moves, 200_000)
+    etroit = syn._champ_des_possibles(moves, 91)
+    assert "très large" in large
+    assert "sentier étroit" in etroit and "moteur" in etroit
+    assert etroit.startswith("2 option(s) sérieusement jouée(s) parmi 3 coups")
+
+
+def test_salutations_retirees() -> None:
+    for debut in ("Salut !", "Bonjour jeune champion,", "Coucou Léa !", "Hey :"):
+        assert syn._SALUTATIONS.sub("", debut + " deux options.").strip() == "deux options."
+
+
 def test_libelle_fr() -> None:
     # Né de l'alerte « Bc5 illégal » : la case de départ lève l'ambiguïté visuelle.
     assert libelle_fr("Bc5", "f8c5") == "Fc5 (fou f8)"

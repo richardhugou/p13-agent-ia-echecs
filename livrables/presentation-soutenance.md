@@ -134,8 +134,8 @@ Visuel : graphique réel du notebook 03 (`notebooks/figures/01-entonnoir-corpus.
 | Abstention sur questions pièges | 5 / 5 | **5 / 5** (filtrage déterministe par rayon) |
 | Réponses avec sources valides | 100 % | **100 %** (garanti par le pipeline d'assemblage) |
 | Latence de recherche vectorielle | < 100 ms | **7 à 11 ms** (p95) |
-| Latence globale de réponse | p95 < 8 s | **6,3 s** local (avec LLM) / **0,96 s** en ligne (gabarit) |
-| Coût d'inférence LLM du POC | 0 € | **0,00 €** (exécution locale sur l'hôte) |
+| Latence globale avec LLM | p95 < 8 s | **1,81 s** (p50) / **2,41 s** (p95) sur Cloud GPU T4 · **6,3 s** (p95) local |
+| Coût d'inférence LLM du POC | 0 € | **0,00 €** (exécution locale sur l'hôte et GPU T4) |
 
 Visuel : graphique des latences réelles du notebook 05 (`notebooks/figures/06-latences-agent.png`).
 
@@ -145,7 +145,7 @@ Visuel : graphique des latences réelles du notebook 05 (`notebooks/figures/06-l
 
 | Choix d'architecture | Alternative évaluée | Décision et justification technique |
 |---|---|---|
-| **Modèle LLM local** | API managée payante | Modèle local Qwen 3.5 (3,2 Go RAM) retenu : coût 0 €, latence 3-7 s, souveraineté des données |
+| **Modèle LLM local / GPU** | API managée payante | Modèle Qwen 3.5 / 2.5 local (3,2 Go) retenu : coût 0 €, latence 1,8 s (GPU T4) / 6,3 s (CPU) |
 | **Structure documentaire** | Chunks bruts 1 000 tokens | Fiches 300-500 tokens avec fil d'Ariane, section et métadonnées scalaires (ECO, FEN) |
 | **Gestion du hors-sujet** | Seuil de score cosinus seul | Filtrage déterministe par rayon d'ouverture + seuil filet à 0,58 (5/5 pièges bloqués) |
 
@@ -159,8 +159,9 @@ Visuel : graphique des latences réelles du notebook 05 (`notebooks/figures/06-l
 - **Architecture** : 7 conteneurs orchestrés (`docker-compose.yml` / `./demarrer.sh`) + modèle Ollama sur l'hôte.
 - **Déploiement** : Volumes persistants, secrets isolés via `.env`, initialisation complète en **2 min 09**.
 
-### 2. Environnement En ligne (Démonstrateur public)
-- **Plateforme** : Hugging Face Spaces (mono-conteneur Docker, gabarit déterministe sans GPU).
+### 2. Environnement En ligne (Déploiement complet GPU T4)
+- **Plateforme** : Hugging Face Spaces (mono-conteneur Docker avec Ollama + GPU NVIDIA T4 16 Go VRAM).
+- **Performances mesurées** : **p50 = 1,81 s**, **p95 = 2,41 s** avec chaîne complète (LLM Qwen + Stockfish + Milvus).
 - **Intégration continue** : Pipeline CI/CD GitHub Actions (`push main -> déploiement automatique sur le Space`).
 - **Accès public** : https://trikwi-p13-agent-echecs.hf.space
 

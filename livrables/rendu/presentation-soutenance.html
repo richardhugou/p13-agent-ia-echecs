@@ -294,8 +294,8 @@
       <tr><td>Abstention sur les pièges</td><td><b>5 / 5</b> (filtrage déterministe par rayon)</td></tr>
       <tr><td>Réponses sourcées</td><td><b>100 %</b> (garanti par le pipeline)</td></tr>
       <tr><td>Recherche vectorielle p95</td><td><b>7–11 ms</b></td></tr>
-      <tr><td>Latence agent p95</td><td><b>6,3 s</b> local (avec LLM) · <b>0,96 s</b> en ligne (gabarit)</td></tr>
-      <tr><td>Coût LLM du POC</td><td><b>0,00 €</b> (inférence locale sur l'hôte)</td></tr>
+      <tr><td>Latence avec LLM p95</td><td><b>2,41 s</b> en ligne (GPU T4) · <b>6,3 s</b> local (CPU)</td></tr>
+      <tr><td>Coût LLM du POC</td><td><b>0,00 €</b> (inférence locale sur l'hôte et GPU T4)</td></tr>
     </table>
     <div class="grow" style="text-align:center;">
       <img src="../../notebooks/figures/06-latences-agent.png" style="width: 100%; border-radius: 10px; border: 1px solid #7A756C;">
@@ -304,9 +304,9 @@
   </div>
   <div class="row" style="margin-top: 10px; margin-bottom: 6px;">
     <div class="card grow"><div class="stitle">Local : poste complet (LLM local Qwen 3.5)</div>
-      <p class="small">p50 <b>2,7 s</b> · p95 <b>6,3 s</b> : la rédaction LLM domine la latence</p></div>
-    <div class="card key grow"><div class="stitle">En ligne : vitrine HF (gabarit sans LLM)</div>
-      <p class="small">p50 <b>0,8 s</b> · p95 <b>0,96 s</b> : réponse sous la seconde · trikwi-p13-agent-echecs.hf.space</p></div>
+      <p class="small">p50 <b>2,7 s</b> · p95 <b>6,3 s</b> : exécution CPU hôte avec LLM local</p></div>
+    <div class="card key grow"><div class="stitle">En ligne : déploiement complet GPU T4</div>
+      <p class="small">p50 <b>1,81 s</b> · p95 <b>2,41 s</b> : accélération CUDA GPU T4 16 Go · trikwi-p13-agent-echecs.hf.space</p></div>
   </div>
   <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 13</span></div>
 </div>
@@ -317,7 +317,7 @@
   <h1>Les principaux choix techniques</h1>
   <table style="margin-bottom: 24px; margin-top: 10px;">
     <tr><th>Choix d'architecture</th><th>Alternative évaluée</th><th>Décision et justification technique</th></tr>
-    <tr><td><strong>Modèle LLM local vs API</strong></td><td class="small">API cloud payante</td><td class="small">Modèle local Qwen 3.5 (3,2 Go RAM) retenu : <b>0 € de coût</b>, latence 3–7 s, souveraineté des données</td></tr>
+    <tr><td><strong>Modèle LLM local vs API</strong></td><td class="small">API cloud payante</td><td class="small">Modèle local Qwen 3.5 (3,2 Go RAM) retenu : <b>0 € de coût</b>, latence 1,8 s (GPU T4) / 6,3 s (CPU)</td></tr>
     <tr><td><strong>Structure documentaire</strong></td><td class="small">Chunks bruts 1 000 tokens</td><td class="small">Fiches 300–500 tokens avec fil d'Ariane, section et métadonnées scalaires (ECO, FEN)</td></tr>
     <tr><td><strong>Gestion du hors-sujet</strong></td><td class="small">Seuil cosinus seul</td><td class="small">Filtrage déterministe par rayon d'ouverture + seuil filet à 0,58 (<b>5/5 pièges bloqués</b>)</td></tr>
   </table>
@@ -340,8 +340,9 @@
       • Installation fraîche mesurée : <b>prête en 2 min 09</b></p>
     </div>
     <div class="card key grow" style="border: 2px solid #3A5A40;">
-      <div class="stitle" style="color:#0B2211; font-size:18px;">EN LIGNE : Démonstrateur public</div>
-      <p class="body" style="margin-top: 8px;">• <b>Hugging Face Spaces</b> (mono-conteneur Docker)<br>
+      <div class="stitle" style="color:#0B2211; font-size:18px;">EN LIGNE : Déploiement complet GPU T4</div>
+      <p class="body" style="margin-top: 8px;">• <b>Hugging Face Spaces</b> (mono-conteneur Docker GPU T4 16 Go)<br>
+      • Modèle LLM Qwen + Stockfish + Milvus Lite embarqués<br>
       • Pipeline CI/CD <b>GitHub Actions</b> (déploiement automatique sur push main)<br>
       • Accès direct : <span class="mono">trikwi-p13-agent-echecs.hf.space</span></p>
     </div>

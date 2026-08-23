@@ -1,6 +1,6 @@
 ---
 title: Coach IA Ouvertures d'Echecs
-emoji: ♞
+emoji: 🐎
 colorFrom: green
 colorTo: gray
 sdk: docker

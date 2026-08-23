@@ -49,4 +49,12 @@ export class AgentService {
   ask(fen: string, question?: string): Observable<ReponseAgent> {
     return this.http.post<ReponseAgent>(`${API}/agent/ask`, { fen, question: question ?? null });
   }
+
+  getEngineMove(fen: string, elo?: number): Observable<{ fen: string; move: string; uci: string; san: string; elo?: number }> {
+    const params: Record<string, string> = { fen };
+    if (elo) {
+      params['elo'] = elo.toString();
+    }
+    return this.http.get<{ fen: string; move: string; uci: string; san: string; elo?: number }>(`${API}/engine-move`, { params });
+  }
 }

@@ -71,6 +71,7 @@
     font-size: 0.82rem;
     cursor: pointer;
     &.actif { background: #3a5a40; border-color: #3a5a40; color: #fff; }
+    &:disabled { cursor: default; opacity: 0.55; }
   }
   .actions { margin-top: 4px; }
   .lancer { flex: 1; }

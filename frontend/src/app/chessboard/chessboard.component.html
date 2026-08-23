@@ -19,7 +19,7 @@
 
       <!-- Toolbar principale -->
       <mat-toolbar color="primary" class="mat-elevation-z4">
-        <span class="app-title">Chessboard</span>
+        <span class="app-title">Chessbot — ouvertures</span>
 
 
       </mat-toolbar>
@@ -34,8 +34,13 @@
         <!-- Section Coach (panneau de l'agent) -->
         <div class="coach-section">
           <app-coach-panel [fen]="fen"
+                           [partieCommencee]="partieCommencee"
                            (campChoisi)="choisirCamp($event)"
+                           (modeChoisi)="definirMode($event)"
+                           (eloChoisi)="definirElo($event)"
                            (ouvertureChoisie)="chargerPosition($event)"
+                           (objectifGuide)="definirObjectifGuide($event)"
+                           (relaisChessbot)="activerRelaisChessbot()"
                            (annulerCoup)="annulerDernierCoup()"
                            (suggestions)="montrerSuggestions($event)"></app-coach-panel>
         </div>

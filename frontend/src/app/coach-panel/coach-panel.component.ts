@@ -1,18 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 import { AgentService, CoupTheorique, ReponseAgent } from '../agent.service';
 
+/** Les 8 ouvertures du manifeste signé — position de référence pour « travailler une ouverture ». */
+export const OUVERTURES: { nom: string; fen: string }[] = [
+  { nom: 'Italienne', fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3' },
+  { nom: 'Espagnole', fen: 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3' },
+  { nom: 'Sicilienne', fen: 'rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2' },
+  { nom: 'Française', fen: 'rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2' },
+  { nom: 'Caro-Kann', fen: 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2' },
+  { nom: 'Gambit dame', fen: 'rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 2' },
+  { nom: 'Est-indienne', fen: 'rnbqkb1r/pppppp1p/5np1/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3' },
+  { nom: 'Anglaise', fen: 'rnbqkbnr/pppppppp/8/8/2P5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1' },
+];
+
 /**
- * Le panneau coach — la moitié droite de la maquette :
- * badge en/hors théorie, coups des maîtres avec stats, réponse sourcée, vidéos.
- * Reçoit le FEN de l'échiquier ; débounce 400 ms pour épargner l'API.
+ * Le panneau coach — parcours revu sur les retours mentor :
+ * 1. l'élève dit qui il est (Blancs ou Noirs) ;
+ * 2. il choisit une ouverture à travailler, OU joue librement ses coups et ceux
+ *    de son adversaire sur l'échiquier (une erreur s'annule) ;
+ * 3. il APPUIE pour lancer l'IA — l'agent ne se déclenche plus à chaque coup.
  */
 @Component({
   selector: 'app-coach-panel',
@@ -21,73 +33,82 @@ import { AgentService, CoupTheorique, ReponseAgent } from '../agent.service';
   templateUrl: './coach-panel.component.html',
   styleUrls: ['./coach-panel.component.scss'],
 })
-export class CoachPanelComponent implements OnInit, OnDestroy {
-  private fenSubject = new Subject<string>();
-  private abonnement?: Subscription;
-  private fenCourant = '';
+export class CoachPanelComponent implements OnInit {
+  ouvertures = OUVERTURES;
+  camp: 'blanc' | 'noir' = 'blanc';
+  ouvertureActive = '';
 
   chargement = false;
   erreurReseau = false;
   reponse: ReponseAgent | null = null;
   question = '';
 
+  fenCourant = '';
+
+  @Output() campChoisi = new EventEmitter<'blanc' | 'noir'>();
+  @Output() ouvertureChoisie = new EventEmitter<string>();
+  @Output() annulerCoup = new EventEmitter<void>();
+
   constructor(private agent: AgentService) {}
 
   @Input() set fen(valeur: string) {
     if (valeur) {
       this.fenCourant = valeur;
-      this.fenSubject.next(valeur);
     }
   }
 
+  /** Lien profond de démo : #ouverture=Italienne déroule le parcours tout seul. */
   ngOnInit(): void {
-    this.abonnement = this.fenSubject
-      .pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        tap(() => {
-          this.chargement = true;
-          this.erreurReseau = false;
-        }),
-        switchMap((fen) => this.agent.ask(fen)),
-      )
-      .subscribe({
-        next: (r) => {
-          this.reponse = r;
-          this.chargement = false;
-        },
-        error: () => {
-          this.erreurReseau = true;
-          this.chargement = false;
-          this.ngOnInit(); // ré-arme le flux après une erreur réseau
-        },
-      });
-    if (this.fenCourant) {
-      this.fenSubject.next(this.fenCourant); // le FEN initial arrive avant ngOnInit : on le rejoue
+    const balise = window.location.hash.match(/#ouverture=([^&]+)/);
+    if (balise) {
+      const nom = decodeURIComponent(balise[1]).toLowerCase();
+      const ouverture = this.ouvertures.find((o) => o.nom.toLowerCase() === nom);
+      if (ouverture) {
+        setTimeout(() => this.choisirOuverture(ouverture), 300); // l'échiquier doit être prêt
+      }
     }
   }
 
-  ngOnDestroy(): void {
-    this.abonnement?.unsubscribe();
+  choisirCamp(camp: 'blanc' | 'noir'): void {
+    this.camp = camp;
+    this.campChoisi.emit(camp);
   }
 
-  poserQuestion(): void {
-    const q = this.question.trim();
-    if (!q || !this.fenCourant) {
+  /** Le sélecteur d'entrée : la position de référence s'installe et les conseils arrivent. */
+  choisirOuverture(ouverture: { nom: string; fen: string }): void {
+    this.ouvertureActive = ouverture.nom;
+    this.fenCourant = ouverture.fen;
+    this.ouvertureChoisie.emit(ouverture.fen);
+    this.lancerIA();
+  }
+
+  /** Le déclencheur unique : l'élève valide sa position, PUIS demande les conseils. */
+  lancerIA(question?: string): void {
+    if (!this.fenCourant || this.chargement) {
       return;
     }
     this.chargement = true;
-    this.agent.ask(this.fenCourant, q).subscribe({
+    this.erreurReseau = false;
+    this.agent.ask(this.fenCourant, question).subscribe({
       next: (r) => {
-        this.reponse = r;
+        // le LLM glisse parfois du Markdown (**gras**) : on affiche du texte propre
+        this.reponse = { ...r, answer: r.answer.replace(/\*\*/g, '') };
         this.chargement = false;
-        this.question = '';
       },
       error: () => {
         this.erreurReseau = true;
         this.chargement = false;
       },
     });
+  }
+
+  poserQuestion(): void {
+    const q = this.question.trim();
+    if (!q) {
+      return;
+    }
+    this.lancerIA(q);
+    this.question = '';
   }
 
   /** +0,38 / −1,10 / « Mat en 2 » — la note du moteur en langage d'élève. */

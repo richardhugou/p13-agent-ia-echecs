@@ -1,0 +1,56 @@
+.adaptive-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.chess-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.analysis-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.navigation-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.moves-display {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.moves-container {
+  text-align: center;
+}
+
+
+/* ── Panneau coach (agent IA) ── */
+.adaptive-layout {
+  display: flex !important;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 18px;
+  justify-content: center;
+}
+
+.coach-section {
+  flex: 1 1 380px;
+  max-width: 480px;
+  background: #fcf9f4;
+  border-radius: 18px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}

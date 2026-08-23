@@ -1,0 +1,16 @@
+# Notebooks de démonstration et de mesure
+
+Style : lapidaire — un titre, une ligne par section, le code fait le reste.
+Règle de labo : **aucune mesure ne vit uniquement dans une discussion** — toute mesure d'adoption a son notebook exécuté ici et, si la propriété doit durer, son test dans `backend/tests/`.
+
+| Notebook | Démontre | Statut |
+|---|---|---|
+| `01-inventaire-corpus.ipynb` | comptes exacts des sources (APIs officielles) | ✅ exécuté |
+| `02-mesures-embeddings.ipynb` | adoption D-a : dims, vitesse, effet du préfixe d'instruction | ✅ exécuté · garde-fou : `backend/tests/test_embeddings_mesure.py` |
+| `03-eda-corpus.ipynb` | figures EDA des diapos data | ✅ exécuté · PNG dans `figures/` |
+| `04-evaluation-rag.ipynb` | gold set, Run A vs Run B, frontière d abstention | ✅ exécuté |
+| `05-mesures-agent.ipynb` | scénario de démo rejoué : 0 coup illégal, latence p50/p95, abstention e2e, coût | ✅ exécuté · PNG dans `figures/` |
+| `06-mesures-llm.ipynb` | reconstruction du banc de mesure de la campagne LLM (journal du 22/08) | à reconstruire |
+| `07-decision-seuil.ipynb` | la décision de l'abstention : 25 questions par le chemin de production, balayage des seuils | ✅ exécuté · a montré qu'aucun seuil ne sépare → **règle des rayons signés + filet 0,58** (garde-fous : `test_rag_service.py`, `test_graph_nodes.py`) |
+
+Exécution : `cd backend && uv run --with jupyter jupyter nbconvert --execute --inplace ../notebooks/<nb>.ipynb`

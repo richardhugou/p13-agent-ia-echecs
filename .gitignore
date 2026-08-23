@@ -30,3 +30,6 @@ models_cache/
 .vscode/
 .idea/
 .DS_Store
+livrables/rendu/*.pdf
+livrables/rendu/*.zip
+livrables/rendu/zip-staging/

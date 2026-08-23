@@ -1,0 +1,212 @@
+meta:
+  statut: 'SIGNÉ par Richard le 2026-08-23 — arbitrages : rabotage FR (12 max), EN 18 pour française/anglaise/caro-kann,
+    est-indienne élargie à 2...g6, candidats absents abandonnés (axe d''amélioration)'
+  genere_le: '2026-08-22'
+  methode: candidats FR vérifiés + catégories filtrées ; sous-arbres EN plafonnés à 12 pages, du général
+    au profond
+  regle: toute modification du périmètre repasse par une signature
+ouvertures:
+  italienne:
+    eco: C50-C54
+    wikipedia_fr:
+    - Défense des deux cavaliers
+    - Gambit Blackburne
+    - Gambit Evans
+    - Partie italienne
+    - Partie italienne Giuoco Piano
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...a6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...d6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...f5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...h6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Bc5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Be7
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Nd4
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Nf6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...f5/4.d3
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...f5/4. d3
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bc4/3...Bc5/4. b4
+    en_disponibles_dans_l_arbre: 349
+  espagnole:
+    eco: C60-C99
+    wikipedia_fr:
+    - Défense Bird
+    - Défense Cordel
+    - Défense Cozio
+    - Défense Smyslov
+    - Défense Steinitz
+    - Espagnole fermée
+    - Gambit Marshall
+    - Partie espagnole
+    - Variante Breyer
+    - Variante Karpov
+    - Variante Kholmov
+    - Variante Möller
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...a6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...d5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...d6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...f5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...f6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...g5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...g6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...h6
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...Bb4
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...Bc5
+    - Chess Opening Theory/1. e4/1...e5/2. Nf3/2...Nc6/3. Bb5/3...Be7
+    en_disponibles_dans_l_arbre: 258
+    fr_ecartees_par_rabotage: 12
+  sicilienne:
+    eco: B20-B99
+    wikipedia_fr:
+    - Attaque Sozine
+    - Attaque anglaise
+    - Défense sicilienne
+    - Gambit Morra
+    - Gambit de l'aile
+    - Sicilienne Kan
+    - Système Kopec
+    - Système Maróczy
+    - Variante Alapine
+    - Variante Kramnik
+    - Variante Najdorf
+    - Variante Snyder
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...c5
+    - Chess Opening Theory/1. e4/1...c5/2.a3
+    - Chess Opening Theory/1. e4/1...c5/2.b4
+    - Chess Opening Theory/1. e4/1...c5/2.c3
+    - Chess Opening Theory/1. e4/1...c5/2.c4
+    - Chess Opening Theory/1. e4/1...c5/2.d4
+    - Chess Opening Theory/1. e4/1...c5/2.f4
+    - Chess Opening Theory/1. e4/1...c5/2. a3
+    - Chess Opening Theory/1. e4/1...c5/2. b3
+    - Chess Opening Theory/1. e4/1...c5/2. b4
+    - Chess Opening Theory/1. e4/1...c5/2. c3
+    - Chess Opening Theory/1. e4/1...c5/2. c4
+    en_disponibles_dans_l_arbre: 263
+    fr_ecartees_par_rabotage: 21
+  francaise:
+    eco: C00-C19
+    wikipedia_fr:
+    - Défense française
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...e6
+    - Chess Opening Theory/1. e4/1...e6/2. c4
+    - Chess Opening Theory/1. e4/1...e6/2. d3
+    - Chess Opening Theory/1. e4/1...e6/2. d4
+    - Chess Opening Theory/1. e4/1...e6/2. e5
+    - Chess Opening Theory/1. e4/1...e6/2. Bc4
+    - Chess Opening Theory/1. e4/1...e6/2. Nc3
+    - Chess Opening Theory/1. e4/1...e6/2. Nf3
+    - Chess Opening Theory/1. e4/1...e6/2. Qe2
+    - Chess Opening Theory/1. e4/1...e6/2. c4/2...d5
+    - Chess Opening Theory/1. e4/1...e6/2. d3/2...c5
+    - Chess Opening Theory/1. e4/1...e6/2. d3/2...d5
+    - Chess Opening Theory/1. e4/1...e6/2. d4/2...c5
+    - Chess Opening Theory/1. e4/1...e6/2. d4/2...d5
+    - Chess Opening Theory/1. e4/1...e6/2. d4/2...f5
+    - Chess Opening Theory/1. e4/1...e6/2. Bc4/2...d5
+    - Chess Opening Theory/1. e4/1...e6/2. Nc3/2...d5
+    - Chess Opening Theory/1. e4/1...e6/2. Nf3/2...c5
+    en_disponibles_dans_l_arbre: 161
+  caro_kann:
+    eco: B10-B19
+    wikipedia_fr:
+    - Attaque Panov
+    - Défense Caro-Kann
+    wikibooks_en:
+    - Chess Opening Theory/1. e4/1...c6
+    - Chess Opening Theory/1. e4/1...c6/2. b3
+    - Chess Opening Theory/1. e4/1...c6/2. c4
+    - Chess Opening Theory/1. e4/1...c6/2. d3
+    - Chess Opening Theory/1. e4/1...c6/2. d4
+    - Chess Opening Theory/1. e4/1...c6/2. Bc4
+    - Chess Opening Theory/1. e4/1...c6/2. Nc3
+    - Chess Opening Theory/1. e4/1...c6/2. Ne2
+    - Chess Opening Theory/1. e4/1...c6/2. Nf3
+    - Chess Opening Theory/1. e4/1...c6/2. c4/2...d5
+    - Chess Opening Theory/1. e4/1...c6/2. c4/2...e5
+    - Chess Opening Theory/1. e4/1...c6/2. d3/2...d5
+    - Chess Opening Theory/1. e4/1...c6/2. d4/2...d5
+    - Chess Opening Theory/1. e4/1...c6/2. d4/2...g6
+    - Chess Opening Theory/1. e4/1...c6/2. Bc4/2...d5
+    - Chess Opening Theory/1. e4/1...c6/2. Nc3/2...d5
+    - Chess Opening Theory/1. e4/1...c6/2. Nf3/2...d5
+    - Chess Opening Theory/1. e4/1...c6/2. d4/2...Na6
+    en_disponibles_dans_l_arbre: 267
+  gambit_dame:
+    eco: D06-D69
+    wikipedia_fr:
+    - Défense Marshall
+    - Défense Tarrasch
+    - Défense Tchigorine
+    - Défense balte
+    - Défense de Méran
+    - Défense orthodoxe
+    - Défense semi-slave
+    - Défense slave
+    - Gambit dame
+    - Gambit dame accepté
+    - Gambit dame refusé
+    - Piège de Lasker
+    wikibooks_en:
+    - Chess Opening Theory/1. d4/1...d5/2. c4
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c5
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...e5
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...e6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...Bf5
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...Nc6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...Nf6
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...dxc4
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...e6/3. g3
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c6/3. Nc3
+    - Chess Opening Theory/1. d4/1...d5/2. c4/2...c6/3. Nf3
+    en_disponibles_dans_l_arbre: 209
+    fr_ecartees_par_rabotage: 11
+  est_indienne:
+    eco: E60-E99
+    wikipedia_fr:
+    - Défense est-indienne
+    - Défense ouest-indienne
+    wikibooks_en:
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. f3
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. h4
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nf3
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. f3/3...d5
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...d5
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nf3/3...d6
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nf3/3...Bg7
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. e4
+    - Chess Opening Theory/1. d4/1...Nf6/2. c4/2...g6/3. Nc3/3...Bg7/4. Nf3
+    en_disponibles_dans_l_arbre: 45
+  anglaise:
+    eco: A10-A39
+    wikipedia_fr:
+    - Ouverture anglaise
+    wikibooks_en:
+    - Chess Opening Theory/1. c4
+    - Chess Opening Theory/1. c4/1...a5
+    - Chess Opening Theory/1. c4/1...a6
+    - Chess Opening Theory/1. c4/1...b5
+    - Chess Opening Theory/1. c4/1...b6
+    - Chess Opening Theory/1. c4/1...c5
+    - Chess Opening Theory/1. c4/1...c6
+    - Chess Opening Theory/1. c4/1...d5
+    - Chess Opening Theory/1. c4/1...d6
+    - Chess Opening Theory/1. c4/1...e5
+    - Chess Opening Theory/1. c4/1...e6
+    - Chess Opening Theory/1. c4/1...f5
+    - Chess Opening Theory/1. c4/1...f6
+    - Chess Opening Theory/1. c4/1...g5
+    - Chess Opening Theory/1. c4/1...g6
+    - Chess Opening Theory/1. c4/1...Na6
+    - Chess Opening Theory/1. c4/1...Nc6
+    - Chess Opening Theory/1. c4/1...Nf6
+    en_disponibles_dans_l_arbre: 106

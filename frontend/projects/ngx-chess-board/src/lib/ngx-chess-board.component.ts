@@ -172,6 +172,46 @@ export class NgxChessBoardComponent
         );
     }
 
+    /** Square highlights for suggested moves : origin = semi-transparent, landing = solid. */
+    public suggestionHighlights: { x: number; y: number; size: number; solid: boolean }[] = [];
+
+    highlightMoves(ucis: string[]): void {
+        this.clearHighlights();
+        const sq = this.engineFacade.heightAndWidth / 8;
+        const reversed = this.engineFacade.board.reverted;
+        const coin = (square: string) => {
+            let col = square.charCodeAt(0) - 97;
+            let row = 8 - parseInt(square.charAt(1), 10);
+            if (reversed) {
+                col = 7 - col;
+                row = 7 - row;
+            }
+            return { x: col * sq, y: row * sq };
+        };
+        const vus = new Set<string>();
+        const ajouter = (square: string, solid: boolean) => {
+            const cle = square + (solid ? 's' : 'o');
+            if (vus.has(cle)) {
+                return;
+            }
+            vus.add(cle);
+            this.suggestionHighlights = [
+                ...this.suggestionHighlights,
+                { ...coin(square), size: sq, solid },
+            ];
+        };
+        for (const uci of ucis) {
+            if (uci && uci.length >= 4) {
+                ajouter(uci.substring(0, 2), false);
+                ajouter(uci.substring(2, 4), true);
+            }
+        }
+    }
+
+    clearHighlights(): void {
+        this.suggestionHighlights = [];
+    }
+
     /** Draws suggestion arrows for the given UCI moves (e.g. ['f8c5']) — programmatic
      *  counterpart of the right-click drawing tool. Clears previous drawings first. */
     drawMoves(ucis: string[], color: 'red' | 'green' | 'blue' | 'orange' = 'green'): void {
@@ -199,6 +239,7 @@ export class NgxChessBoardComponent
 
     clearDrawings(): void {
         this.engineFacade.drawProvider.clear();
+        this.clearHighlights();
     }
 
     reverse(): void {

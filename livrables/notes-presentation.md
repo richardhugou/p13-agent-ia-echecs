@@ -27,6 +27,7 @@ Suivre le schéma de composants du regard, boîte par boîte — **chaque boîte
 - « **Lichess** répond à "que jouent les maîtres ici ?" ; **Stockfish** à "que vaut la position hors théorie ?" ; **Milvus** à "où chercher les connaissances ?" ; **YouTube** à "quelle ressource proposer ?" ; **MongoDB** à "que met-on en cache ?". »
 - « Et le **LLM local** transforme ces faits en explication — il ne décide jamais. »
 Fermer : « Le FEN est la langue commune de toutes les briques ; le routeur est déterministe ; chaque brique a un plan B — observé en conditions réelles. »
+**Articulation à dire telle quelle** : « Cette diapo montre les grandes briques et leurs rôles — la suivante montre le chemin réellement parcouru par une position, dans l'ordre. » (évite le « pourquoi LangGraph appelle quatre choses en parallèle ? »)
 
 ## Diapo 6 — L'orchestration : le chemin d'une position *(1 min 30)*
 Raconter UN parcours sur le graphe : « Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs stats → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie, le moteur mesure au lieu de réciter. » **Insister : le LLM ne choisit jamais un coup.**

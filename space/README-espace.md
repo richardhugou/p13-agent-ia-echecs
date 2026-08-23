@@ -5,6 +5,7 @@ colorFrom: green
 colorTo: gray
 sdk: docker
 app_port: 7860
+suggested_hardware: t4-small
 pinned: false
 ---
 

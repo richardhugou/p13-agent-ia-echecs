@@ -114,4 +114,3 @@ def shutdown() -> None:
     if _engine is not None:
         _engine.quit()
         _engine = None
-

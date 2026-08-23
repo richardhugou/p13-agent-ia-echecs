@@ -38,7 +38,7 @@ Un seul parcours, suivi jusqu'au bout — Léa travaille l'Italienne avec les Bl
 2. **Elle choisit son point de départ** : l'Italienne (parmi les 8 ouvertures), ou une position libre.
 3. **L'agent joue les coups de l'adversaire** — les plus joués par les maîtres, jamais un choix de LLM ; elle joue les siens. Une erreur ? « Annuler le coup » retire la paire.
 4. **Hors théorie, l'agent le signale** et lui laisse la main : annuler, ou analyser.
-5. **Position prête → « Lancer l'IA »** : coups des maîtres avec statistiques, explication **avec sources cliquables**, vidéos — et une question libre si elle veut.
+5. **Position prête → « Lancer l'IA »** : coups des maîtres avec statistiques **et flèches sur l'échiquier**, explication **avec sources cliquables**, vidéos — et une question libre si elle veut.
 6. **Sur un coup douteux**, l'agent change d'outil : **évaluation objective du moteur**.
 
 Capture : `rendu/captures/ui-accueil.png` (l'accueil qui explique ce parcours). À aucun moment le système n'invente : il va chercher, il assemble, il cite.

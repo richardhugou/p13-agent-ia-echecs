@@ -48,6 +48,8 @@ export class CoachPanelComponent implements OnInit {
   @Output() campChoisi = new EventEmitter<'blanc' | 'noir'>();
   @Output() ouvertureChoisie = new EventEmitter<string>();
   @Output() annulerCoup = new EventEmitter<void>();
+  /** Les coups suggérés (UCI) — l'échiquier les dessine en flèches. */
+  @Output() suggestions = new EventEmitter<string[]>();
 
   constructor(private agent: AgentService) {}
 
@@ -94,6 +96,8 @@ export class CoachPanelComponent implements OnInit {
         // le LLM glisse parfois du Markdown (**gras**) : on affiche du texte propre
         this.reponse = { ...r, answer: r.answer.replace(/\*\*/g, '') };
         this.chargement = false;
+        // les suggestions se voient AUSSI sur le plateau (flèches) — top 3 théorique
+        this.suggestions.emit((r.theory_moves ?? []).slice(0, 3).map((m) => m.uci));
       },
       error: () => {
         this.erreurReseau = true;

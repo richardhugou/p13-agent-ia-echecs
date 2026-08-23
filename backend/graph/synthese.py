@@ -19,15 +19,20 @@ PROMPT_COACH = """Tu es un coach d'échecs pour de jeunes joueurs (10 à 14 ans)
 On te donne des FAITS vérifiés sur une position. Règles absolues :
 1. Ne recommande JAMAIS un coup absent des faits fournis. N'invente ni coup, ni chiffre.
 2. N'ajoute AUCUNE explication stratégique de ton cru : présente les faits, rien de plus.
-3. Si les faits sont vides ou insuffisants, dis honnêtement que tu ne peux pas répondre.
-4. Rédige 3 à 5 phrases en français simple, tutoie l'élève, reste encourageant.
-5. N'écris PAS de ligne « Sources » : elle est ajoutée automatiquement après toi.
-6. Ce n'est PAS une conversation : ne salue jamais (« Salut », « Bonjour »...),
-   ne te présente pas — entre directement dans l'analyse de la position."""
+3. Si les faits sont vides ou insuffisants, dis-le en une phrase.
+4. STYLE LAPIDAIRE : 2 à 3 phrases courtes maximum. Tutoie. Pas un mot de trop.
+5. Commence TOUJOURS par le champ des possibles : les coups jouables et leurs parties.
+   Exemple : « Deux options sérieuses : Fc5 (25 481 parties) ou Cf6 (21 370). »
+6. Le fait « champ_des_possibles » dit si la théorie est large ou se resserre :
+   reprends-le tel quel en une phrase — quand il se resserre, dis que la sortie de
+   théorie approche et que le moteur prendra le relais.
+7. N'écris PAS de ligne « Sources » : elle est ajoutée automatiquement après toi.
+8. Ce n'est PAS une conversation : JAMAIS de salutation (« Salut », « Bonjour »...),
+   de présentation ou de formule d'accueil — première phrase = les coups possibles."""
 
-# Le LLM local n'obéit pas toujours à la règle 6 : le code, si (garanti par construction).
+# Le LLM local n'obéit pas toujours à la règle 8 : le code, si (garanti par construction).
 _SALUTATIONS = re.compile(
-    r"^(salut|bonjour|coucou|hello|hey|bonsoir)\s*(à toi|jeune joueur|champion(ne)?)?\s*[!,.:]*\s*",
+    r"^(salut|bonjour|coucou|hello|hey|bonsoir|bienvenue|yo)\b[^.!?:,\n]{0,40}[!,.:]?\s*",
     re.IGNORECASE,
 )
 
@@ -103,6 +108,30 @@ def synthese_gabarit(state: AgentState) -> dict:
     return {"answer": " ".join(parts), "sources": sources}
 
 
+def _champ_des_possibles(moves: list[dict], total: int) -> str:
+    """Le resserrement de la théorie, calculé par le CODE (déterministe), mis en mots par le LLM.
+
+    Plus on avance dans les parties de maîtres, plus le champ se resserre — jusqu'au
+    moment où la théorie s'épuise et où l'autre plateau (Stockfish) prend le relais.
+    """
+    serieux = [m for m in moves if m["games"] >= max(1, total * 0.05)]
+    if total > 100_000:
+        largeur = "la théorie est très large, presque tout se joue encore"
+    elif total > 5_000:
+        largeur = "la théorie est bien balisée"
+    elif total > 500:
+        largeur = "le champ des possibles se resserre nettement"
+    else:
+        largeur = (
+            "sentier étroit : la sortie de théorie est toute proche, "
+            "le moteur prendra bientôt le relais"
+        )
+    return (
+        f"{len(serieux)} option(s) sérieusement jouée(s) parmi {len(moves)} coups recensés, "
+        f"{total} parties de maîtres — {largeur}."
+    )
+
+
 def _faits_annotes(state: AgentState) -> str:
     """Les faits préparés pour le LLM — coups annotés, évaluation pré-verbalisée."""
     faits: dict = {}
@@ -117,6 +146,7 @@ def _faits_annotes(state: AgentState) -> str:
         faits["coups_recommandes_par_la_theorie"] = [
             {"coup": annoter_san(m["san"]), "parties": m["games"]} for m in moves[:3]
         ]
+        faits["champ_des_possibles"] = _champ_des_possibles(moves, state.get("total_games", 0))
     top_games = state.get("top_games") or []
     if top_games:
         faits["partie_de_reference"] = top_games[0]

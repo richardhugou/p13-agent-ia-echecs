@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Démarrage complet du POC — neutralise les pannes rencontrées (journal du 24/08) :
+# Démarrage complet du POC — neutralise les pannes rencontrées (journal du 23/08) :
 #   1. Ollama mort avec son shell        → démarré en service, attendu, vérifié
 #   2. modèle absent (404 « not found ») → pull automatique des deux modèles
 #   3. conteneur gelé sur un vieux .env  → compose up -d recrée si la config a changé

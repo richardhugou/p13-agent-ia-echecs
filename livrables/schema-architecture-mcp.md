@@ -1,9 +1,9 @@
-# [LIVRABLE] Schéma d'architecture technique — solution MCP (analyse vidéo)
+# Schéma d'architecture technique — solution MCP (analyse vidéo)
 
-> **Comment compléter** : ce document est quasi final ; il reste à (1) valider les noms/périmètres des serveurs MCP, (2) exporter le schéma mermaid en image pour la note et le slide 14, (3) remplir les [CHIFFRE] depuis l'étude de coûts.
+> Document compagnon de `note-benefices-limites.md` (§5) et de `etude-faisabilite-couts.md`. Le schéma mermaid ci-dessous est la source ; il est rendu en image dans les slides.
 
 ## 1. Rappel MCP en 5 lignes (pour la note et pour le jury)
-Le **Model Context Protocol** (standard ouvert initié par Anthropic fin 2024, adopté ensuite largement dans l'écosystème ⚠️ à sourcer au moment de la rédaction) normalise la façon dont un agent (« hôte ») découvre et appelle des capacités externes via des **serveurs MCP** exposant trois primitives : **tools** (actions), **resources** (données lisibles), **prompts** (gabarits). Transports : stdio en local, HTTP streamable en distant. Implémentation Python de référence pour nous : **FastMCP**.
+Le **Model Context Protocol** (standard ouvert initié par Anthropic fin 2024, largement adopté depuis dans l'écosystème des agents — les principaux fournisseurs de modèles et d'outils ont annoncé leur support courant 2025) normalise la façon dont un agent (« hôte ») découvre et appelle des capacités externes via des **serveurs MCP** exposant trois primitives : **tools** (actions), **resources** (données lisibles), **prompts** (gabarits). Transports : stdio en local, HTTP streamable en distant. Implémentation Python de référence pour nous : **FastMCP**.
 
 **Argument d'architecture** : chaque serveur MCP est réutilisable par n'importe quel agent futur de la FFE (pas seulement le nôtre), indépendamment du framework d'orchestration — c'est la modularité demandée.
 
@@ -59,8 +59,8 @@ flowchart TB
 | srv-vision | Pilotage des analyses (asynchrone) | FastMCP | **lancer_analyse retourne un job_id** : MCP pilote, le batch exécute |
 | srv-chess-tools | Validation FEN, éval, théorie | FastMCP encapsulant les services du POC | Réutilisation directe — argument fort |
 | srv-connaissances | Recherche sémantique + jointure position↔vidéo | FastMCP + pymilvus/Mongo | La clé pivot reste le FEN normalisé |
-| File + workers | Ingestion de masse | Redis + workers Python (ffmpeg, OpenCV) | Débit dimensionné dans l'étude ([CHIFFRE] vidéos/h/worker) |
-| Stockage objet | Frames clés uniquement (pas les vidéos) | minio local / S3 prod | ~[CHIFFRE] Mo/vidéo (frames retenues seulement) |
+| File + workers | Ingestion de masse | Redis + workers Python (ffmpeg, OpenCV) | ≈ 3 min CPU/vidéo → **~20 vidéos/heure/worker** (étude §1) |
+| Stockage objet | Frames clés uniquement (pas les vidéos) | minio local / S3 prod | ≈ **3 Mo/vidéo** (≈ 30 frames clés × 100 Ko — jamais les fichiers vidéo) |
 
 ## 4. Décisions d'architecture à défendre
 1. **MCP pour l'interface, batch pour la masse** : un agent n'a pas à attendre 3 min d'analyse ; il déclenche (`lancer_analyse`) et consulte (`etat_analyse`). Honnêteté architecturale = crédibilité.

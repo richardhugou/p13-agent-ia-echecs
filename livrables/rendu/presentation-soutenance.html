@@ -53,10 +53,10 @@
     <div class="kicker">Soutenance · Preuve de concept</div>
     <h1 style="font-size: 52px; max-width: 760px;">Un coach IA pour les ouvertures d'échecs</h1>
     <p style="font-size: 22px; color: #7A756C; margin-bottom: 40px;">Preuve de concept pour la Fédération Française des Échecs</p>
-    <p class="body">Richard Hugou — IA Engineer junior, Cavalier Data &nbsp;·&nbsp; Soutenance du <span class="chip">date à fixer</span> &nbsp;·&nbsp; Mission POC — 2 semaines</p>
+    <p class="body">Richard Hugou — IA Engineer junior, Cavalier Data &nbsp;·&nbsp; Soutenance — août 2026 &nbsp;·&nbsp; Mission POC — 2 semaines</p>
   </div>
   <div style="position: absolute; right: 110px; bottom: 120px; font-size: 110px; color: #3A5A40;">♘ ♗ ♖</div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>1 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/01 — cadrage</span><span>1 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 2 ═══════════ -->
@@ -65,7 +65,7 @@
   <h1>Le contexte et le besoin</h1>
   <div class="row" style="margin-bottom: 22px;">
     <div class="card grow"><div class="stitle">⚑ Le problème</div>
-      <p class="body">Plus de <span class="chip">60 000 licenciés — à sourcer</span> dont <span class="chip">~60 % de jeunes — à sourcer</span>, quelques centaines d'entraîneurs diplômés, cours à 30–60 €/h.<br><span style="color:#3A5A40; font-weight:600;">Le goulot d'étranglement, c'est l'humain.</span></p>
+      <p class="body">Plus de <strong>60 000 licenciés</strong> dont <strong>~60 % de jeunes</strong>, quelques centaines d'entraîneurs diplômés, cours à 30–60 €/h.<br><span style="color:#3A5A40; font-weight:600;">Le goulot d'étranglement, c'est l'humain.</span></p>
     </div>
   </div>
   <div class="card key" style="text-align:center; font-size: 21px; font-weight: 500; margin-bottom: 22px; padding: 22px;">
@@ -78,7 +78,7 @@
     <div class="card grow small">▶ recommander des vidéos adaptées à la position</div>
     <div class="card grow small">⚖ évaluer objectivement hors des sentiers battus</div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>2 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/01 — cadrage FFE</span><span>2 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 3 ═══════════ -->
@@ -96,7 +96,7 @@
         <td><strong>Des textes sourcés + un rédacteur</strong> — RAG et LLM</td></tr>
   </table>
   <div class="punchline">Les trois sources à la fois, à chaque coup, dans cet ordre — chaque étape fabrique l'entrée de la suivante.<br>Ce déroulé conditionnel répété, c'est ça, un agent.</div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>3 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/11 — fondations produit</span><span>3 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 4 ═══════════ -->
@@ -106,18 +106,18 @@
   <table style="margin-bottom: 18px;">
     <tr><th>Besoin</th><th>Source</th><th>Volumétrie</th><th>Licence</th></tr>
     <tr><td>Nommer les ouvertures</td><td>Référentiel <span class="mono">chess-openings</span></td><td><strong>3 810 lignes</strong> <span class="chip solid">compté 22/08</span></td><td>CC0</td></tr>
-    <tr><td>Ce que joue l'élite</td><td>API Lichess Explorer</td><td>2 M+ parties masters <span class="chip">à confirmer</span></td><td>CC0</td></tr>
+    <tr><td>Ce que joue l'élite</td><td>API Lichess Explorer</td><td><strong>2 M+ parties masters</strong></td><td>CC0</td></tr>
     <tr><td>Expliquer les idées</td><td>Wiki d'ouvertures FR + EN</td><td><strong>225 art. FR + 3 026 p. EN</strong> <span class="chip solid">compté 22/08</span></td><td>CC BY-SA, attribution</td></tr>
     <tr><td>Montrer des vidéos</td><td>API YouTube (métadonnées)</td><td><span class="chip">quota 10 000 u/j</span></td><td>CGU : embed/liens seuls</td></tr>
   </table>
   <div class="row" style="margin-bottom: 14px;">
-    <div class="card grow" style="border: 1px solid #7A756C; background: repeating-linear-gradient(45deg,#F3EEE4,#F3EEE4 8px,#EDE7DA 8px,#EDE7DA 16px); text-align:center; padding: 16px;"><span class="small">Composition du corpus par source</span><br><span class="chip">EDA — à mesurer</span></div>
-    <div class="card grow" style="border: 1px solid #7A756C; background: repeating-linear-gradient(45deg,#F3EEE4,#F3EEE4 8px,#EDE7DA 8px,#EDE7DA 16px); text-align:center; padding: 16px;"><span class="small">Couverture ECO des ouvertures cibles</span><br><span class="chip">EDA — à mesurer</span></div>
-    <div class="card grow" style="border: 1px solid #7A756C; background: repeating-linear-gradient(45deg,#F3EEE4,#F3EEE4 8px,#EDE7DA 8px,#EDE7DA 16px); text-align:center; padding: 16px;"><span class="small">Doublons éliminés · longueurs</span><br><span class="chip">EDA — à mesurer</span></div>
+    <div class="card grow" style="text-align:center; padding: 10px;"><img src="../../notebooks/figures/01-entonnoir-corpus.png" style="width:100%; border-radius:8px;"><span class="small">L'entonnoir : 3 251 → 161 → 477 fiches</span></div>
+    <div class="card grow" style="text-align:center; padding: 10px;"><img src="../../notebooks/figures/02-couverture-ouvertures.png" style="width:100%; border-radius:8px;"><span class="small">Couverture des 8 ouvertures (FR/EN)</span></div>
+    <div class="card grow" style="text-align:center; padding: 10px;"><img src="../../notebooks/figures/03-longueurs-fiches.png" style="width:100%; border-radius:8px;"><span class="small">Longueurs — médiane 200, cible 300–500</span></div>
   </div>
   <p class="body" style="color:#3A5A40; font-weight: 600; text-align:center;">La clé de jointure de tout le système : le FEN — la seule donnée fournie par l'élève.</p>
   <p class="small" style="text-align:center; margin-top:6px;">Périmètre signé : manifeste versionné <span class="mono">corpus.yml</span> — <b>47 FR + 114 EN = 161 pages</b> retenues sur 3 251 disponibles · règle : pas de manifeste signé, pas d'extraction</p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>4 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 01 · manifeste corpus.yml</span><span>4 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE formats bruts ═══════════ -->
@@ -141,7 +141,7 @@
       <p class="small" style="font-family: 'SF Mono', Menlo, monospace;">info depth 16 score cp 34 pv e2e4 e7e5 g1f3</p></div>
   </div>
   <div class="punchline" style="font-size: 18px;">Cinq formats hétérogènes → la normalisation est obligatoire.<br><span style="font-size: 15px; font-weight: 400;">Pivots : positions en FEN, coups en SAN, textes en chunks à métadonnées uniformes — JSON comme format d'échange interne.</span></div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>5 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/04 — formats</span><span>5 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 5 ═══════════ -->
@@ -163,8 +163,8 @@
     <div class="card grow"><div class="stitle">Charger</div>
       <p class="small">Embeddings Qwen3-0.6B — FR et EN dans le même espace (1024 d) → Milvus (HNSW, cosinus) avec métadonnées : eco, ouverture, fen_ref, source, licence.</p></div>
   </div>
-  <p class="body" style="text-align:center;">Pipeline <strong>rejouable et idempotent</strong> (upsert par hash de contenu).<br><span class="small">Rapport chiffré à chaque exécution : pages retenues, chunks (longueur moyenne), doublons écartés <span class="chip">à mesurer</span></span></p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>6 / 19</span></div>
+  <p class="body" style="text-align:center;">Pipeline <strong>rejouable et idempotent</strong> (upsert par hash de contenu).<br><span class="small">Rapport chiffré (notebook 03) : <b>156 pages extraites → 477 fiches</b>, longueur moyenne <b>244 tokens</b> (sous-cible mesurée, assumée), <b>1 doublon écarté</b>, 95 FEN calculés / 0 échec</span></p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA</span><span>6 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE modèle de données ═══════════ -->
@@ -197,7 +197,7 @@
     </div>
   </div>
   <div class="punchline" style="font-size: 17px;">Clé de jointure transverse : le <span style="font-family: 'SF Mono', Menlo, monospace;">FEN</span> normalisé (+ eco pour l'agrégat par ouverture).</div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>7 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/05 — architecture</span><span>7 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 6 ═══════════ -->
@@ -211,7 +211,7 @@
   </div>
   <div class="card wood"><div class="stitle">Conformité (et limite structurante de la partie 2)</div>
   <p class="body">Affichage en lien / lecteur intégré, <strong>aucun téléchargement</strong> (CGU YouTube).</p></div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>8 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>CGU YouTube · docs/04</span><span>8 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 7 ═══════════ -->
@@ -223,24 +223,25 @@
     <tr><td>API Lichess</td><td>Coups théoriques + stats</td><td>Non — parties réelles CC0</td><td>seuil « en théorie » testé · 0 coup illégal</td></tr>
     <tr><td><strong>Stockfish</strong> (&gt; 3600 Elo)</td><td>Évaluation hors théorie</td><td>Non — moteur éprouvé</td><td>latence / profondeur mesurées</td></tr>
     <tr><td><strong>Qwen3-Embedding-0.6B</strong></td><td>Recherche sémantique FR+EN</td><td>Non — pré-entraîné</td><td>recall@5 ≥ 0,8 · MRR (gold set)</td></tr>
-    <tr><td><strong>LLM de synthèse</strong></td><td>Rédige, pédagogise, cite</td><td>Non — API</td><td>sources 100 % · abstention · coût</td></tr>
+    <tr><td><strong>LLM de synthèse</strong> (qwen3.5:4b local)</td><td>Rédige, pédagogise, cite</td><td>Non — pré-entraîné</td><td>sources 100 % · abstention · coût</td></tr>
   </table>
   <div class="punchline">Nous n'entraînons aucun modèle — choix assumé. Notre valeur ajoutée : l'orchestration et l'évaluation systématique.<br><span style="font-size: 16px; font-weight: 400;">Ce qu'on ajuste (chunking, top-k, seuil), on le mesure.</span></div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>9 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/12 — modèles</span><span>9 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 8 ═══════════ -->
 <div class="slide">
   <div class="kicker">L'approche · Le LLM</div>
   <h1>Le choix du LLM de synthèse</h1>
-  <table style="margin-bottom: 18px;">
-    <tr><th>Option</th><th>Prix (entrée / sortie, par M tokens)</th><th>Verdict</th></tr>
-    <tr style="background:#BFE3C3;"><td><strong>Claude Haiku 4.5 ✓</strong></td><td>1 $ / 5 $ <span class="chip solid">vérifié</span></td><td>rapide, français correct, budget tenu</td></tr>
-    <tr><td>Claude Sonnet 5</td><td>3 $ / 15 $</td><td>plan B si le français déçoit sur le gold set</td></tr>
-    <tr><td>LLM local (Ollama)</td><td>0 €</td><td>écarté : 16 Go de RAM partagés → risque démo</td></tr>
+  <p class="body" style="margin-bottom: 12px;">Décision <strong>prise sur mesures</strong> (campagne de 4 modèles locaux, 22/08) — et <strong>révisée par elles</strong> : le plan initial (API) est tombé devant les chiffres du local.</p>
+  <table style="margin-bottom: 16px;">
+    <tr><th>Option</th><th>Coût</th><th>Verdict mesuré</th></tr>
+    <tr style="background:#BFE3C3;"><td><strong>qwen3.5:4b local (Ollama) ✓</strong></td><td><strong>0 €</strong></td><td>3,2 Go de RAM · 3–7 s/réponse · FR correct avec garde-fous (faits annotés, temp 0,2)</td></tr>
+    <tr><td>Claude Haiku 4.5 (API)</td><td>1 $ / 5 $ par M tokens</td><td>option qualité — activable par variable d'environnement</td></tr>
+    <tr><td>Gabarit déterministe</td><td>0 €</td><td>repli toujours juste : réponse exacte et sourcée même sans LLM</td></tr>
   </table>
-  <div class="card wood"><div class="stitle">Réversible par conception</div><p class="body">Le LLM ne fait que la mise en forme finale : en changer = changer une variable d'environnement.</p></div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>10 / 19</span></div>
+  <div class="card wood"><div class="stitle">Réversible par conception</div><p class="body">Le LLM ne fait que la mise en forme finale (<span class="mono">LLM_PROVIDER</span>) : il n'est <strong>jamais la source de vérité</strong>.</p></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>campagne LLM du 22/08 (mesurée)</span><span>10 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 9 ═══════════ -->
@@ -283,11 +284,11 @@
     <rect x="876" y="276" width="240" height="52" rx="20" fill="#FCF9F4" stroke="#3A5A40" stroke-width="2.5"/>
     <text x="996" y="307" text-anchor="middle" font-size="17" font-weight="600" fill="#1C1B18">Réponse sourcée</text>
   </svg>
-  <p class="small" style="text-align:center; margin-bottom: 12px;">vert = sources de vérité · terracotta = rédaction · <strong>le LLM ne choisit jamais un coup</strong> · chaque nœud a un fallback · chaque passage est tracé</p>
+  <p class="small" style="text-align:center; margin-bottom: 12px;">vert = sources de vérité · terracotta = rédaction · <strong>le LLM ne choisit jamais un coup</strong> · chaque nœud a un fallback (dégradation observée en réel) · les runs d'évaluation sont tracés (MLflow)</p>
   <div style="text-align:center;">
     <span class="chip solid">Angular</span> <span class="chip solid">FastAPI + LangGraph</span> <span class="chip solid">Milvus</span> <span class="chip solid">MongoDB</span> <span class="chip solid">Stockfish embarqué</span> <span class="chip solid">MLflow</span>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>11 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>backend/graph — 65 tests verts</span><span>11 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 10 ═══════════ -->
@@ -304,7 +305,7 @@
   <p class="body">Chaque run (paramètres, métriques, figures) est loggé dans MLflow — <strong>aucun chiffre des diapos suivantes n'a d'autre origine</strong>. Toujours comparé à une baseline (Run A vs Run B, diapo 14).</p></div>
   <div class="card"><div class="stitle">Les mesures d'adoption</div>
   <p class="body">Aucune brique modèle n'entre sans son banc de mesure <strong>versionné et rejouable</strong> (notebook exécuté + test). Méthode : similarité cosinus sur des paires étalonnées (cible / lié / hors-sujet, FR et EN). Mesuré : le préfixe d'instruction fait passer la séparation cible/hors-sujet de 0,29 à <strong>0,50</strong>.</p></div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>12 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>evaluation/gold_set.yml — figé le 24/08</span><span>12 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 11 ═══════════ -->
@@ -313,18 +314,19 @@
   <h1>Mesure de la performance</h1>
   <table style="margin-bottom: 16px;">
     <tr><th>Indicateur</th><th>Cible</th><th>Mesuré</th></tr>
-    <tr><td>Coups illégaux proposés</td><td><strong>0</strong></td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>Coups illégaux proposés</td><td><strong>0</strong></td><td><b>0 sur 56 coups affichés</b> <span class="chip solid">notebook 05 — scénario rejoué</span></td></tr>
     <tr><td>recall@5 (gold set 25 questions)</td><td>≥ 0,8</td><td><b>1,0</b> <span class="chip solid">runs MLflow 24/08</span></td></tr>
-    <tr><td>Abstention correcte sur les pièges</td><td>5 / 5</td><td><b>4 / 5</b> — le piège « adjacent » résiste au seuil (diapo suivante)</td></tr>
+    <tr><td>Abstention correcte sur les pièges</td><td>5 / 5</td><td><b>5 / 5 — par construction</b> : règle des rayons signés (diapo suivante)</td></tr>
+    <tr><td>Latence recherche vectorielle p95</td><td>&lt; 100 ms</td><td><b>7–11 ms</b> à chaud</td></tr>
     <tr><td>Réponses RAG sourcées</td><td>100 %</td><td><b>100 %</b> — par construction</td></tr>
-    <tr><td>Latence agent p95</td><td>&lt; 8 s</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
-    <tr><td>Coût LLM total dev + démo</td><td>&lt; 5 €</td><td><span class="dash" style="font-size:24px;">—</span> <span class="chip">à mesurer</span></td></tr>
+    <tr><td>Latence agent p95</td><td>&lt; 8 s</td><td><b>6,1 s</b> (p50 4,5 s — synthèse LLM locale comprise)</td></tr>
+    <tr><td>Coût LLM total dev + démo</td><td>&lt; 5 €</td><td><b>0,00 € facturé</b> — LLM local (équiv. cloud du banc ≈ 0,03 $)</td></tr>
   </table>
   <div class="row" style="align-items:center; margin-top:6px;">
     <img src="../../notebooks/figures/04-mlflow-runs.png" style="width:56%; border-radius:12px; border:1px solid #7A756C;">
     <p class="body" style="color:#3A5A40; font-weight:600;">Toute valeur affichée ici sort d'un run MLflow tracé — d'aucun autre endroit. Ci-contre : l'expérience gold-set-rag, runs A_naif / B_soigne.</p>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>13 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>MLflow gold-set-rag · notebook 05</span><span>13 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 12 ═══════════ -->
@@ -344,8 +346,9 @@
     <tr><td class="small">marge d'abstention</td><td class="small">chevauchement −0,10</td><td class="small"><b>−0,04</b></td><td class="small">B sépare mieux ; le piège « adjacent » résiste au seuil seul</td></tr>
     <tr><td class="small">ce que reçoit le rédacteur</td><td class="small">fenêtres brutes 1 000 tokens</td><td class="small"><b>fiches ciblées + fil d'Ariane</b></td><td class="small">la vraie différence — gold set v2 à labels fins en axe</td></tr>
   </table>
-  <p class="small">Autres itérations mesurées : seuil N du routeur théorie/moteur · profondeur/temps Stockfish · prompt de synthèse (abstention propre).</p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>14 / 19</span></div>
+  <div class="card key" style="padding: 16px 20px;"><div class="stitle">L'abstention — trois itérations, toutes sur données (notebooks 05 et 07)</div>
+  <p class="small" style="color:#0B2211;">Préjudice mesuré : une question hors corpus citait <b>5 fiches adjacentes</b> → aucun seuil ne sépare (piège 0,619 vs légitime 0,618, à un millième) et les vraies questions scorent bas (démo : 0,629) → <b>règle des rayons signés</b> : le corpus n'est consulté que dans un rayon établi par la position ou nommé dans la question ; hors manifeste → 0 fiche + réponse honnête. Seuil = filet à 0,58. <b>Vérifié : 5/5 pièges bloqués par construction, 0 légitime sacrifiée.</b></p></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 04 · 05 · 07</span><span>14 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 13 ═══════════ -->
@@ -355,14 +358,14 @@
   <div class="card" style="background:#EDE7DA; font-family: 'SF Mono', Menlo, monospace; font-size: 24px; text-align:center; padding: 18px; border-radius: 16px; margin-bottom: 20px;">$ docker compose up</div>
   <table style="margin-bottom: 14px;">
     <tr><th>Service</th><th>Rôle</th><th>Port</th></tr>
-    <tr><td>frontend</td><td>Angular + ngx-chessboard</td><td>4200</td></tr>
+    <tr><td>frontend</td><td>Angular + ngx-chessboard, servi par nginx — image <b>78 Mo</b></td><td>4200</td></tr>
     <tr><td>api</td><td>FastAPI + LangGraph + Stockfish embarqué (Swagger pour la démo)</td><td>8000</td></tr>
-    <tr><td>milvus (+ etcd, minio)</td><td>recherche vectorielle</td><td>interne</td></tr>
+    <tr><td>milvus (+ etcd, minio)</td><td>recherche vectorielle</td><td>19530 (job ETL)</td></tr>
     <tr><td>mongodb</td><td>caches, sessions, runs</td><td>interne</td></tr>
-    <tr><td>mlflow</td><td>tracking des expériences</td><td>5000</td></tr>
+    <tr><td>mlflow</td><td>tracking des expériences</td><td>5001 (5000 hôte : AirPlay)</td></tr>
   </table>
-  <p class="body">Volumes persistants · variables d'environnement · seuls les ports utiles exposés · <strong>testé sur machine vierge : utilisable en &lt; 5 min</strong> <span class="chip">à vérifier en É6</span></p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>15 / 19</span></div>
+  <p class="body">Volumes persistants · variables d'environnement · seuls les ports utiles exposés · <strong>installation fraîche mesurée : app utilisable en 2 min 09</strong>, bibliothèque prête à 2 min 28 <span class="chip solid">tester-installation.sh</span></p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>tester-installation.sh — mesuré le 23/08</span><span>15 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 14 ═══════════ -->
@@ -381,7 +384,7 @@
     <div class="card grow"><div class="stitle">Mise à jour des connaissances</div>
       <p class="body">ingestion du corpus re-jouée en batch hebdomadaire (delta par hash) — <strong>sans réentraînement</strong></p></div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>16 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/05 — architecture</span><span>16 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 15 (coût) ═══════════ -->
@@ -392,12 +395,12 @@
     <tr><th>Poste (coût du POC)</th><th>Coût</th><th>Pourquoi</th></tr>
     <tr><td>Données : parties, stats, corpus encyclopédique</td><td><strong>0 €</strong></td><td>licences libres (CC0, CC BY-SA)</td></tr>
     <tr><td>Moteur Stockfish + embeddings</td><td><strong>0 €</strong></td><td>open source, exécution locale</td></tr>
-    <tr><td>Recherche de vidéos</td><td><strong>0 €</strong></td><td>quota gratuit, consommation maîtrisée par cache <span class="chip">réel — à mesurer</span></td></tr>
-    <tr style="background:#BFE3C3;"><td><strong>LLM de synthèse (dev + démo)</strong></td><td><strong>≈ 2,3 $</strong> estimés</td><td>seul poste payant <span class="chip">compteur de tokens — à mesurer</span></td></tr>
+    <tr><td>Recherche de vidéos</td><td><strong>0 €</strong></td><td>quota gratuit — <b>≈ 300 unités réelles</b> sur 10 000/jour, le cache 7 j absorbe le reste</td></tr>
+    <tr style="background:#BFE3C3;"><td><strong>LLM de synthèse (dev + démo)</strong></td><td><strong>0,00 €</strong></td><td>qwen3.5:4b local — le poste payant a été <b>supprimé par la mesure</b> (campagne du 22/08)</td></tr>
   </table>
   <div class="card key"><div class="stitle">Coût du passage à l'échelle</div>
-      <p class="body">Coût marginal d'une réponse : de l'ordre du <strong>centime</strong> (tokens LLM ; le reste est local ou en cache) → <span class="chip">€/élève/mois — calculé des tokens mesurés au POC</span>. Postes additionnels : hébergement (UE, public mineur), supervision — détail dans l'étude de faisabilité jointe.</p></div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>17 / 19</span></div>
+      <p class="body">Coût marginal d'une réponse : <strong>nul en local</strong> ; si LLM cloud (Haiku 4.5) ≈ <strong>0,25 centime/réponse</strong> → <strong>&lt; 0,10 €/élève/mois</strong> à 30 questions/mois (tokens comptés au notebook 05). Postes additionnels : hébergement (UE, public mineur), supervision — détail dans l'étude de faisabilité jointe.</p></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · console Google</span><span>17 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 16 ═══════════ -->
@@ -414,7 +417,7 @@
     <div class="card grow"><div class="stitle">Évaluation continue</div><p class="small">gold set enrichi des vraies questions d'élèves, feedback entraîneurs</p></div>
     <div class="card grow"><div class="stitle">Qualité LLM</div><p class="small">A/B Haiku 4.5 vs Sonnet 5 sur le gold set, juge automatique</p></div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>18 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>docs/07</span><span>18 / 19</span></div>
 </div>
 
 <!-- ═══════════ SLIDE 16 ═══════════ -->
@@ -430,10 +433,11 @@
       <span class="chip solid">✓ Livraison en une commande</span>&nbsp;
       <span class="chip solid">✓ Protocole de mesure</span>
     </div>
-    <p style="text-align:center;" class="body">Objectifs O1–O6 : <span class="chip">statuts à remplir après mesure</span></p>
+    <p style="text-align:center;" class="body"><b>Objectifs mesurés et tenus</b> : 0/56 coup illégal · abstention 5/5 · 100 % sourcé · p95 6,1 s · 0,00 € de LLM · installation 2 min 09</p>
+    <p style="text-align:center; font-size: 19px; margin-top: 18px;">→ <strong>Démo en direct</strong> : Léa joue l'Italienne… et sort de la théorie au 5<sup>e</sup> coup.</p>
     <p style="text-align:center; font-size: 24px; font-weight: 500; margin-top: 40px;">Merci — place aux questions <span style="color:#3A5A40;">♘</span></p>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Source : [·]</span><span>19 / 19</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>le dépôt public</span><span>19 / 19</span></div>
 </div>
 
 </body>

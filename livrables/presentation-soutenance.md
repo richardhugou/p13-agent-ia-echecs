@@ -149,7 +149,7 @@ Ce que chaque source renvoie réellement — un extrait par source :
 | API Lichess (données, pas un modèle) | Coups théoriques + stats | Non — parties réelles CC0 | seuil « en théorie » testé, 0 coup illégal en sortie |
 | **Stockfish** (local, > 3600 Elo) | Évaluation hors théorie | Non — moteur éprouvé | latence/profondeur mesurées, évals cachées |
 | **Qwen3-Embedding-0.6B** (local) | Recherche sémantique FR+EN | Non — pré-entraîné | recall@5 ≥ 0,8 et MRR sur gold set (25 questions) |
-| **LLM de synthèse** (API) | Rédige, pédagogise, cite | Non — API | sources citées 100 %, abstention sur pièges, coût |
+| **LLM de synthèse** (qwen3.5:4b, local via Ollama) | Rédige, pédagogise, cite | Non — pré-entraîné | sources citées 100 %, abstention sur pièges, coût |
 
 **Nous n'entraînons aucun modèle — choix assumé** pour un POC de 2 semaines : on assemble des briques éprouvées, et notre valeur ajoutée est dans **l'orchestration** (le graphe, le routeur déterministe) et **l'évaluation systématique** de bout en bout. Ce qu'on ajuste, ce sont les paramètres du système (chunking, top-k, seuil N) — et chaque ajustement est mesuré (diapos 12–14).
 
@@ -159,13 +159,15 @@ Le routeur théorie/moteur est **déterministe** (seuil de parties masters), pas
 
 ## Diapo 10 — Le choix du LLM de synthèse
 
-| Option | Prix (entrée/sortie par M tokens) | Verdict |
-|---|---|---|
-| **Claude Haiku 4.5** ✅ | 1 $ / 5 $ | Rapide (latence = critère produit), FR correct, budget tenu |
-| Claude Sonnet 5 | 3 $ / 15 $ (lancement : 2 $/10 $) | Plan B si le FR de Haiku déçoit sur le gold set |
-| LLM local (Ollama) | 0 € | Écarté : 16 Go de RAM partagés avec Milvus + Mongo → risque démo |
+**Décision prise sur mesures** (campagne de 4 modèles locaux au banc, journal du 22/08) — et révisée par elles : le plan initial (Haiku via API) est tombé devant les chiffres du local.
 
-Le choix est **réversible** : changer de LLM = changer une variable d'environnement, car le LLM ne fait que la mise en forme finale.
+| Option | Coût | Verdict mesuré |
+|---|---|---|
+| **qwen3.5:4b local (Ollama)** ✅ | 0 € | 3,2 Go de RAM, 3–7 s par réponse, FR correct avec garde-fous (faits annotés, temp 0,2, think off) |
+| Claude Haiku 4.5 (API) | 1 $ / 5 $ par M tokens | **Option qualité** : activable par variable d'environnement si le FR local déçoit |
+| Gabarit déterministe | 0 € | **Repli toujours juste** : si le LLM est indisponible, la réponse reste exacte et sourcée |
+
+Le choix est **réversible** : changer de LLM = changer une variable d'environnement (`LLM_PROVIDER`), car le LLM ne fait que la mise en forme finale — il n'est jamais la source de vérité.
 
 ---
 
@@ -180,7 +182,7 @@ Le choix est **réversible** : changer de LLM = changer une variable d'environne
 4. RAG Milvus (filtre ECO=C50) : idées du Giuoco Piano, sources.
 5. Vidéos depuis le cache → **synthèse LLM** : réponse structurée + sources citées → panneau Angular.
 
-**Chaque nœud a un fallback** (Lichess KO → RAG+Stockfish ; YouTube KO → sans vidéos ; Milvus KO → théorie seule + avertissement) : l'agent dégrade, ne plante pas. Tout passage est tracé (nœud, durée, tokens) → MLflow.
+**Chaque nœud a un fallback** (Lichess KO → RAG+Stockfish ; YouTube KO → sans vidéos ; Milvus KO → théorie seule + avertissement) : l'agent dégrade, ne plante pas — comportement **observé en conditions réelles** (Milvus en recharge : réponse sans fiches + note d'incident). Les runs d'évaluation sont tracés dans MLflow.
 
 ---
 
@@ -204,10 +206,10 @@ Le choix est **réversible** : changer de LLM = changer une variable d'environne
 | Coups illégaux proposés | **0** | **0 sur 56 coups affichés** (scénario de démo rejoué, notebook 05) |
 | recall@5 (gold set 25 questions) | ≥ 0,8 | **1,0** (runs MLflow du 24/08) |
 | MRR | — | **1,0** (runs MLflow du 24/08) |
-| Abstention correcte sur questions pièges | 5/5 | **4/5** — le piège adjacent passe le seuil, d'où la défense en profondeur (diapo 14) |
+| Abstention correcte sur questions pièges | 5/5 | **5/5 — par construction** (règle des rayons signés + seuil filet, diapo 14) |
 | Citation des sources (réponses RAG) | 100 % | **100 % — garanti par construction** (les sources sont ajoutées par le code, pas par le LLM) |
 | Latence recherche vectorielle p95 | < 100 ms | **7–11 ms** (à chaud) |
-| Latence agent p95 | < 8 s | **6,3 s** (p50 4,2 s — synthèse LLM locale comprise ; notebook 05, figure 06) |
+| Latence agent p95 | < 8 s | **6,1 s** (p50 4,5 s — synthèse LLM locale comprise ; notebook 05, figure 06) |
 | Coût LLM total dev+démo | < 5 € | **0,00 € facturé** (qwen3.5:4b local ; équivalent cloud Haiku du banc complet ≈ 0,03 $) |
 
 Tous les chiffres sortent des **runs MLflow** (params, métriques, figures) — aucun chiffre de slide n'a d'autre origine. **Capture du cahier d'expériences : `notebooks/figures/04-mlflow-runs.png`** (expérience gold-set-rag, runs A_naif / B_soigne).
@@ -229,12 +231,13 @@ Tous les chiffres sortent des **runs MLflow** (params, métriques, figures) — 
 
 Enseignement honnête des runs : au niveau « rayon d'ouverture », les deux configurations réussissent — la mesure a montré que le gold set v1 était trop grossier pour les départager, et c'est une découverte en soi. Axe ouvert : gold set v2 à labels fins (page/section).
 
-**La décision du seuil d'abstention — prise sur données** (notebooks 05 et 07, figure `07-decision-seuil.png`) :
+**La décision de l'abstention — trois itérations, toutes sur données** (notebooks 05 et 07, figure `07-decision-seuil.png`) :
 
-- Mesure de bout en bout : sans seuil, une question hors corpus (défense scandinave) faisait **citer 5 fiches adjacentes en sources** — trompeur pour l'élève.
-- Les 25 questions du gold set passées par le chemin de production : les 3 pièges grossiers flottent sous 0,55 (bloqués gratuitement) ; les 2 pièges « adjacents » sont **entrelacés** avec les questions légitimes (scandinave 0,619 vs légitime la plus basse 0,618) — aucun seuil ne sépare tout.
-- **Choix : seuil 0,63**, à mi-chemin de ses voisines mesurées (0,619 / 0,641) : bloque 4/5 pièges **dont le cas mesuré**, au prix d'une question légitime sur 20 privée d'extraits wiki (elle garde stats et moteur). Le code n'ajoute pas de source qu'il ne transmet pas : les citations trompeuses disparaissent **par construction**. Vérifié après mise en production : scandinave → 0 fiche citée ; italienne → 5 fiches intactes.
-- **Défense en profondeur** : ce que le seuil ne bloque pas (piège « gambit du roi », 0,659), la règle d'honnêteté du prompt le couvre.
+1. **Le préjudice mesuré** : sans protection, une question hors corpus (défense scandinave) faisait **citer 5 fiches adjacentes en sources** — trompeur pour l'élève.
+2. **Le seuil seul ne suffit pas** : les 25 questions du gold set passées par le chemin de production — le piège scandinave (0,619) et la question légitime la plus basse (0,618) sont à **un millième** l'un de l'autre ; et les vraies questions d'élèves scorent bas (« Pourquoi joue-t-on 3.Fc4 ? » = 0,629) : un seuil assez haut pour tout bloquer aurait privé la démo de ses fiches.
+3. **La parade retenue — déterministe : la règle des rayons signés.** Le corpus n'est consulté que dans un rayon établi — par la position (ECO) ou par le nom d'ouverture dans la question (alias FR/EN des 8 rayons du manifeste). Ouverture identifiée hors bibliothèque → zéro fiche + réponse honnête sur les seules statistiques. Une citation trompeuse devient **impossible par construction**. Le seuil devient un **filet à 0,58** (marge ±0,03) contre les hors-sujet grossiers dans un rayon.
+
+Vérifié de bout en bout : gambit du roi et scandinave → **0 fiche, 0 source wiki** ; les 20 questions légitimes et la démo → fiches intactes. **5/5 pièges bloqués, 0 légitime sacrifiée** — là où le meilleur seuil pur plafonnait à 4/5 avec sacrifice.
 
 ---
 
@@ -299,10 +302,10 @@ Du POC local au service FFE :
 
 **Ce que le POC démontre** :
 - La boucle produit fonctionne : jouer → comprendre → dévier → évaluer, en moins de 8 s.
-- Zéro coup illégal, sources citées, coût marginal (< 5 € de LLM pour tout le POC).
+- Zéro coup illégal (0/56 au banc), 100 % des réponses sourcées, 0,00 € de LLM (local).
 - Reproductible en une commande, mesurable de bout en bout (MLflow).
 
-**Ce qu'on recommande à la FFE** : valider le POC avec un groupe d'élèves pilote avant les championnats d'Europe, puis industrialiser selon la trajectoire de la diapo 12.
+**Ce qu'on recommande à la FFE** : valider le POC avec un groupe d'élèves pilote avant les championnats d'Europe, puis industrialiser selon la trajectoire de la diapo 16.
 
 → **Démo en direct** : Léa joue l'Italienne… et sort de la théorie au 5e coup.
 

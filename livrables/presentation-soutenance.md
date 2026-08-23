@@ -32,18 +32,16 @@ Capture : `rendu/captures/ui-conseils-italienne.png` — l'écran unique : échi
 
 ## Diapo 4 — Le parcours de l'élève (fonctionnel)
 
-Ce que fait Léa, et ce que fait le système à chaque étape :
+Un seul parcours, suivi jusqu'au bout — Léa travaille l'Italienne avec les Blancs :
 
-| Ce que fait Léa | Ce que fait le système | Pourquoi |
-|---|---|---|
-| 1. Elle dit qui elle est : « je joue les Noirs » | le plateau se retourne vers elle | un seul jeu de pions, son point de vue |
-| 2. Elle choisit une ouverture à travailler — ou joue ses coups **et ceux de son adversaire** (corrigeables) | la position s'installe, validée à chaque coup | l'erreur de saisie ne pollue jamais l'analyse |
-| 3. Elle appuie sur **« Lancer l'IA »** | l'agent interroge ses sources et compose la réponse | c'est elle qui décide quand demander conseil |
-| 4. Elle lit : coups des maîtres + statistiques, explication **avec sources cliquables**, vidéos | chaque bloc vient d'une source vérifiable | rien n'est inventé |
-| 5. Elle pose une question libre (« pourquoi le fou vise f7 ? ») | réponse fondée sur le corpus documentaire, sourcée | la boucle jouer → comprendre |
-| 6. Elle tente un coup douteux hors théorie | l'agent change d'outil : **évaluation objective du moteur** | hors des livres, on mesure au lieu de réciter |
+1. **Elle dit qui elle est** : « je joue les Blancs » — un seul jeu de pièces, son point de vue.
+2. **Elle choisit son point de départ** : l'Italienne (parmi les 8 ouvertures), ou une position libre.
+3. **L'agent joue les coups de l'adversaire** — les plus joués par les maîtres, jamais un choix de LLM ; elle joue les siens. Une erreur ? « Annuler le coup » retire la paire.
+4. **Hors théorie, l'agent le signale** et lui laisse la main : annuler, ou analyser.
+5. **Position prête → « Lancer l'IA »** : coups des maîtres avec statistiques, explication **avec sources cliquables**, vidéos — et une question libre si elle veut.
+6. **Sur un coup douteux**, l'agent change d'outil : **évaluation objective du moteur**.
 
-Capture : `rendu/captures/ui-accueil.png` (l'accueil qui explique ce parcours).
+Capture : `rendu/captures/ui-accueil.png` (l'accueil qui explique ce parcours). À aucun moment le système n'invente : il va chercher, il assemble, il cite.
 
 ---
 
@@ -69,7 +67,22 @@ Chaque boîte répond à une question — et **le FEN** (la position en une lign
 
 ---
 
-## Diapo 6 — La base vectorielle, expliquée
+## Diapo 6 — L'orchestration : le chemin d'une position
+
+*(le graphe de décision — celui du code)*
+
+```
+position (FEN) → valider → identifier l'ouverture → en théorie ?
+      oui → LICHESS (coups des maîtres + stats)      non → STOCKFISH (évaluation objective)
+                     → contexte documentaire (Milvus, rayon de l'ouverture) → vidéos
+                     → LLM : rédige et cite — IL NE CHOISIT JAMAIS UN COUP
+```
+
+Un seul parcours à raconter : Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs statistiques → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie → le moteur mesure (−1,47) au lieu de réciter.
+
+---
+
+## Diapo 7 — La base vectorielle, expliquée
 
 **Le problème** : Léa demande « pourquoi le fou vise f7 ? » — aucun mot-clé ne relie sa question à la page « Giuoco Piano ». Il faut chercher par le **sens**.
 
@@ -84,7 +97,7 @@ Chaque boîte répond à une question — et **le FEN** (la position en une lign
 
 ---
 
-## Diapo 7 — Comment j'ai construit la connaissance
+## Diapo 8 — Comment j'ai construit la connaissance
 
 Pour répondre, l'agent s'appuie sur **4 sources complémentaires** :
 
@@ -98,21 +111,6 @@ Pour répondre, l'agent s'appuie sur **4 sources complémentaires** :
 La base documentaire est **construite par un pipeline rejouable** : extraction (périmètre signé) → nettoyage → découpage en fiches → vectorisation → Milvus.
 
 **Le visuel de cette diapo est la figure réelle du notebook 03** (`notebooks/figures/01-entonnoir-corpus.png`) : **3 251 pages disponibles → 161 retenues (manifeste signé) → 477 fiches** — avec 95 FEN de référence calculés, 0 échec, 1 doublon écarté.
-
----
-
-## Diapo 8 — L'orchestration : le chemin d'une position
-
-*(le graphe de décision — celui du code)*
-
-```
-position (FEN) → valider → identifier l'ouverture → en théorie ?
-      oui → LICHESS (coups des maîtres + stats)      non → STOCKFISH (évaluation objective)
-                     → contexte documentaire (Milvus, rayon de l'ouverture) → vidéos
-                     → LLM : rédige et cite — IL NE CHOISIT JAMAIS UN COUP
-```
-
-Un seul parcours à raconter : Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs statistiques → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie → le moteur mesure (−1,47) au lieu de réciter.
 
 ---
 
@@ -156,7 +154,7 @@ Discipline : chaque chiffre de ce deck sort d'un notebook exécuté ou d'un run 
 
 ## Diapo 12 — Et si la connaissance était dans une vidéo ? (partie 2)
 
-La demande d'Alan : indexer les vidéos **par position**, pas par titre — « cette position est expliquée à 4 min 32 ».
+La demande d'Alan : indexer les vidéos **par position**, pas par titre — « cette position est expliquée à 4 min 32 ». **C'est une étude : rien de ce système n'est développé, c'est volontaire et conforme à la commande** — voilà comment le POC *pourrait évoluer*.
 
 ```
 vidéo → images extraites → détection de l'échiquier → position → FEN → l'AGENT EXISTANT

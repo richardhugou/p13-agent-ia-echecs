@@ -16,8 +16,8 @@
 ## Diapo 3 — L'application en action *(2 min — LA VIDÉO D'ABORD)*
 **Lancer la vidéo (3-4 coups, ~1 min)** sans parler par-dessus, puis reprendre : « Ce que vous venez de voir : un seul écran, l'échiquier et le panneau coach. Les coups affichés viennent des maîtres — "Fc5, le fou de f8" — avec leurs statistiques réelles ; l'explication cite ses sources ; les vidéos sont adaptées à la position. »
 
-## Diapo 4 — Le parcours de l'élève *(2 min)*
-Dérouler le tableau ligne par ligne, toujours du point de vue de Léa : elle dit qui elle est → elle installe sa position (ses coups ET ceux de l'adversaire, corrigeables — une erreur ne pollue jamais l'analyse) → **c'est elle qui appuie** pour lancer l'IA → elle lit des blocs dont chacun vient d'une source vérifiable → elle questionne → elle sort de la théorie et l'agent change d'outil.
+## Diapo 4 — Le parcours de l'élève *(2 min — UN seul parcours, suivi jusqu'au bout)*
+Raconter le scénario unique : « Léa dit qui elle est — les Blancs. Elle choisit l'Italienne. **L'agent joue les coups de son adversaire** — les plus joués par les maîtres, jamais un choix de LLM — et elle joue les siens ; une erreur s'annule. Quand la théorie s'arrête, l'agent le signale et lui laisse la main. Position prête : elle appuie sur "Lancer l'IA" et lit des blocs dont chacun vient d'une source vérifiable. Sur un coup douteux, l'agent change d'outil : le moteur. »
 **Phrase clé** : « À aucun moment le système n'invente : il va chercher, il assemble, il cite. »
 **Transition** : « Comment c'est construit ? Voici l'architecture. »
 
@@ -28,15 +28,15 @@ Suivre le schéma de composants du regard, boîte par boîte — **chaque boîte
 - « Et le **LLM local** transforme ces faits en explication — il ne décide jamais. »
 Fermer : « Le FEN est la langue commune de toutes les briques ; le routeur est déterministe ; chaque brique a un plan B — observé en conditions réelles. »
 
-## Diapo 6 — La base vectorielle *(2 min — le mentor nous attend ici)*
+## Diapo 6 — L'orchestration : le chemin d'une position *(1 min 30)*
+Raconter UN parcours sur le graphe : « Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs stats → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie, le moteur mesure au lieu de réciter. » **Insister : le LLM ne choisit jamais un coup.**
+
+## Diapo 7 — La base vectorielle *(2 min — le mentor nous attend ici)*
 **Définir avant de décrire** : « Une base vectorielle range les textes par leur *sens* — c'est la mémoire documentaire de l'agent. Pourquoi ? Parce que "pourquoi le fou vise f7" ne partage aucun mot avec la page qui l'explique. »
 Suivre le flux du schéma : question → **embedding** (un vecteur) → **similarité cosinus** (l'angle : 1 = même sujet, 0 = sans rapport) → les fiches les plus proches, dans le rayon de l'ouverture jouée → le LLM rédige et cite. Fermer sur les chiffres : 7–11 ms, séparation 0,29 → 0,50, hors bibliothèque → zéro fiche, réponse honnête.
 
-## Diapo 7 — Comment j'ai construit la connaissance *(1 min 30)*
+## Diapo 8 — Comment j'ai construit la connaissance *(1 min 30)*
 « Quatre besoins, quatre sources — et pour la bibliothèque, un pipeline rejouable : extraction, nettoyage, fiches, vecteurs, Milvus. Deux disciplines : le périmètre est **signé avant extraction**, et chaque exécution produit son rapport chiffré. » Montrer l'entonnoir (figure réelle du notebook 03) : 3 251 → 161 → 477.
-
-## Diapo 8 — L'orchestration : le chemin d'une position *(1 min 30)*
-Raconter UN parcours sur le graphe : « Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs stats → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie, le moteur mesure au lieu de réciter. » **Insister : le LLM ne choisit jamais un coup.**
 
 ## Diapo 9 — Ce que j'ai mesuré *(1 min 30)*
 Dérouler la colonne « Résultat » — chaque ligne est une promesse à Léa tenue — et montrer la figure réelle des latences (notebook 05). Le mot de théorie LLM (le mentor l'a demandé) : « Un LLM prédit le mot suivant : il est fait pour être *plausible*, pas pour être *vrai*. Toute l'architecture découle de cette phrase. » Fermer : « Le POC atteint ses objectifs et reste assez rapide pour un usage interactif. »
@@ -51,7 +51,7 @@ Dérouler la colonne « Résultat » — chaque ligne est une promesse à Léa t
 « La demande : indexer les vidéos par **position** — "cette position est expliquée à 4 min 32". L'idée maîtresse : **ce n'est pas un deuxième agent** — la vidéo devient des positions FEN, la même clé que tout le POC, exploitables par l'agent existant. Trois choses à retenir : le bénéfice chiffré (×50 à ×100 contre l'indexation humaine) ; **la limite dure est juridique** (CGU : jamais les fichiers → MVP sur Creative Commons + transcripts d'abord) ; l'architecture en **MCP** — des serveurs d'outils réutilisables par tout agent futur de la FFE, avec un pipeline batch assumé. Build 15-20 k€, opex ~100 $/mois, roadmap avec critères d'arrêt. L'étude complète est jointe. »
 
 ## Diapo 13 — Conclusion → démo *(30 s puis démo en direct)*
-« La promesse : un retour de niveau entraîneur, à la demande — et chaque objectif est mesuré et tenu. Je vous propose maintenant de le voir en vrai. » → Démo (`docs/08-script-demo.md`) : choix du camp → Italienne par le sélecteur → question libre → 4.g4?! bascule moteur. Si le jury est curieux : la question scandinave — l'agent répond « ma bibliothèque est vide pour ce sujet, je ne peux pas t'expliquer » : l'honnêteté en direct.
+« La promesse : un retour de niveau entraîneur, à la demande — et chaque objectif est mesuré et tenu. Je vous propose maintenant de le voir en vrai. » → Démo (`docs/08-script-demo.md`) : choix du camp (l'agent joue l'adversaire !) → Italienne par le sélecteur → question libre → 4.g4?! bascule moteur. Si le jury est curieux : la question scandinave — l'agent répond « ma bibliothèque est vide pour ce sujet, je ne peux pas t'expliquer » : l'honnêteté en direct.
 
 ---
 

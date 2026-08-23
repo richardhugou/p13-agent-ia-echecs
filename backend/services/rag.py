@@ -68,7 +68,9 @@ def _milvus() -> MilvusClient:
     global _client
     if _client is None:
         settings = get_settings()
-        _client = MilvusClient(uri=f"http://{settings.milvus_host}:{settings.milvus_port}")
+        # MILVUS_LITE_PATH non vide (ex. /tmp/openings.db) = Milvus Lite embarqué (vitrine)
+        uri = settings.milvus_lite_path or f"http://{settings.milvus_host}:{settings.milvus_port}"
+        _client = MilvusClient(uri=uri)
     return _client
 
 
@@ -99,8 +101,27 @@ def eco_vers_ouverture(eco: str | None) -> str | None:
     return None
 
 
+_modele_local = None
+
+
+def _embed_local(texte: str) -> list[float]:
+    """Embeddings sans Ollama (mode vitrine) : le MÊME modèle Qwen3-Embedding-0.6B,
+    servi par sentence-transformers sur CPU — même espace vectoriel que le corpus."""
+    global _modele_local
+    if _modele_local is None:
+        from sentence_transformers import SentenceTransformer
+
+        _modele_local = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B", device="cpu")
+    return _modele_local.encode([texte], normalize_embeddings=True)[0].tolist()
+
+
 def _embed_question(question: str) -> list[float]:
     settings = get_settings()
+    if settings.embed_provider == "local":
+        try:
+            return _embed_local(INSTRUCTION + question)
+        except Exception as exc:  # noqa: BLE001 — toute panne d'embedding = bibliothèque KO
+            raise RagUnavailable(f"embeddings locaux : {type(exc).__name__}: {exc}") from exc
     response = httpx2.post(
         f"{settings.ollama_base_url}/api/embed",
         json={"model": settings.embedding_model, "input": [INSTRUCTION + question]},

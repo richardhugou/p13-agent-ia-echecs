@@ -1,9 +1,9 @@
 # Note — Bénéfices attendus et limites du système d'analyse vidéo
 
-**Projet** : agent IA d'entraînement aux ouvertures d'échecs — FFE / Cavalier Data
-**Objet** : étude de la partie 2 de la mission — un système qui analyse les vidéos pédagogiques pour les indexer par position d'échecs (FEN)
-**Auteur** : Richard Hugou, IA Engineer — **Destinataire** : Alan (responsable technique), DTN jeunes FFE
-**Statut** : étude de conception — aucune ligne de code de ce système n'est développée à ce stade, c'est volontaire et conforme à la commande.
+- **Projet** : agent IA d'entraînement aux ouvertures d'échecs — FFE / Cavalier Data
+- **Objet** : étude de la partie 2 de la mission — un système qui analyse les vidéos pédagogiques pour les indexer par position d'échecs (FEN)
+- **Auteur** : Richard Hugou, IA Engineer — **Destinataire** : Alan (responsable technique), DTN jeunes FFE
+- **Statut** : étude de conception — aucune ligne de code de ce système n'est développée à ce stade, c'est volontaire et conforme à la commande.
 
 ---
 

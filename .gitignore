@@ -31,3 +31,5 @@ models_cache/
 .idea/
 .DS_Store
 livrables/rendu/*.pdf
+livrables/rendu/*.zip
+livrables/rendu/zip-staging/

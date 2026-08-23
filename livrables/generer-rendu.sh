@@ -56,13 +56,14 @@ md_vers_pdf livrables/schema-architecture-mcp.md  "$STAGE/Hugou_Richard_5_schema
 md_vers_pdf livrables/fiche-autoevaluation.md     "$STAGE/Hugou_Richard_6_fiche_autoevaluation_082026.pdf"
 md_vers_pdf livrables/documentation-technique.md  "$STAGE/Hugou_Richard_7_documentation_technique_082026.pdf"
 
-echo "── 8. La vidéo de démo (si présente) ──"
+echo "── 8. La vidéo de démo ──"
 video=$(find livrables/rendu -maxdepth 1 -iname "*demo*.mp4" -o -iname "*demo*.mov" -o -iname "*demo*.webm" 2>/dev/null | head -1)
 if [ -n "$video" ]; then
   cp "$video" "$STAGE/Hugou_Richard_8_video_demo_082026.${video##*.}"
-  echo "  ✓ vidéo : $(basename "$video")"
+  echo "  ✓ vidéo (fichier) : $(basename "$video")"
 else
-  echo "  ⚠️  aucune vidéo *demo*.mp4/mov/webm dans livrables/rendu/ — à déposer puis relancer"
+  printf "Vidéo de démonstration (Loom, ~45 s — le parcours de l'élève sur l'Italienne) :\nhttps://www.loom.com/share/821b854d6676475bb82cb1830448a3c3\n" > "$STAGE/Hugou_Richard_8_video_demo_lien_082026.txt"
+  echo "  ✓ vidéo : lien Loom (déposer un fichier *demo*.mp4 dans livrables/rendu/ pour l'embarquer à la place)"
 fi
 
 echo "── Assemblage ──"

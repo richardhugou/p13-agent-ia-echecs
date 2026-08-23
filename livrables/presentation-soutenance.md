@@ -26,7 +26,7 @@ Ce que l'IA doit savoir faire pour elle : (1) proposer les coups reconnus par la
 **→ Vidéo de démonstration (3-4 coups, ~45 s)** : Léa choisit son camp, travaille l'Italienne, reçoit les conseils, sort de la théorie — l'agent bascule sur le moteur.
 *Lien : https://www.loom.com/share/821b854d6676475bb82cb1830448a3c3*
 
-Capture : `rendu/captures/ui-conseils-italienne.png` — l'écran unique : échiquier + panneau coach (coups des maîtres « Fc5 (fou f8) » avec statistiques, explication sourcée, vidéos).
+Visuel : la capture réelle `rendu/captures/ui-conseils-italienne.png` en grand (≈ 70 % de la diapo) — l'écran unique : camp, ouvertures, coups des maîtres « Fc5 (fou f8) » avec statistiques et cases teintées, explication sourcée, vidéos.
 
 ---
 

@@ -26,22 +26,24 @@ ENV UV_COMPILE_BYTECODE=1 \
     HF_HOME=/app/hf-cache
 
 COPY backend/pyproject.toml backend/uv.lock ./
-RUN uv sync --frozen --no-install-project --no-dev \
+RUN uv sync --frozen --no-install-project --no-dev
+
+COPY backend/ .
+# ATTENTION à l'ordre : uv sync purge tout paquet hors lock — les extras du mode
+# vitrine s'installent donc APRÈS le sync final.
+RUN uv sync --frozen --no-dev \
     && uv pip install "sentence-transformers>=3.0" milvus-lite
 
 # Le modèle d'embedding entre dans l'image : pas de téléchargement au démarrage
 RUN uv run --no-sync python -c "from sentence_transformers import SentenceTransformer; \
 SentenceTransformer('Qwen/Qwen3-Embedding-0.6B', device='cpu')"
-
-COPY backend/ .
-RUN uv sync --frozen --no-dev
 COPY space/corpus_export.json.gz /app/corpus_export.json.gz
 COPY --from=front /app/dist/chess-board /app/static
 
 # Les Spaces exécutent le conteneur sous un utilisateur arbitraire
 RUN chmod -R a+rwX /app
 
-ENV MILVUS_URI=/tmp/openings.db \
+ENV MILVUS_LITE_PATH=/tmp/openings.db \
     EMBED_PROVIDER=local \
     SERVE_FRONT=1 \
     CORPUS_EXPORT=/app/corpus_export.json.gz \

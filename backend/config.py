@@ -16,11 +16,12 @@ class Settings(BaseSettings):
     embedding_model: str = "qwen3-embedding:0.6b"
     rag_top_k: int = 5
     # Mode vitrine (Hugging Face Space, mono-conteneur) — sans effet en local :
-    # milvus_uri non vide = Milvus Lite (fichier embarqué) au lieu du serveur ;
+    # milvus_lite_path non vide = Milvus Lite (fichier embarqué) au lieu du serveur
+    # (nom volontairement ≠ MILVUS_URI : pymilvus lit cette variable d'env à l'import) ;
     # embed_provider "local" = sentence-transformers CPU au lieu d'Ollama ;
     # serve_front = FastAPI sert aussi l'Angular compilé ; corpus_export = le
     # corpus pré-vectorisé chargé au premier démarrage.
-    milvus_uri: str = ""
+    milvus_lite_path: str = ""
     embed_provider: str = "ollama"
     serve_front: bool = False
     corpus_export: str = ""

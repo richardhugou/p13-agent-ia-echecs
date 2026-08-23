@@ -68,8 +68,8 @@ def _milvus() -> MilvusClient:
     global _client
     if _client is None:
         settings = get_settings()
-        # MILVUS_URI non vide (ex. /data/openings.db) = Milvus Lite embarqué (mode vitrine)
-        uri = settings.milvus_uri or f"http://{settings.milvus_host}:{settings.milvus_port}"
+        # MILVUS_LITE_PATH non vide (ex. /tmp/openings.db) = Milvus Lite embarqué (vitrine)
+        uri = settings.milvus_lite_path or f"http://{settings.milvus_host}:{settings.milvus_port}"
         _client = MilvusClient(uri=uri)
     return _client
 

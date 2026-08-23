@@ -33,7 +33,10 @@
 
         <!-- Section Coach (panneau de l'agent) -->
         <div class="coach-section">
-          <app-coach-panel [fen]="fen"></app-coach-panel>
+          <app-coach-panel [fen]="fen"
+                           (campChoisi)="choisirCamp($event)"
+                           (ouvertureChoisie)="chargerPosition($event)"
+                           (annulerCoup)="annulerDernierCoup()"></app-coach-panel>
         </div>
 
         <!-- Section Échiquier -->

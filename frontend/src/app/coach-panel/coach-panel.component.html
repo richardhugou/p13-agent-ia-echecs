@@ -1,5 +1,34 @@
 <div class="coach">
 
+  <div class="config">
+    <div class="ligne camp">
+      <span class="etiquette">Tu joues :</span>
+      <button class="pilule" [class.actif]="camp === 'blanc'" (click)="choisirCamp('blanc')">♙ les Blancs</button>
+      <button class="pilule" [class.actif]="camp === 'noir'" (click)="choisirCamp('noir')">♟ les Noirs</button>
+    </div>
+    <div class="ligne">
+      <span class="etiquette">Travailler une ouverture :</span>
+      <span class="pilules">
+        <button class="pilule" *ngFor="let o of ouvertures" [class.actif]="ouvertureActive === o.nom"
+                (click)="choisirOuverture(o)">{{ o.nom }}</button>
+      </span>
+    </div>
+    <div class="ligne actions">
+      <button mat-flat-button color="primary" class="lancer" (click)="lancerIA()" [disabled]="chargement">
+        Lancer l'IA sur cette position
+      </button>
+      <button mat-stroked-button (click)="annulerCoup.emit()" [disabled]="chargement">↶ Annuler le coup</button>
+    </div>
+  </div>
+
+  <div class="carte accueil" *ngIf="!reponse && !chargement && !erreurReseau">
+    <p class="texte">Salut, je suis ton coach d'ouvertures ! Joue tes coups <strong>et ceux de ton
+    adversaire</strong> sur l'échiquier (une erreur ? « Annuler le coup »), ou choisis directement
+    une ouverture à travailler. Quand ta position est prête, appuie sur
+    <strong>« Lancer l'IA »</strong> — je te dirai ce que jouent les maîtres, pourquoi, et avec
+    quelles vidéos progresser.</p>
+  </div>
+
   <div class="entete">
     <ng-container *ngIf="reponse?.in_theory !== null && reponse">
       <span class="badge" [class.theorie]="reponse.in_theory" [class.moteur]="!reponse.in_theory">
@@ -39,7 +68,7 @@
   <div class="question">
     <input type="text" [(ngModel)]="question" (keyup.enter)="poserQuestion()"
            placeholder="Pose ta question sur cette position… (ex. pourquoi le fou vise f7 ?)" />
-    <button mat-flat-button color="primary" (click)="poserQuestion()" [disabled]="chargement">
+    <button mat-flat-button color="primary" (click)="poserQuestion()" [disabled]="chargement || !question.trim()">
       Demander
     </button>
   </div>

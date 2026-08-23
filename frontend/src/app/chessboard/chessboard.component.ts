@@ -365,6 +365,31 @@ public currentMoveIndex = 0;
     this.fenUpdateSubject.next(initialFen);
   }
 
+  // ========== PARCOURS COACH (retours mentor) ==========
+
+  private plateauInverse = false;
+
+  /** L'élève dit qui il est : jouer les Noirs retourne le plateau vers lui. */
+  public choisirCamp(camp: 'blanc' | 'noir'): void {
+    const inverser = camp === 'noir';
+    if (inverser !== this.plateauInverse) {
+      this.boardManager.reverse();
+      this.plateauInverse = inverser;
+    }
+  }
+
+  /** Le sélecteur d'ouverture pose la position de référence sur l'échiquier. */
+  public chargerPosition(fen: string): void {
+    this.boardManager.setFEN(fen);
+    this.fen = fen;
+  }
+
+  /** Une erreur de saisie (son coup ou celui de l'adversaire) se corrige d'un clic. */
+  public annulerDernierCoup(): void {
+    this.boardManager.undo();
+    this.fen = this.boardManager.getFEN();
+  }
+
   public reset(): void {
     this.boardManager.reset();
     this.resetComponentState();

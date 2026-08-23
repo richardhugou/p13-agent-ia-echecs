@@ -47,6 +47,37 @@
   }
 }
 
+.config {
+  background: #f3eee4;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+
+  .ligne {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+    &:last-child { margin-bottom: 0; }
+  }
+  .etiquette { font-size: 0.82rem; color: #7a756c; font-weight: 600; margin-right: 4px; }
+  .pilules { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+  .pilule {
+    border: 1px solid #bdb6a8;
+    background: #fcf9f4;
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    &.actif { background: #3a5a40; border-color: #3a5a40; color: #fff; }
+  }
+  .actions { margin-top: 4px; }
+  .lancer { flex: 1; }
+}
+
+.accueil .texte { line-height: 1.5; }
+
 .coup {
   display: flex;
   align-items: center;

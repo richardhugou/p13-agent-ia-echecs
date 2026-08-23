@@ -92,15 +92,16 @@
 <!-- ═══════════ DIAPO 4 — Le parcours utilisateur ═══════════ -->
 <div class="slide">
   <div class="kicker">Le produit · Le parcours</div>
-  <h1>Le parcours de l'élève</h1>
+  <h1>Le parcours de l'élève — un seul, suivi jusqu'au bout</h1>
   <div class="row" style="align-items:center; margin-bottom: 6px;">
-    <img src="captures/ui-accueil.png" style="width: 52%; border-radius: 12px; border: 1px solid #7A756C;">
-    <div class="grow body" style="line-height: 1.65;">
-      <p><span class="num">1.</span> Elle dit qui elle est — <em>« je joue les Noirs »</em> : le plateau se retourne vers elle.</p>
-      <p><span class="num">2.</span> Elle choisit une <strong>ouverture à travailler</strong>, ou installe sa position en jouant ses coups <strong>et ceux de l'adversaire</strong> — une erreur se corrige (« Annuler le coup »).</p>
-      <p><span class="num">3.</span> Elle appuie sur <strong>« Lancer l'IA »</strong> — c'est elle qui décide quand demander conseil.</p>
-      <p><span class="num">4.</span> Elle lit : coups + statistiques, explication <strong>avec sources cliquables</strong>, vidéos — et peut poser une question libre.</p>
-      <p><span class="num">5.</span> Hors théorie, l'agent change d'outil : <strong>évaluation objective du moteur</strong>.</p>
+    <img src="captures/ui-accueil.png" style="width: 50%; border-radius: 12px; border: 1px solid #7A756C;">
+    <div class="grow body" style="line-height: 1.6;">
+      <p><span class="num">1.</span> Léa dit <strong>qui elle est</strong> — « je joue les Blancs » : un seul jeu de pièces, son point de vue.</p>
+      <p><span class="num">2.</span> Elle choisit <strong>son point de départ</strong> : l'Italienne, ou une position libre.</p>
+      <p><span class="num">3.</span> <strong>L'agent joue les coups de l'adversaire</strong> — les plus joués par les maîtres, jamais un choix de LLM. Elle joue les siens ; une erreur ? « Annuler le coup ».</p>
+      <p><span class="num">4.</span> <strong>Hors théorie, l'agent le signale</strong> et lui laisse la main.</p>
+      <p><span class="num">5.</span> Position prête → <strong>« Lancer l'IA »</strong> : coups + statistiques, explication <strong>sourcée</strong>, vidéos, question libre.</p>
+      <p><span class="num">6.</span> Sur un coup douteux : <strong>évaluation objective du moteur</strong>.</p>
     </div>
   </div>
   <p class="small" style="text-align:center;">À aucun moment le système n'invente : il va chercher, il assemble, il cite.</p>
@@ -155,62 +156,9 @@
   <div class="footer"><span>Cavalier Data × FFE</span><span>architecture implémentée — documentation-technique.md</span><span>5 / 13</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 6 — La base vectorielle ═══════════ -->
-<div class="slide">
-  <div class="kicker">L'architecture · 2/2 — Le cœur documentaire</div>
-  <h1>Pourquoi une base vectorielle ?</h1>
-  <p class="body" style="margin-bottom: 16px;">Léa demande : <em>« pourquoi le fou vise f7 ? »</em> — aucun mot-clé ne relie sa question à la page « Giuoco Piano ». Il faut chercher par le <strong>sens</strong>. La base vectorielle est la <strong>mémoire documentaire</strong> de l'agent.</p>
-  <svg viewBox="0 0 1160 250" style="width: 92%; display:block; margin: 0 auto 12px;" role="img">
-    <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#7A756C"/></marker></defs>
-    <rect x="10" y="90" width="220" height="60" rx="16" fill="#F3EEE4"/>
-    <text x="120" y="116" text-anchor="middle" font-size="14.5" fill="#1C1B18">question de l'élève</text>
-    <text x="120" y="136" text-anchor="middle" font-size="12" fill="#7A756C">« pourquoi le fou vise f7 ? »</text>
-    <line x1="230" y1="120" x2="280" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
-    <rect x="284" y="90" width="170" height="60" rx="16" fill="#F0E6D2"/>
-    <text x="369" y="116" text-anchor="middle" font-size="14.5" fill="#2A2011">embedding</text>
-    <text x="369" y="136" text-anchor="middle" font-size="12" fill="#7A756C">[0.12, −0.04, …]</text>
-    <line x1="454" y1="120" x2="512" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
-    <text x="483" y="106" text-anchor="middle" font-size="12" fill="#3A5A40" font-weight="600">cosinus</text>
-    <rect x="516" y="55" width="250" height="130" rx="16" fill="#BFE3C3"/>
-    <text x="641" y="83" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">MILVUS — 477 fiches</text>
-    <text x="641" y="110" text-anchor="middle" font-size="13" fill="#0B2211">fiche « Giuoco Piano »&nbsp;&nbsp;0,91</text>
-    <text x="641" y="132" text-anchor="middle" font-size="13" fill="#0B2211">fiche « Italienne »&nbsp;&nbsp;0,84</text>
-    <text x="641" y="154" text-anchor="middle" font-size="13" fill="#0B2211">fiche « f7, point faible »&nbsp;&nbsp;0,79</text>
-    <line x1="766" y1="120" x2="822" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
-    <rect x="826" y="90" width="150" height="60" rx="16" fill="#FFDAD2"/>
-    <text x="901" y="116" text-anchor="middle" font-size="14.5" fill="#4a1206">LLM</text>
-    <text x="901" y="136" text-anchor="middle" font-size="12" fill="#4a1206">rédige et cite</text>
-    <line x1="976" y1="120" x2="1024" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
-    <rect x="1028" y="90" width="125" height="60" rx="16" fill="#FCF9F4" stroke="#3A5A40" stroke-width="2"/>
-    <text x="1090" y="116" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1C1B18">explication</text>
-    <text x="1090" y="134" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1C1B18">sourcée</text>
-  </svg>
-  <p class="body" style="margin-bottom: 8px;">Les 477 fiches (FR + EN, dans le <strong>même espace de sens</strong>) sont vectorisées une fois ; chaque question l'est à la volée ; la <strong>similarité cosinus</strong> mesure l'angle entre les deux (1 = même sujet, 0 = sans rapport). La recherche se fait <strong>dans le rayon de l'ouverture jouée uniquement</strong> — hors bibliothèque : zéro fiche, réponse honnête.</p>
-  <p class="small">Mesuré : recherche <b>7–11 ms</b> · séparation sujet/hors-sujet 0,29 → <b>0,50</b> (notebook 02) · le détail (modèle, dimensions, index) : documentation technique.</p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>6 / 13</span></div>
-</div>
-
-<!-- ═══════════ DIAPO 7 — La connaissance ═══════════ -->
-<div class="slide">
-  <div class="kicker">La construction</div>
-  <h1>Comment j'ai construit la connaissance</h1>
-  <div class="row" style="align-items:center; margin-bottom: 8px;">
-    <div style="flex: 0 0 44%;" class="body">
-      <p style="margin-bottom: 12px;"><strong>4 besoins, 4 sources</strong> : nommer l'ouverture (référentiel CC0) · voir ce que jouent les maîtres (Lichess) · expliquer les idées (Wikipédia FR + Wikibooks EN) · proposer une vidéo (YouTube, métadonnées seules).</p>
-      <p style="margin-bottom: 12px;"><strong>Le pipeline</strong> (rejouable, idempotent) :<br><span class="mono">extraction → nettoyage → fiches → vecteurs → Milvus</span></p>
-      <p>Le périmètre est <strong>signé avant extraction</strong> (manifeste versionné) — et chaque exécution produit son rapport chiffré : <b>156 pages extraites → 477 fiches</b>, 95 FEN de référence calculés / 0 échec, 1 doublon écarté.</p>
-    </div>
-    <div class="grow" style="text-align:center;">
-      <img src="../../notebooks/figures/01-entonnoir-corpus.png" style="width: 96%; border-radius: 10px; border: 1px solid #7A756C;">
-      <p class="small">L'entonnoir réel du corpus — figure générée par le notebook 03 : 3 251 pages disponibles → 161 retenues → 477 fiches.</p>
-    </div>
-  </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml (signé)</span><span>7 / 13</span></div>
-</div>
-
 <!-- ═══════════ DIAPO 8 — L'orchestration ═══════════ -->
 <div class="slide">
-  <div class="kicker">La construction · L'agent</div>
+  <div class="kicker">L'architecture · 2/2</div>
   <h1>L'orchestration : le chemin d'une position</h1>
   <svg viewBox="0 0 1160 400" style="width: 100%; margin-bottom: 8px;" role="img">
     <defs>
@@ -250,7 +198,60 @@
   </svg>
 
   <p class="body" style="text-align:center; margin-top: 6px;">Un seul parcours à retenir : Léa joue 3.Fc4 → Italienne identifiée → <b>en théorie</b> → Fc5/Cf6 avec leurs statistiques → fiches du rayon italienne → vidéos → réponse rédigée et sourcée.<br>Sur 4.g4?! : <b>hors théorie</b> → le moteur mesure (−1,47) au lieu de réciter. <span style="color:#3A5A40; font-weight:600;">Le LLM ne choisit jamais un coup.</span></p>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>backend/graph — 65 tests verts</span><span>8 / 13</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>backend/graph — 65 tests verts</span><span>6 / 13</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 6 — La base vectorielle ═══════════ -->
+<div class="slide">
+  <div class="kicker">La construction · 1/2 — Le cœur documentaire</div>
+  <h1>Pourquoi une base vectorielle ?</h1>
+  <p class="body" style="margin-bottom: 16px;">Léa demande : <em>« pourquoi le fou vise f7 ? »</em> — aucun mot-clé ne relie sa question à la page « Giuoco Piano ». Il faut chercher par le <strong>sens</strong>. La base vectorielle est la <strong>mémoire documentaire</strong> de l'agent.</p>
+  <svg viewBox="0 0 1160 250" style="width: 92%; display:block; margin: 0 auto 12px;" role="img">
+    <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#7A756C"/></marker></defs>
+    <rect x="10" y="90" width="220" height="60" rx="16" fill="#F3EEE4"/>
+    <text x="120" y="116" text-anchor="middle" font-size="14.5" fill="#1C1B18">question de l'élève</text>
+    <text x="120" y="136" text-anchor="middle" font-size="12" fill="#7A756C">« pourquoi le fou vise f7 ? »</text>
+    <line x1="230" y1="120" x2="280" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <rect x="284" y="90" width="170" height="60" rx="16" fill="#F0E6D2"/>
+    <text x="369" y="116" text-anchor="middle" font-size="14.5" fill="#2A2011">embedding</text>
+    <text x="369" y="136" text-anchor="middle" font-size="12" fill="#7A756C">[0.12, −0.04, …]</text>
+    <line x1="454" y1="120" x2="512" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <text x="483" y="106" text-anchor="middle" font-size="12" fill="#3A5A40" font-weight="600">cosinus</text>
+    <rect x="516" y="55" width="250" height="130" rx="16" fill="#BFE3C3"/>
+    <text x="641" y="83" text-anchor="middle" font-size="15" font-weight="600" fill="#0B2211">MILVUS — 477 fiches</text>
+    <text x="641" y="110" text-anchor="middle" font-size="13" fill="#0B2211">fiche « Giuoco Piano »&nbsp;&nbsp;0,91</text>
+    <text x="641" y="132" text-anchor="middle" font-size="13" fill="#0B2211">fiche « Italienne »&nbsp;&nbsp;0,84</text>
+    <text x="641" y="154" text-anchor="middle" font-size="13" fill="#0B2211">fiche « f7, point faible »&nbsp;&nbsp;0,79</text>
+    <line x1="766" y1="120" x2="822" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <rect x="826" y="90" width="150" height="60" rx="16" fill="#FFDAD2"/>
+    <text x="901" y="116" text-anchor="middle" font-size="14.5" fill="#4a1206">LLM</text>
+    <text x="901" y="136" text-anchor="middle" font-size="12" fill="#4a1206">rédige et cite</text>
+    <line x1="976" y1="120" x2="1024" y2="120" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <rect x="1028" y="90" width="125" height="60" rx="16" fill="#FCF9F4" stroke="#3A5A40" stroke-width="2"/>
+    <text x="1090" y="116" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1C1B18">explication</text>
+    <text x="1090" y="134" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1C1B18">sourcée</text>
+  </svg>
+  <p class="body" style="margin-bottom: 8px;">Les 477 fiches (FR + EN, dans le <strong>même espace de sens</strong>) sont vectorisées une fois ; chaque question l'est à la volée ; la <strong>similarité cosinus</strong> mesure l'angle entre les deux (1 = même sujet, 0 = sans rapport). La recherche se fait <strong>dans le rayon de l'ouverture jouée uniquement</strong> — hors bibliothèque : zéro fiche, réponse honnête.</p>
+  <p class="small">Mesuré : recherche <b>7–11 ms</b> · séparation sujet/hors-sujet 0,29 → <b>0,50</b> (notebook 02) · le détail (modèle, dimensions, index) : documentation technique.</p>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>7 / 13</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 7 — La connaissance ═══════════ -->
+<div class="slide">
+  <div class="kicker">La construction · 2/2</div>
+  <h1>Comment j'ai construit la connaissance</h1>
+  <div class="row" style="align-items:center; margin-bottom: 8px;">
+    <div style="flex: 0 0 44%;" class="body">
+      <p style="margin-bottom: 12px;"><strong>4 besoins, 4 sources</strong> : nommer l'ouverture (référentiel CC0) · voir ce que jouent les maîtres (Lichess) · expliquer les idées (Wikipédia FR + Wikibooks EN) · proposer une vidéo (YouTube, métadonnées seules).</p>
+      <p style="margin-bottom: 12px;"><strong>Le pipeline</strong> (rejouable, idempotent) :<br><span class="mono">extraction → nettoyage → fiches → vecteurs → Milvus</span></p>
+      <p>Le périmètre est <strong>signé avant extraction</strong> (manifeste versionné) — et chaque exécution produit son rapport chiffré : <b>156 pages extraites → 477 fiches</b>, 95 FEN de référence calculés / 0 échec, 1 doublon écarté.</p>
+    </div>
+    <div class="grow" style="text-align:center;">
+      <img src="../../notebooks/figures/01-entonnoir-corpus.png" style="width: 96%; border-radius: 10px; border: 1px solid #7A756C;">
+      <p class="small">L'entonnoir réel du corpus — figure générée par le notebook 03 : 3 251 pages disponibles → 161 retenues → 477 fiches.</p>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml (signé)</span><span>8 / 13</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 9 — Ce que j'ai mesuré ═══════════ -->
@@ -311,7 +312,7 @@
 <div class="slide">
   <div class="kicker">La perspective · Partie 2</div>
   <h1>Et si la connaissance était dans une vidéo ?</h1>
-  <p class="body" style="margin-bottom: 14px;">La demande d'Alan : indexer les vidéos <strong>par position</strong>, pas par titre — <em>« cette position est expliquée à 4 min 32 »</em>.</p>
+  <p class="body" style="margin-bottom: 14px;">La demande d'Alan : indexer les vidéos <strong>par position</strong>, pas par titre — <em>« cette position est expliquée à 4 min 32 »</em>. <strong>C'est une étude</strong> : rien de ce système n'est développé, c'est volontaire et conforme à la commande — voilà comment le POC <em>pourrait évoluer</em>.</p>
   <div style="text-align:center; font-family: 'SF Mono', Menlo, monospace; font-size: 17px; line-height: 2.0; margin-bottom: 14px;">
     vidéo &nbsp;→&nbsp; images extraites &nbsp;→&nbsp; détection de l'échiquier &nbsp;→&nbsp; position → <b>FEN</b> &nbsp;→&nbsp; <span style="color:#3A5A40; font-weight:700;">l'agent existant</span>
   </div>

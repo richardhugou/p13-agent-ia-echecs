@@ -64,7 +64,7 @@ Erreurs typées et actionnables (429 → Retry-After, 401 → message explicite,
 
 ## 5. Le front
 
-Angular 19 (starter OC material-chessboard, lib ngx-chess-board locale). Parcours élève (revu sur retours mentor) : choix du camp (le plateau se retourne) → coups libres — les siens et ceux de l'adversaire, corrigeables (« Annuler le coup ») — ou sélecteur d'ouverture (8 rayons) → **bouton « Lancer l'IA »** (pas de déclenchement automatique). Notation française annotée « Fc5 (fou f8) ». Lien profond de démo : `http://localhost:4200/#ouverture=Italienne`.
+Angular 19 (starter OC material-chessboard, lib ngx-chess-board locale). Parcours élève (revu sur retours mentor) : choix du camp (le plateau se retourne) → **mode entraînement : l'agent joue les coups de l'adversaire** (le plus joué des maîtres via `/moves` — jamais un choix de LLM ; plus de théorie → signal et main rendue à l'élève) → « Annuler le coup » retire la paire de coups → sélecteur d'ouverture (8 rayons) → **bouton « Lancer l'IA »** (pas de déclenchement automatique). Notation française annotée « Fc5 (fou f8) ». Lien profond de démo : `http://localhost:4200/#ouverture=Italienne`.
 
 ## 6. Évaluation et mesures (tout est rejouable)
 

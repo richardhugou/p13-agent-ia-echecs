@@ -311,7 +311,7 @@ parseEvaluationToCentipawns(evaluation: string): number {
     this.currentIndex = 0;
     this.fenSubject.next(this.fen);
     this.fenUpdateSubject.next(this.fen);
-
+    this.jouerAdversaireSiBesoin(); // l'agent répond si c'est le trait du camp adverse
   }
  public loadNextPosition(): void {
     if (this.moves && this.moves.length > 0 && !this.lightDisabled && !this.darkDisabled  && !this.isBoardLocked) {
@@ -368,26 +368,79 @@ public currentMoveIndex = 0;
   // ========== PARCOURS COACH (retours mentor) ==========
 
   private plateauInverse = false;
+  public camp: 'blanc' | 'noir' | null = null;
+  public horsTheorie = false;
+  private adversaireEnCours = false;
 
-  /** L'élève dit qui il est : jouer les Noirs retourne le plateau vers lui. */
+  /** L'élève dit qui il est : le plateau se tourne vers lui, l'agent joue le camp adverse. */
   public choisirCamp(camp: 'blanc' | 'noir'): void {
+    this.camp = camp;
     const inverser = camp === 'noir';
     if (inverser !== this.plateauInverse) {
       this.boardManager.reverse();
       this.plateauInverse = inverser;
     }
+    this.jouerAdversaireSiBesoin();
   }
 
   /** Le sélecteur d'ouverture pose la position de référence sur l'échiquier. */
   public chargerPosition(fen: string): void {
     this.boardManager.setFEN(fen);
     this.fen = fen;
+    this.horsTheorie = false;
+    this.jouerAdversaireSiBesoin();
   }
 
-  /** Une erreur de saisie (son coup ou celui de l'adversaire) se corrige d'un clic. */
+  /**
+   * L'agent joue les coups de l'adversaire (retour mentor) : quand c'est le trait
+   * du camp adverse, il joue le coup le PLUS JOUÉ par les maîtres (API /moves —
+   * même source de vérité que le panneau, jamais un choix de LLM). Position sans
+   * théorie → il s'arrête et le signale : à l'élève d'annuler ou de lancer l'IA.
+   */
+  private jouerAdversaireSiBesoin(): void {
+    if (!this.camp || this.adversaireEnCours) {
+      return;
+    }
+    const traitBlanc = this.fen.includes(' w ');
+    if ((this.camp === 'blanc') === traitBlanc) {
+      return; // c'est à l'élève de jouer
+    }
+    this.adversaireEnCours = true;
+    this.http.get<any>('http://localhost:8000/api/v1/moves', { params: { fen: this.fen } })
+      .subscribe({
+        next: (data) => {
+          const meilleur = data?.moves?.[0];
+          if (meilleur?.uci) {
+            this.horsTheorie = false;
+            setTimeout(() => {
+              this.boardManager.move(meilleur.uci);
+              this.adversaireEnCours = false;
+            }, 900);
+          } else {
+            this.horsTheorie = true; // plus de théorie : l'agent passe la main
+            this.adversaireEnCours = false;
+          }
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.adversaireEnCours = false; // backend injoignable : l'élève garde la main
+        },
+      });
+  }
+
+  /** Une erreur se corrige d'un clic. En mode entraînement, on retire LA PAIRE de coups
+   *  (la réponse de l'agent + le coup de l'élève), sinon l'agent rejouerait aussitôt. */
   public annulerDernierCoup(): void {
     this.boardManager.undo();
     this.fen = this.boardManager.getFEN();
+    if (this.camp) {
+      const traitBlanc = this.fen.includes(' w ');
+      if ((this.camp === 'blanc') !== traitBlanc) {
+        this.boardManager.undo();
+        this.fen = this.boardManager.getFEN();
+      }
+    }
+    this.horsTheorie = false;
   }
 
   public reset(): void {

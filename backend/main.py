@@ -44,6 +44,7 @@ if _settings.corpus_export:
 
     vitrine.charger_corpus_si_vide(rag._milvus(), _settings.corpus_export)
 
+
 @app.get("/api/v1/healthcheck")
 def healthcheck() -> dict:
     """Statut du service et de ses dépendances."""

@@ -1,6 +1,6 @@
 # Présentation — Agent IA d'entraînement aux ouvertures (FFE)
 
-> **v5 — restructurée sur retours mentor** : la présentation raconte la démarche (fonctionnement → architecture → déploiement → mesure → coûts), les détails techniques vivent dans `documentation-technique.md`. 13 diapositives + annexes. Notes de l'orateur : `notes-presentation.md`.
+> **v3 (deck) — retours mentor + revue croisée** : la présentation raconte (problème → produit → démonstration → architecture → preuves → coûts → perspective vidéo) ; chaque visuel est une **preuve réelle du projet** (captures de l'app, figures des notebooks) ; les détails techniques vivent dans `documentation-technique.md` et en annexes. 13 diapositives + annexes. Notes : `notes-presentation.md`.
 
 ---
 
@@ -46,23 +46,25 @@ Capture : `rendu/captures/ui-accueil.png` (l'accueil qui explique ce parcours).
 
 ---
 
-## Diapo 5 — L'architecture
+## Diapo 5 — L'architecture : qui communique avec qui, et pourquoi
 
-*(le schéma — chaque brique, son intérêt, les liens ; les détails : documentation technique)*
+Schéma de composants (l'architecture réellement implémentée) :
 
 ```
-Léa (navigateur) ⇄ FRONTEND Angular (échiquier + panneau coach)
-                      ⇄ API FastAPI — L'AGENT (graphe LangGraph) :
-   valider la position → identifier l'ouverture → ROUTEUR (déterministe)
-     en théorie  → LICHESS  : les coups des maîtres (2 M+ parties, la vérité statistique)
-     hors théorie → STOCKFISH : l'évaluation objective (embarqué, aucune position inconnue)
-   → BASE VECTORIELLE Milvus : le « pourquoi » documentaire (diapo suivante)
-   → YOUTUBE (métadonnées) : les vidéos — il y a toujours quelque chose à proposer
-   → LLM local (Ollama) : RÉDIGE la réponse — il ne décide jamais, il met en mots
-   ⇢ MONGODB : les caches (théorie 24 h, évals, vidéos 7 j) — rapidité et résilience
+Léa (navigateur) → ANGULAR (échiquier + panneau coach)
+                        ↕ position (FEN) / réponse
+                   FASTAPI + LANGGRAPH (l'orchestrateur : qui décide quelle étape exécuter)
+        ┌──────────────┼──────────────┐
+     LICHESS       STOCKFISH       MILVUS          + YOUTUBE (ressource pédagogique)
+   (que jouent    (que vaut la    (où chercher     + MONGODB (que met-on en cache)
+   les maîtres ?)  position ?)     les connaissances ?)
+        └──────────────┼──────────────┘
+                   LLM local (comment transformer ces informations en explication ?)
+                        ↓
+                 RÉPONSE SOURCÉE
 ```
 
-**Les trois principes qui tiennent l'ensemble** : le **FEN** (la position en une ligne de texte) circule entre toutes les briques ; le **routeur est déterministe** (un seuil de parties, pas un avis de LLM) ; **chaque brique a un plan B** (une source en panne → l'agent dégrade, ne plante pas — observé en conditions réelles).
+Chaque boîte répond à une question — et **le FEN** (la position en une ligne de texte) est la langue commune qui circule entre toutes. Le **routeur est déterministe** (un seuil de parties, pas un avis de LLM) et **chaque brique a un plan B** (dégradation propre, observée en réel).
 
 ---
 
@@ -81,19 +83,39 @@ Léa (navigateur) ⇄ FRONTEND Angular (échiquier + panneau coach)
 
 ---
 
-## Diapo 7 — Le déploiement
+## Diapo 7 — Comment j'ai construit la connaissance
 
-```
-./demarrer.sh          # ou : docker compose up
-```
+Pour répondre, l'agent s'appuie sur **4 sources complémentaires** :
 
-7 conteneurs (front nginx 78 Mo, API+Stockfish, Milvus, MongoDB, MLflow) + Ollama sur l'hôte. Volumes persistants, secrets en variables d'environnement, CI (lint + 65 tests + build front).
+| Besoin | Source |
+|---|---|
+| Nommer l'ouverture | le référentiel `chess-openings` (CC0) |
+| Voir ce que jouent les maîtres | l'API Lichess (2 M+ parties) |
+| Expliquer les idées | la base documentaire vectorielle (Wikipédia FR + Wikibooks EN, CC BY-SA) |
+| Donner une ressource pédagogique | YouTube (métadonnées seules) |
 
-**Installation fraîche mesurée** : application utilisable en **2 min 09**, bibliothèque vectorielle prête à 2 min 28 (protocole rejouable `tester-installation.sh`) — critère « < 5 minutes » largement tenu.
+La base documentaire est **construite par un pipeline rejouable** : extraction (périmètre signé) → nettoyage → découpage en fiches → vectorisation → Milvus.
+
+**Le visuel de cette diapo est la figure réelle du notebook 03** (`notebooks/figures/01-entonnoir-corpus.png`) : **3 251 pages disponibles → 161 retenues (manifeste signé) → 477 fiches** — avec 95 FEN de référence calculés, 0 échec, 1 doublon écarté.
 
 ---
 
-## Diapo 8 — Performances et fiabilité (tout est mesuré)
+## Diapo 8 — L'orchestration : le chemin d'une position
+
+*(le graphe de décision — celui du code)*
+
+```
+position (FEN) → valider → identifier l'ouverture → en théorie ?
+      oui → LICHESS (coups des maîtres + stats)      non → STOCKFISH (évaluation objective)
+                     → contexte documentaire (Milvus, rayon de l'ouverture) → vidéos
+                     → LLM : rédige et cite — IL NE CHOISIT JAMAIS UN COUP
+```
+
+Un seul parcours à raconter : Léa joue 3.Fc4 → Italienne identifiée → en théorie → Fc5/Cf6 avec leurs statistiques → fiches du rayon italienne → vidéos → réponse rédigée et sourcée. Et sur 4.g4?! : hors théorie → le moteur mesure (−1,47) au lieu de réciter.
+
+---
+
+## Diapo 9 — Ce que j'ai mesuré
 
 | Ce qu'on promet à Léa | Cible | Mesuré |
 |---|---|---|
@@ -107,7 +129,7 @@ Léa (navigateur) ⇄ FRONTEND Angular (échiquier + panneau coach)
 
 ---
 
-## Diapo 9 — La démarche : mesurer avant de décider
+## Diapo 10 — Une amélioration guidée par la mesure
 
 Trois exemples de décisions prises **par la mesure** (le détail : documentation technique + notebooks versionnés) :
 
@@ -119,49 +141,43 @@ Discipline : chaque chiffre de ce deck sort d'un notebook exécuté ou d'un run 
 
 ---
 
-## Diapo 10 — Structure de coûts
+## Diapo 11 — Le déploiement et les coûts
 
-| Poste (coût du POC) | Coût | Pourquoi |
-|---|---|---|
-| Données (Lichess, wikis, référentiel) | **0 €** | licences libres (CC0, CC BY-SA) |
-| Moteur Stockfish + embeddings | **0 €** | open source, exécution locale |
-| Recherche vidéos | **0 €** | quota gratuit YouTube (~300 unités réelles / 10 000 par jour, cache 7 j) |
-| LLM (dev + démo) | **0,00 €** | local — le poste payant a été supprimé par la mesure |
+```
+./demarrer.sh          # ou : docker compose up
+```
 
-**À l'échelle** : coût marginal d'une réponse nul en local ; en cloud ≈ 0,25 centime/réponse → **< 0,10 €/élève/mois**. Postes réels d'industrialisation : hébergement UE (public mineur, RGPD) et supervision — détaillés dans l'étude jointe.
+7 conteneurs + le modèle local sur l'hôte. Volumes persistants, secrets en variables d'environnement, CI verte. **Installation fraîche mesurée : application utilisable en 2 min 09** (bibliothèque prête à 2 min 28, protocole rejouable).
 
----
-
-## Diapo 11 — Partie 2 : l'étude du système d'analyse vidéo
-
-La demande : indexer les vidéos **par position** (FEN), pas par titre — « cette position est expliquée à 4 min 32 ».
-
-- **Bénéfice chiffré** : indexation automatique ≈ **0,10–0,15 €/vidéo** contre 7,50–15 € à la main (×50-100).
-- **La limite dure est juridique** (CGU YouTube : jamais les fichiers) → périmètre MVP : licences Creative Commons + **transcripts d'abord**, vision 2D ensuite ; le 3D (seul vrai entraînement de modèle du projet) attendra les chiffres du pilote.
-- **Architecture MCP** : 4 serveurs d'outils réutilisables par tout agent FFE (youtube, vision, chess-tools, connaissances) + pipeline batch assumé pour la masse.
-- **Build MVP : 15–20 k€** · opex ~100–150 $/mois à 1 000 vidéos/mois · roadmap avec critères go/no-go chiffrés.
-
-Livrables joints : note bénéfices/limites (9 p.), schéma d'architecture MCP, étude de faisabilité et coûts.
+**Combien ça coûte ?** POC : **0 € de consommation** (données libres, briques open source, LLM local — le poste payant a été supprimé par la mesure). Passage cloud : ≈ **0,25 centime/réponse** (option Haiku mesurée) → < 0,10 €/élève/mois. À industrialiser : hébergement UE (public mineur), stockage, supervision, montée en charge — détail dans l'étude jointe.
 
 ---
 
-## Diapo 12 — Pistes d'amélioration
+## Diapo 12 — Et si la connaissance était dans une vidéo ? (partie 2)
 
-- **Gold set v2** à labels fins — la suite logique de la leçon de mesure.
-- **Corpus élargi** : de 8 ouvertures vers les 500 codes ECO + parties commentées FFE.
-- **Mode entraînement actif** : l'agent joue la ligne théorique contre l'élève.
-- **Analyse vidéo → FEN** : le MVP de la partie 2.
-- Répertoire personnalisé par élève ; A/B qualité LLM sur le gold set.
+La demande d'Alan : indexer les vidéos **par position**, pas par titre — « cette position est expliquée à 4 min 32 ».
+
+```
+vidéo → images extraites → détection de l'échiquier → position → FEN → l'AGENT EXISTANT
+```
+
+**Ce n'est pas un deuxième agent** : le principe est de transformer la vidéo en positions FEN — la même clé que tout le POC — exploitables par l'agent déjà construit. Les capacités d'analyse sont exposées en **MCP** : des serveurs d'outils indépendants que tout agent futur de la FFE peut appeler.
+
+- Bénéfice chiffré : ≈ **0,10–0,15 €/vidéo** contre 7,50–15 € à la main (×50-100).
+- **La limite dure est juridique** (CGU : jamais les fichiers) → MVP : licences Creative Commons + transcripts d'abord, vision 2D ; le 3D attendra les chiffres du pilote.
+- Build MVP **15–20 k€** · opex ~100–150 $/mois à 1 000 vidéos/mois · roadmap avec critères go/no-go.
+
+Livrables joints : note bénéfices/limites (9 p.), schéma MCP, étude de faisabilité et coûts.
 
 ---
 
-## Diapo 13 — Conclusion
+## Diapo 13 — Conclusion : démontré, limites, suite
 
-**La promesse : un retour de niveau entraîneur, à la demande.** Objectifs mesurés et tenus : 0/56 coup illégal · abstention 5/5 · 100 % sourcé · p95 6,1 s · 0,00 € de LLM · installation 2 min 09.
+**Démontré et mesuré** : la boucle jouer → comprendre → dévier → évaluer fonctionne (0/56 coup illégal · abstention 5/5 · 100 % sourcé · p95 6,1 s · 0 € · installation 2 min 09).
+**Limites assumées** : 8 ouvertures (manifeste signé), gold set v1 grossier (v2 en axe), exécution locale.
+**La suite** : groupe pilote d'élèves avant les championnats d'Europe ; industrialisation (architecture inchangée, redimensionnée) ; MVP analyse vidéo ; mode entraînement actif (l'agent joue l'adversaire) ; corpus élargi vers les 500 codes ECO.
 
-Recommandation à la FFE : un groupe pilote d'élèves avant les championnats d'Europe, puis industrialisation (architecture inchangée, redimensionnée) et lancement du MVP analyse vidéo.
-
-**→ Démo en direct.** *(Questions bienvenues — annexes et documentation technique à disposition.)*
+**→ Démo en direct.** *(Annexes et documentation technique à disposition.)*
 
 ---
 ---

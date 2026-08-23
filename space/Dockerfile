@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     procps \
+    zstd \
     && rm -rf /var/lib/apt/lists/*
 
 # Installation du binaire officiel Ollama avec support CUDA
@@ -47,7 +48,7 @@ SentenceTransformer('Qwen/Qwen3-Embedding-0.6B', device='cpu')"
 
 # Pré-téléchargement du modèle LLM dans l'image
 RUN mkdir -p /app/ollama_models \
-    && (ollama serve & PID=$!; sleep 4; ollama pull qwen3.5:4b || ollama pull qwen2.5:3b; kill $PID || true)
+    && (OLLAMA_MODELS=/app/ollama_models ollama serve & PID=$!; sleep 5; OLLAMA_MODELS=/app/ollama_models ollama pull qwen2.5:3b || true; kill $PID || true)
 
 COPY space/corpus_export.json.gz /app/corpus_export.json.gz
 COPY --from=front /app/dist/chess-board /app/static

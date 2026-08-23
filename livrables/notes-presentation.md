@@ -6,8 +6,8 @@
 
 ---
 
-## Diapo 1 — Titre *(20 s)*
-« IA Engineer junior chez Cavalier Data, missionné à la FFE. Je vais vous raconter comment on a construit et mesuré un coach d'ouvertures pour les jeunes espoirs — et ce qu'on propose pour la suite. »
+## Diapo 1 — Titre *(30 s — annoncer la CARTE avant le voyage)*
+« IA Engineer junior chez Cavalier Data, missionné à la FFE. Je vais commencer par vous montrer **ce que voit l'utilisateur**. Ensuite, **ce qui se passe derrière** : l'architecture globale, puis le chemin réellement parcouru par une position. Enfin **les performances obtenues, les coûts**, et l'évolution possible vers l'analyse vidéo. » — cette phrase répond d'avance au « je ne sais pas où vous allez ».
 
 ## Diapo 2 — L'histoire et le besoin *(1 min 30)*
 **Rester dans l'histoire** : « 60 000 licenciés, 60 % de jeunes, quelques centaines d'entraîneurs — le goulot est humain. Imaginez Léa, 12 ans, qui veut travailler ses ouvertures ce soir : son entraîneur n'est pas là. Alan m'a commandé un POC en deux semaines : une IA qui l'accompagne *pendant qu'elle joue*. » Énumérer les 4 capacités en une phrase chacune.
@@ -74,4 +74,5 @@ Dérouler la colonne « Résultat » — chaque ligne est une promesse à Léa t
 - *« Pourquoi ne pas laisser le LLM choisir les coups ? »* — il est fait pour être plausible, pas vrai ; ici 0/56 illégal par construction, python-chess valide tout.
 - *« Votre recall de 1,0 n'est-il pas suspect ? »* — si, et c'est ma diapo 9 : l'étalon était trop facile, découvert en mesurant, v2 en axe.
 - *« Que se passe-t-il hors des 8 ouvertures ? »* — règle des rayons : l'agent le dit honnêtement, garde stats et moteur ; l'élargissement est une piste chiffrée.
+- *« Le cosinus est-il vraiment entre 0 et 1 ? »* — non : « je simplifie pour la présentation — la similarité cosinus est mathématiquement dans [−1, 1] ; dans notre espace d'embeddings, les scores observés sont positifs. » (montre la maîtrise, ne jamais répondre « oui »)
 - *« Pourquoi MCP pour la partie 2 ? »* — des serveurs d'outils réutilisables par tout agent futur de la FFE, indépendamment du framework — et l'honnêteté d'assumer un pipeline batch pour la masse.

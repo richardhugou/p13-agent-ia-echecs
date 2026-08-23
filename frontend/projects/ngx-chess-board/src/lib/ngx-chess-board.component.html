@@ -72,6 +72,16 @@
         [attr.width]="engineFacade.heightAndWidth"
         style="position:absolute; top:0; pointer-events: none"
     >
+        <rect
+            *ngFor="let h of suggestionHighlights"
+            [attr.x]="h.x"
+            [attr.y]="h.y"
+            [attr.width]="h.size"
+            [attr.height]="h.size"
+            [attr.fill]="'#3a9a40'"
+            [attr.fill-opacity]="h.solid ? 0.62 : 0.25"
+            rx="4"
+        ></rect>
         <defs *ngFor="let color of ['red', 'green', 'blue', 'orange']">
             <marker
                 [id]="color + 'Arrow'"

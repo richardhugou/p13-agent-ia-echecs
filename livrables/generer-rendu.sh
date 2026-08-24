@@ -47,7 +47,7 @@ echo "  ✓ code + lien dépôt"
 
 echo "── 2. La présentation ──"
 cp livrables/rendu/presentation-soutenance.pdf "$STAGE/Hugou_Richard_2_presentation_082026.pdf"
-echo "  ✓ présentation (13 diapos + annexes)"
+echo "  ✓ présentation (15 diapos)"
 
 echo "── 3-7. Les documents (md → PDF) ──"
 md_vers_pdf livrables/note-benefices-limites.md   "$STAGE/Hugou_Richard_3_note_analyse_video_082026.pdf"

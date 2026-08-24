@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# Génère le zip de rendu OC : Mettez_en_place_un_agent_IA_Hugou_Richard.zip
-# Nommage interne : Hugou_Richard_<n>_<libellé>_082026.<ext>
-# Rejouable : convertit les .md en PDF (markdown → HTML → Chrome headless), archive le code
-# depuis git (develop), inclut la vidéo de démo si présente dans livrables/rendu/ (*demo*.mp4|mov|webm).
+# Génère le zip officiel de rendu de soutenance OC : Mettez_en_place_un_agent_IA_Hugou_Richard.zip
+# Nommage conforme : Hugou_Richard_<n>_<libellé>_082026.<ext>
+# Livrables stricts pour le jury :
+#   1. Le code source (archive git de develop + lien dépôt)
+#   2. Le support de présentation (15 diapositives 1080p sans annexes)
+#   3. La note détaillée d'analyse vidéo (rapport d'ingénierie complet intégrant architecture MCP et modèle de coûts)
+
 set -euo pipefail
 cd "$(dirname "$0")/.."   # racine du dépôt
 
@@ -40,34 +43,20 @@ PY
   echo "  ✓ $(basename "$2")"
 }
 
-echo "── 1. Le code (archive git de develop) ──"
+echo "── 1. Le code source ──"
 git archive --format=zip -o "$STAGE/Hugou_Richard_1_code_082026.zip" develop
-printf "Dépôt public : https://github.com/richardhugou/p13-agent-ia-echecs (branche develop)\nDémarrage : ./demarrer.sh — voir README.md\n" > "$STAGE/Hugou_Richard_1_code_lien_depot.txt"
+printf "Dépôt public : https://github.com/richardhugou/p13-agent-ia-echecs (branche main/develop)\nDémarrage : ./demarrer.sh — voir README.md\n" > "$STAGE/Hugou_Richard_1_code_lien_depot.txt"
 echo "  ✓ code + lien dépôt"
 
-echo "── 2. La présentation ──"
+echo "── 2. Le support de soutenance ──"
 cp livrables/rendu/presentation-soutenance.pdf "$STAGE/Hugou_Richard_2_presentation_082026.pdf"
 echo "  ✓ présentation (15 diapos)"
 
-echo "── 3-7. Les documents (md → PDF) ──"
-md_vers_pdf livrables/note-benefices-limites.md   "$STAGE/Hugou_Richard_3_note_analyse_video_082026.pdf"
-md_vers_pdf livrables/etude-faisabilite-couts.md  "$STAGE/Hugou_Richard_4_etude_faisabilite_couts_082026.pdf"
-md_vers_pdf livrables/schema-architecture-mcp.md  "$STAGE/Hugou_Richard_5_schema_architecture_mcp_082026.pdf"
-md_vers_pdf livrables/fiche-autoevaluation.md     "$STAGE/Hugou_Richard_6_fiche_autoevaluation_082026.pdf"
-md_vers_pdf livrables/documentation-technique.md  "$STAGE/Hugou_Richard_7_documentation_technique_082026.pdf"
+echo "── 3. La note détaillée d'ingénierie (Partie 2) ──"
+md_vers_pdf livrables/note-benefices-limites.md "$STAGE/Hugou_Richard_3_note_analyse_video_082026.pdf"
 
-echo "── 8. La vidéo de démo ──"
-video=$(find livrables/rendu -maxdepth 1 -iname "*demo*.mp4" -o -iname "*demo*.mov" -o -iname "*demo*.webm" 2>/dev/null | head -1)
-if [ -n "$video" ]; then
-  cp "$video" "$STAGE/Hugou_Richard_8_video_demo_082026.${video##*.}"
-  echo "  ✓ vidéo (fichier) : $(basename "$video")"
-else
-  printf "Vidéo de démonstration (Loom, ~45 s — le parcours de l'élève sur l'Italienne) :\nhttps://www.loom.com/share/821b854d6676475bb82cb1830448a3c3\n" > "$STAGE/Hugou_Richard_8_video_demo_lien_082026.txt"
-  echo "  ✓ vidéo : lien Loom (déposer un fichier *demo*.mp4 dans livrables/rendu/ pour l'embarquer à la place)"
-fi
-
-echo "── Assemblage ──"
+echo "── Assemblage de l'archive de soumission ──"
 (cd "$STAGE" && zip -q -X "../$(basename "$ZIP")" ./*)
 rm -rf "$STAGE"
 echo "✅ $(du -h "$ZIP" | cut -f1) → $ZIP"
-unzip -l "$ZIP" | tail -n +4 | head -12
+unzip -l "$ZIP" | tail -n +4 | head -10

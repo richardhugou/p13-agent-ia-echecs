@@ -45,8 +45,26 @@ PY
 
 echo "── 1. Le code source ──"
 git archive --format=zip -o "$STAGE/Hugou_Richard_1_code_082026.zip" develop
-printf "Dépôt public : https://github.com/richardhugou/p13-agent-ia-echecs (branche main/develop)\nDémarrage : ./demarrer.sh — voir README.md\n" > "$STAGE/Hugou_Richard_1_code_lien_depot.txt"
-echo "  ✓ code + lien dépôt"
+cat <<'MD' > "$STAGE/Hugou_Richard_1_code_lien_depot.md"
+# Agent IA d'entraînement aux ouvertures d'échecs (FFE)
+
+- **Auteur** : Richard Hugou (IA Engineer — Cavalier Data)
+- **Dépôt GitHub public** : https://github.com/richardhugou/p13-agent-ia-echecs
+- **Branche de soutenance** : `main` / `develop`
+- **Vitrine Cloud (Hugging Face Spaces GPU T4)** : https://trikwi-p13-agent-echecs.hf.space
+- **Vidéo de démonstration (Loom)** : https://www.loom.com/share/821b854d6676475bb82cb1830448a3c3
+
+## Démarrage rapide en local
+
+```bash
+git clone https://github.com/richardhugou/p13-agent-ia-echecs.git
+cd p13-agent-ia-echecs
+./demarrer.sh
+```
+
+Pour les instructions complètes d'architecture et de tests, consulter le `README.md` à la racine du dépôt.
+MD
+echo "  ✓ code + lien dépôt (.md)"
 
 echo "── 2. Le support de soutenance ──"
 cp livrables/rendu/presentation-soutenance.pdf "$STAGE/Hugou_Richard_2_presentation_082026.pdf"

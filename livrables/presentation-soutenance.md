@@ -203,16 +203,16 @@ Visuel : graphique des latences réelles (`notebooks/figures/06-latences-agent.p
 
 ---
 
-## Diapo 13 — Perspective vidéo
-
-**Objectif** : enrichir la recommandation en pointant directement vers le **timestamp exact** où la position de l'élève est expliquée dans la vidéo.
+## Diapo 13 — Analyse vidéo
 
 ```
-Flux vidéo ──► Extraction d'images ──► Détection échiquier ──► Position FEN ──► Agent existant
+Vidéo ──► Images & transcripts ──► Détection échiquier ──► Position FEN ──► FEN ↔ vidéo ↔ timestamp
 ```
 
-- **Valeur ajoutée** : recommandation vidéo à la position d'échiquier près, au lieu d'une recommandation globale par nom d'ouverture.
-- **Statut** : Étude d'ingénierie formalisée (faisabilité, architecture MCP, modèle de coûts) ; développement hors périmètre du POC.
+- **Aujourd'hui (POC)** : Recommandation globale par ouverture (*« 3 vidéos sur l'Italienne »*).
+- **Après analyse vidéo (Étude)** : Recommandation au timestamp exact (*« cette position est expliquée à 4:32 »*).
+
+*Étude de faisabilité réalisée — développement hors périmètre du POC.*
 
 ---
 

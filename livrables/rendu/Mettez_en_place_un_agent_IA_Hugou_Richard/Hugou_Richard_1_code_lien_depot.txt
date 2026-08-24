@@ -1,0 +1,2 @@
+Dépôt public : https://github.com/richardhugou/p13-agent-ia-echecs (branche develop)
+Démarrage : ./demarrer.sh — voir README.md

@@ -117,7 +117,7 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 ```
 
 - **Espace vectoriel unifié** : modèle multilingue (`qwen3-embedding:0.6b`, 1024 dimensions) alignant les fiches FR et EN.
-- **Filtrage par rayon** : recherche restreinte strictement à l'ouverture active pour éliminer tout risque d'hallucination de source.
+- **Filtrage par rayon** : recherche restreinte strictement à l'ouverture active pour empêcher la récupération de sources hors périmètre.
 - **Performances mesurées** : recherche en **7 à 11 ms** ; séparation sémantique cible / hors-sujet portée de 0,29 à **0,50**.
 
 ---
@@ -180,7 +180,7 @@ Visuel : graphique des latences réelles (`notebooks/figures/06-latences-agent.p
 
 | Choix d'architecture | Alternative évaluée | Décision et justification technique |
 |---|---|---|
-| **Modèle LLM local / GPU** | API managée payante | Modèle Qwen open source : 0 € d'API, 1,8 s sur T4 GPU, souveraineté des données |
+| **Modèle LLM open source** | API managée payante | Modèle Qwen open source : 0 € d'API, p95 2,41 s sur T4 GPU, souveraineté des données |
 | **Structure documentaire** | Chunks bruts 1 000 tokens | Fiches 300–500 tokens avec fil d'Ariane, section et métadonnées scalaires (ECO, FEN) |
 | **Gestion du hors-sujet** | Seuil de similarité seul | Filtrage déterministe par rayon d'ouverture + seuil filet à 0,58 (5/5 pièges bloqués) |
 

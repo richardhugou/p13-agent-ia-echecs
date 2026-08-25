@@ -20,7 +20,7 @@
     height: 1080px;
     page-break-after: always;
     background: #FCF9F4;
-    padding: 70px 100px 70px 100px;
+    padding: 65px 95px 65px 95px;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -29,7 +29,7 @@
   }
   .slide-header {
     flex-shrink: 0;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   .slide-content {
     flex-grow: 1;
@@ -43,39 +43,39 @@
     text-transform: uppercase;
     color: #7A756C;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   h1 {
-    font-size: 50px;
+    font-size: 46px;
     font-weight: 700;
     line-height: 1.15;
     color: #1C1B18;
   }
   .body {
-    font-size: 23px;
-    line-height: 1.55;
+    font-size: 22px;
+    line-height: 1.5;
     color: #2A2011;
   }
   .small {
-    font-size: 18px;
-    line-height: 1.45;
+    font-size: 17px;
+    line-height: 1.4;
     color: #7A756C;
   }
   .footer {
     flex-shrink: 0;
     display: flex;
     justify-content: space-between;
-    font-size: 16px;
+    font-size: 15px;
     color: #7A756C;
     border-top: 1px solid #E6E1D8;
-    padding-top: 16px;
-    margin-top: 20px;
+    padding-top: 14px;
+    margin-top: 16px;
   }
   .card {
     background: #FFFFFF;
-    border-radius: 16px;
+    border-radius: 14px;
     border: 1px solid #E6E1D8;
-    padding: 30px 36px;
+    padding: 26px 32px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.03);
   }
   .card.key {
@@ -86,12 +86,12 @@
     background: #F4EFE6;
     border-color: #D4C9B8;
   }
-  .row { display: flex; gap: 32px; width: 100%; }
+  .row { display: flex; gap: 28px; width: 100%; }
   .grow { flex: 1; }
-  .stitle { font-size: 24px; font-weight: 700; color: #1C1B18; margin-bottom: 12px; }
+  .stitle { font-size: 22px; font-weight: 700; color: #1C1B18; margin-bottom: 10px; }
   .mono { font-family: "SF Mono", Menlo, Consolas, monospace; }
-  table { width: 100%; border-collapse: collapse; font-size: 20px; }
-  th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid #E6E1D8; }
+  table { width: 100%; border-collapse: collapse; font-size: 18.5px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #E6E1D8; }
   th { background: #F4EFE6; font-weight: 700; color: #2A2011; }
 </style>
 </head>
@@ -100,17 +100,17 @@
 <!-- ═══════════ DIAPO 1 — Titre ═══════════ -->
 <div class="slide" style="justify-content: center; align-items: flex-start; padding-left: 140px;">
   <div class="kicker" style="color: #3A5A40; font-size: 22px;">Fédération Française des Échecs × Cavalier Data</div>
-  <h1 style="font-size: 72px; line-height: 1.1; margin-bottom: 28px; max-width: 1500px;">
+  <h1 style="font-size: 68px; line-height: 1.1; margin-bottom: 24px; max-width: 1500px;">
     Un coach IA pour les ouvertures d'échecs
   </h1>
-  <p class="body" style="font-size: 32px; color: #3A5A40; margin-bottom: 60px; font-weight: 500;">
+  <p class="body" style="font-size: 30px; color: #3A5A40; margin-bottom: 50px; font-weight: 500;">
     Accompagner les jeunes espoirs pendant leur entraînement autonome
   </p>
   <div style="border-left: 6px solid #3A5A40; padding-left: 24px; margin-top: 10px;">
-    <p class="body" style="font-size: 28px; font-weight: 700;">Richard Hugou</p>
-    <p class="small" style="font-size: 20px;">IA Engineer — Soutenance de projet — Août 2026</p>
+    <p class="body" style="font-size: 26px; font-weight: 700;">Richard Hugou</p>
+    <p class="small" style="font-size: 19px;">IA Engineer — Soutenance de projet — Août 2026</p>
   </div>
-  <div class="footer"><span>Cavalier Data</span><span>Projet OpenClassrooms P13</span><span>1 / 15</span></div>
+  <div class="footer"><span>Cavalier Data</span><span>Projet OpenClassrooms P13</span><span>1 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 2 — Besoin et contexte ═══════════ -->
@@ -123,7 +123,7 @@
     <div class="row" style="align-items: stretch;">
       <div class="card grow" style="border-left: 8px solid #C97A63;">
         <div class="stitle">Le constat à la FFE</div>
-        <p class="body" style="margin-top: 10px;">
+        <p class="body" style="margin-top: 8px;">
           • <b>60 000 licenciés</b>, dont ~60 % de jeunes espoirs.<br>
           • Quelques centaines d'entraîneurs qualifiés sur le territoire.<br>
           • <b>Le goulot d'étranglement est humain</b> : impossible d'offrir un suivi quotidien individualisé le soir ou entre les rondes de tournoi.
@@ -131,46 +131,46 @@
       </div>
       <div class="card key grow" style="border-left: 8px solid #3A5A40;">
         <div class="stitle">Le cas d'usage : Léa, 12 ans</div>
-        <p class="body" style="margin-top: 10px;">
+        <p class="body" style="margin-top: 8px;">
           • Prépare ses championnats et veut réviser son répertoire ce soir.<br>
           • Son entraîneur n'est pas disponible.<br>
-          • <b>Mission du POC</b> : un agent interactif disponible à la demande pour l'accompagner <i>pendant</i> qu'elle joue.
+          • <b>Mission du POC</b> : un répétiteur interactif disponible 24/7 pour l'accompagner <i>pendant</i> qu'elle joue.
         </p>
       </div>
     </div>
     <div class="card wood">
-      <div class="stitle" style="margin-bottom: 16px;">Les 4 capacités attendues de l'agent</div>
+      <div class="stitle" style="margin-bottom: 12px;">Les 4 capacités attendues de l'agent</div>
       <div class="row">
-        <div class="grow body" style="font-size: 20px;"><b>1. Répertoire théorique</b> : proposer les coups joués par les maîtres.</div>
-        <div class="grow body" style="font-size: 20px;"><b>2. Explications sourcées</b> : justifier les plans avec sources fiables.</div>
-        <div class="grow body" style="font-size: 20px;"><b>3. Vidéos ciblées</b> : recommander les cours pertinents.</div>
-        <div class="grow body" style="font-size: 20px;"><b>4. Évaluation moteur</b> : analyser objectivement toute sortie de théorie.</div>
+        <div class="grow body" style="font-size: 19px;"><b>1. Jouer</b> : proposer les coups recommandés par la théorie des maîtres.</div>
+        <div class="grow body" style="font-size: 19px;"><b>2. Expliquer</b> : justifier les plans stratégiques avec sources fiables.</div>
+        <div class="grow body" style="font-size: 19px;"><b>3. Conseiller</b> : recommander des vidéos pédagogiques ciblées.</div>
+        <div class="grow body" style="font-size: 19px;"><b>4. Évaluer</b> : analyser objectivement toute sortie de théorie via Stockfish.</div>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Cadrage du besoin</span><span>2 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Cadrage du besoin</span><span>2 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 3 — Démonstration ═══════════ -->
+<!-- ═══════════ DIAPO 3 — L'application en action ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Le produit</div>
-    <h1>Démonstration</h1>
+    <h1>L'application en action</h1>
   </div>
   <div class="slide-content">
     <div class="row" style="align-items: center; justify-content: space-between;">
       <div style="flex: 0 0 68%; text-align: center;">
-        <img src="../../livrables/rendu/captures/ui-conseils-italienne.png" style="width: 100%; max-height: 650px; object-fit: contain; border-radius: 14px; border: 1px solid #7A756C; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <img src="../../livrables/rendu/captures/ui-conseils-italienne.png" style="width: 100%; max-height: 640px; object-fit: contain; border-radius: 14px; border: 1px solid #7A756C; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
       </div>
-      <div class="card grow" style="flex: 0 0 28%; text-align: center; padding: 36px 20px;">
-        <div class="stitle" style="font-size: 22px; margin-bottom: 16px;">Démonstration en vidéo</div>
-        <img src="../../livrables/rendu/captures/qr-code-video.svg" style="width: 200px; height: 200px; margin: 0 auto 16px auto; display: block;">
-        <p class="body" style="font-size: 19px; line-height: 1.4; margin-bottom: 12px;">Scénario complet en conditions réelles (~45 s) :</p>
-        <p class="small" style="font-size: 16px; color: #3A5A40; font-weight: 600;">Loom · 3-4 coups · Conseils RAG · Sortie de théorie Stockfish</p>
+      <div class="card grow" style="flex: 0 0 28%; text-align: center; padding: 32px 18px;">
+        <div class="stitle" style="font-size: 21px; margin-bottom: 14px;">Démonstration en vidéo</div>
+        <img src="../../livrables/rendu/captures/qr-code-video.svg" style="width: 190px; height: 190px; margin: 0 auto 14px auto; display: block;">
+        <p class="body" style="font-size: 18px; line-height: 1.4; margin-bottom: 10px;">Scénario complet en conditions réelles (~45 s) :</p>
+        <p class="small" style="font-size: 15px; color: #3A5A40; font-weight: 600;">Loom · 3-4 coups · Conseils RAG · Sortie de théorie Stockfish</p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Interface Angular 17 en direct</span><span>3 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Interface Angular 17 en direct</span><span>3 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 4 — Parcours utilisateur ═══════════ -->
@@ -180,39 +180,39 @@
     <h1>Parcours utilisateur</h1>
   </div>
   <div class="slide-content">
-    <div class="row" style="align-items: stretch; margin-bottom: 24px;">
+    <div class="row" style="align-items: stretch; margin-bottom: 20px;">
       <div class="card grow" style="border-top: 6px solid #3A5A40;">
         <div class="stitle">1. Orientation & Choix</div>
-        <p class="body" style="font-size: 20px;">L'élève choisit son camp (ex : les Blancs). L'échiquier s'oriente immédiatement et l'ouverture cible (Partie Italienne) est sélectionnée.</p>
+        <p class="body" style="font-size: 19px;">L'élève choisit son camp (ex: les Blancs). L'échiquier s'oriente immédiatement et l'ouverture cible (Partie Italienne) est sélectionnée.</p>
       </div>
       <div class="card grow" style="border-top: 6px solid #3A5A40;">
         <div class="stitle">2. Jeu théorique</div>
-        <p class="body" style="font-size: 20px;">L'élève joue ses coups sur le plateau. L'agent joue automatiquement la réponse des maîtres Lichess la plus fréquente (1.e4 e5, 2.Cf3 Cc6).</p>
+        <p class="body" style="font-size: 19px;">L'élève joue ses coups sur le plateau. L'agent joue automatiquement la réplique des maîtres Lichess la plus fréquente (1.e4 e5, 2.Cf3 Cc6).</p>
       </div>
       <div class="card grow" style="border-top: 6px solid #3A5A40;">
         <div class="stitle">3. Conseils sourcés</div>
-        <p class="body" style="font-size: 20px;">À 3.Fc4, « Demander à Chessbot » affiche les coups des maîtres, les flèches tactiques, la synthèse sourcée et la vidéo YouTube associée.</p>
+        <p class="body" style="font-size: 19px;">À 3.Fc4, « Demander à Chessbot » affiche les coups des maîtres, les flèches tactiques, la synthèse sourcée et la vidéo YouTube associée.</p>
       </div>
       <div class="card grow" style="border-top: 6px solid #C97A63;">
         <div class="stitle">4. Déviation moteur</div>
-        <p class="body" style="font-size: 20px;">Sur un coup hors théorie (ex: 4.g4?!), l'agent bascule instantanément sur Stockfish pour fournir une évaluation objective chiffrée (-1,47 cp).</p>
+        <p class="body" style="font-size: 19px;">Sur un coup hors théorie (ex: 4.g4?!), l'agent bascule instantanément sur Stockfish pour fournir une évaluation objective chiffrée (-1,47 cp).</p>
       </div>
     </div>
-    <div class="card wood" style="text-align: center; padding: 20px;">
-      <p class="body" style="font-weight: 600; color: #3A5A40; font-size: 22px;">Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.</p>
+    <div class="card wood" style="text-align: center; padding: 18px;">
+      <p class="body" style="font-weight: 600; color: #3A5A40; font-size: 21px;">Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 5 — Architecture ═══════════ -->
+<!-- ═══════════ DIAPO 5 — Architecture logicielle ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Architecture logicielle</div>
-    <h1>Architecture</h1>
+    <h1>Architecture logicielle</h1>
   </div>
   <div class="slide-content">
-    <svg viewBox="0 0 1150 280" style="width: 100%; max-height: 300px; margin: 0 auto; display: block;">
+    <svg viewBox="0 0 1150 280" style="width: 100%; max-height: 290px; margin: 0 auto; display: block;">
       <defs>
         <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#7A756C"/></marker>
         <marker id="ar1-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#3A5A40"/></marker>
@@ -226,7 +226,7 @@
 
       <rect x="290" y="95" width="250" height="85" rx="14" fill="#3A5A40"/>
       <text x="415" y="132" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">FASTAPI + LANGGRAPH</text>
-      <text x="415" y="156" text-anchor="middle" font-size="13" fill="#E8F5E9">Orchestration & Routage</text>
+      <text x="415" y="156" text-anchor="middle" font-size="13" fill="#E8F5E9">Orchestration déterministe</text>
 
       <rect x="305" y="10" width="220" height="52" rx="10" fill="#F4EFE6" stroke="#7A756C" stroke-width="1.5"/>
       <text x="415" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#2A2011">MONGODB — CACHE</text>
@@ -260,32 +260,32 @@
       <text x="1017" y="132" text-anchor="middle" font-size="14.5" font-weight="700" fill="#410002">LLM (OLLAMA / GPU)</text>
       <text x="1017" y="154" text-anchor="middle" font-size="12" fill="#410002">Formulation pédagogique sourcée</text>
     </svg>
-    <div class="row" style="margin-top: 16px;">
-      <div class="card grow" style="padding: 20px;">
-        <div class="stitle" style="font-size: 18px;">Clé pivot FEN</div>
+    <div class="row" style="margin-top: 14px;">
+      <div class="card grow" style="padding: 18px;">
+        <div class="stitle" style="font-size: 17px;">Clé pivot FEN</div>
         <p class="small">La chaîne transmet la position standardisée de bout en bout sans ambiguïté.</p>
       </div>
-      <div class="card grow" style="padding: 20px;">
-        <div class="stitle" style="font-size: 18px;">Milvus vs MongoDB</div>
+      <div class="card grow" style="padding: 18px;">
+        <div class="stitle" style="font-size: 17px;">Milvus vs MongoDB</div>
         <p class="small"><b>Milvus</b> stocke la connaissance vectorisée ; <b>MongoDB</b> gère le cache applicatif transverse.</p>
       </div>
-      <div class="card grow" style="padding: 20px;">
-        <div class="stitle" style="font-size: 18px;">Routage déterministe</div>
+      <div class="card grow" style="padding: 18px;">
+        <div class="stitle" style="font-size: 17px;">Routage déterministe</div>
         <p class="small">Le seuil de parties maîtres décide du passage théorie/moteur de manière fiable.</p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture de composants</span><span>5 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture de composants</span><span>5 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 6 — Orchestration ═══════════ -->
+<!-- ═══════════ DIAPO 6 — Orchestration de l'agent ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Orchestration LangGraph</div>
-    <h1>Orchestration</h1>
+    <h1>Orchestration de l'agent</h1>
   </div>
   <div class="slide-content">
-    <svg viewBox="0 0 1150 200" style="width: 100%; max-height: 220px; margin: 0 auto; display: block;">
+    <svg viewBox="0 0 1150 200" style="width: 100%; max-height: 210px; margin: 0 auto; display: block;">
       <defs>
         <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#7A756C"/></marker>
       </defs>
@@ -331,28 +331,55 @@
       <text x="1100" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#410002">SYNTHÈSE LLM</text>
       <text x="1100" y="120" text-anchor="middle" font-size="12" fill="#410002">Rédige et cite</text>
     </svg>
-    <div class="row" style="margin-top: 16px;">
+    <div class="row" style="margin-top: 14px;">
       <div class="card grow">
         <div class="stitle">Scénario nominal (Italienne)</div>
-        <p class="body" style="font-size: 19px;">Coup 3.Fc4 → Lichess fournit Fc5/Cf6 → Milvus extrait les fiches du rayon → le LLM rédige le plan stratégique.</p>
+        <p class="body" style="font-size: 18px;">Coup 3.Fc4 → Lichess fournit Fc5/Cf6 → Milvus extrait les fiches du rayon → le LLM rédige le plan stratégique.</p>
       </div>
       <div class="card grow">
         <div class="stitle">Scénario de déviation (Sortie)</div>
-        <p class="body" style="font-size: 19px;">Coup 4.g4?! → &lt; 5 parties de référence → bifurcation immédiate vers Stockfish → évaluation -1,47 cp.</p>
+        <p class="body" style="font-size: 18px;">Coup 4.g4?! → &lt; 5 parties de référence → bifurcation immédiate vers Stockfish → évaluation -1,47 cp.</p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Graphe d'exécution LangGraph</span><span>6 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Graphe d'exécution LangGraph</span><span>6 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 7 — Recherche sémantique ═══════════ -->
+<!-- ═══════════ DIAPO 7 — Gisement de données ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Les données</div>
+    <h1>Gisement de données</h1>
+  </div>
+  <div class="slide-content">
+    <div class="row" style="align-items: center;">
+      <div style="flex: 0 0 46%;" class="body">
+        <p style="margin-bottom: 18px; font-size: 21px;"><strong>4 sources documentaires complémentaires</strong> :<br>
+        • <b>Référentiel des ouvertures</b> : nomenclature et codes ECO officiels<br>
+        • <b>Lichess Explorer</b> : base de 2 M+ parties et statistiques maîtres<br>
+        • <b>Wikipédia / Wikibooks</b> : corpus encyclopédique structuré<br>
+        • <b>YouTube</b> : métadonnées et horodatages des cours vidéo</p>
+        <p style="margin-bottom: 18px; font-size: 19px;"><strong>Pipeline ETL rejouable et idempotent</strong> :<br>
+        <span class="mono" style="font-size: 16px;">extraction (manifeste signé) → nettoyage → fiches → vecteurs → Milvus</span></p>
+        <p class="small" style="font-size: 17px;">Périmètre validé : <b>156 pages extraites → 477 fiches structurées</b> (95 positions FEN calculées, 0 échec).</p>
+      </div>
+      <div class="grow" style="text-align: center;">
+        <img src="../../notebooks/figures/01-entonnoir-corpus.png" style="width: 95%; border-radius: 12px; border: 1px solid #7A756C;">
+        <p class="small" style="margin-top: 6px;">Entonnoir réel du corpus (notebook 03) : 3 251 pages disponibles → 161 retenues → 477 fiches.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml</span><span>7 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 8 — Recherche sémantique ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Base vectorielle</div>
     <h1>Recherche sémantique</h1>
   </div>
   <div class="slide-content">
-    <svg viewBox="0 0 1150 150" style="width: 100%; max-height: 160px; margin: 0 auto; display: block;">
+    <svg viewBox="0 0 1150 150" style="width: 100%; max-height: 155px; margin: 0 auto; display: block;">
       <defs>
         <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#7A756C"/></marker>
       </defs>
@@ -386,96 +413,29 @@
       <text x="1135" y="72" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1C1B18">SYNTHÈSE</text>
       <text x="1135" y="92" text-anchor="middle" font-size="12" fill="#3A5A40">SOURCÉE</text>
     </svg>
-    <div class="row" style="margin-top: 20px;">
+    <div class="row" style="margin-top: 16px;">
       <div class="card grow">
         <div class="stitle">Espace vectoriel unifié</div>
-        <p class="body" style="font-size: 19px;">Modèle multilingue (1024 dimensions) alignant naturellement les concepts en français et anglais.</p>
+        <p class="body" style="font-size: 18px;">Modèle multilingue (1024 dimensions) alignant naturellement les concepts en français et anglais.</p>
       </div>
       <div class="card grow">
         <div class="stitle">Filtrage par rayon d'ouverture</div>
-        <p class="body" style="font-size: 19px;">Recherche restreinte au rayon actif : empêche la récupération de sources hors du périmètre concerné.</p>
+        <p class="body" style="font-size: 18px;">Recherche restreinte au rayon actif : empêche la récupération de sources hors du périmètre concerné.</p>
       </div>
       <div class="card grow">
         <div class="stitle">Performances mesurées</div>
-        <p class="body" style="font-size: 19px;">Recherche exécutée en <b>7 à 11 ms</b> · Séparation sémantique cible/hors-sujet portée de 0,29 à <b>0,50</b>.</p>
+        <p class="body" style="font-size: 18px;">Recherche exécutée en <b>7 à 11 ms</b> · Séparation sémantique cible/hors-sujet portée de 0,29 à <b>0,50</b>.</p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>7 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>8 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 8 — Données ═══════════ -->
-<div class="slide">
-  <div class="slide-header">
-    <div class="kicker">Les données</div>
-    <h1>Données</h1>
-  </div>
-  <div class="slide-content">
-    <div class="row" style="align-items: center;">
-      <div style="flex: 0 0 46%;" class="body">
-        <p style="margin-bottom: 20px; font-size: 22px;"><strong>4 sources documentaires complémentaires</strong> :<br>
-        • <b>Référentiel des ouvertures</b> : nomenclature et codes ECO officiels<br>
-        • <b>Lichess Explorer</b> : base de 2 M+ parties et statistiques maîtres<br>
-        • <b>Wikipédia / Wikibooks</b> : corpus encyclopédique structuré<br>
-        • <b>YouTube</b> : métadonnées et horodatages des cours vidéo</p>
-        <p style="margin-bottom: 20px; font-size: 20px;"><strong>Pipeline ETL rejouable et idempotent</strong> :<br>
-        <span class="mono" style="font-size: 17px;">extraction (manifeste signé) → nettoyage → fiches → vecteurs → Milvus</span></p>
-        <p class="small" style="font-size: 18px;">Périmètre validé : <b>156 pages extraites → 477 fiches structurées</b> (95 positions FEN calculées, 0 échec).</p>
-      </div>
-      <div class="grow" style="text-align: center;">
-        <img src="../../notebooks/figures/01-entonnoir-corpus.png" style="width: 95%; border-radius: 12px; border: 1px solid #7A756C;">
-        <p class="small" style="margin-top: 8px;">Entonnoir réel du corpus (notebook 03) : 3 251 pages disponibles → 161 retenues → 477 fiches.</p>
-      </div>
-    </div>
-  </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml</span><span>8 / 15</span></div>
-</div>
-
-<!-- ═══════════ DIAPO 9 — Protocole de mesure ═══════════ -->
-<div class="slide">
-  <div class="slide-header">
-    <div class="kicker">Validation scientifique</div>
-    <h1>Protocole de mesure</h1>
-  </div>
-  <div class="slide-content">
-    <div class="row" style="align-items: stretch; margin-bottom: 24px;">
-      <div class="card grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">1. Scénarios évalués</div>
-        <p class="body" style="font-size: 20px;">
-          • Ligne théorique nominale (Italienne).<br>
-          • Déviation hors théorie (`4.g4?!`).<br>
-          • Questions libres d'explication tactique.
-        </p>
-      </div>
-      <div class="card grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">2. Bancs automatisés</div>
-        <p class="body" style="font-size: 20px;">
-          • <b>56 positions</b> validées par `python-chess`.<br>
-          • <b>Gold Set 25 questions</b> sous MLflow.<br>
-          • <b>5 pièges d'abstention</b> hors domaine.<br>
-          • <b>12 runs de latence</b> (4 positions × 3 répétitions).
-        </p>
-      </div>
-      <div class="card grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">3. Environnements testés</div>
-        <p class="body" style="font-size: 20px;">
-          • <b>Local</b> : CPU hôte avec LLM Ollama.<br>
-          • <b>Cloud</b> : Hugging Face Space avec GPU NVIDIA T4 16 Go VRAM et Ollama CUDA.
-        </p>
-      </div>
-    </div>
-    <div class="card wood" style="text-align: center; padding: 22px;">
-      <p class="body" style="font-weight: 600; font-size: 22px; color: #2A2011;">Toutes les mesures sont reproductibles via les notebooks et scripts de test du dépôt.</p>
-    </div>
-  </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Méthodologie d'évaluation</span><span>9 / 15</span></div>
-</div>
-
-<!-- ═══════════ DIAPO 10 — Résultats et performances ═══════════ -->
+<!-- ═══════════ DIAPO 9 — Performances mesurées ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Mesures et validation</div>
-    <h1>Résultats et performances</h1>
+    <h1>Performances mesurées</h1>
   </div>
   <div class="slide-content">
     <div class="row" style="align-items: center;">
@@ -492,139 +452,277 @@
       </table>
       <div class="grow" style="text-align: center;">
         <img src="../../notebooks/figures/06-latences-agent.png" style="width: 98%; border-radius: 12px; border: 1px solid #7A756C;">
-        <p class="small" style="margin-top: 8px;">Latences mesurées sur le scénario de démo (notebook 05, 3 répétitions par position).</p>
+        <p class="small" style="margin-top: 6px;">Latences mesurées sur le scénario de démo (notebook 05, 3 répétitions par position).</p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>10 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 11 — Choix techniques ═══════════ -->
-<div class="slide">
-  <div class="slide-header">
-    <div class="kicker">Ingénierie IA</div>
-    <h1>Choix techniques</h1>
-  </div>
-  <div class="slide-content">
-    <table style="margin-bottom: 30px;">
-      <tr><th>Choix d'architecture</th><th>Alternative évaluée</th><th>Décision et justification technique</th></tr>
-      <tr><td><strong>Modèle LLM open source</strong></td><td class="small">API cloud payante</td><td class="body" style="font-size: 19px;">Modèle Qwen (3,2 Go) retenu : <b>0 € de coût d'API</b>, p95 2,41 s sur T4 GPU, souveraineté des données</td></tr>
-      <tr><td><strong>Structure documentaire</strong></td><td class="small">Chunks bruts 1 000 tokens</td><td class="body" style="font-size: 19px;">Fiches 300–500 tokens avec fil d'Ariane, section et métadonnées scalaires (ECO, FEN)</td></tr>
-      <tr><td><strong>Gestion du hors-sujet</strong></td><td class="small">Seuil cosinus seul</td><td class="body" style="font-size: 19px;">Filtrage déterministe par rayon d'ouverture + seuil filet à 0,58 (<b>5/5 pièges bloqués</b>)</td></tr>
-    </table>
-    <div class="card wood" style="padding: 24px 32px; text-align: center;">
-      <p class="body" style="font-weight: 600; font-size: 22px;">Chaque choix technique repose sur une comparaison objective et des mesures reproductibles.</p>
-    </div>
-  </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 04 · 05 · 07</span><span>11 / 15</span></div>
-</div>
-
-<!-- ═══════════ DIAPO 12 — Déploiement et coûts ═══════════ -->
+<!-- ═══════════ DIAPO 10 — Architecture de déploiement ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Déploiement et infrastructure</div>
-    <h1>Déploiement et coûts</h1>
+    <h1>Architecture de déploiement</h1>
   </div>
   <div class="slide-content">
-    <div class="row" style="align-items: stretch;">
-      <div class="card grow" style="border: 2.5px solid #3A5A40;">
-        <div class="stitle" style="color:#3A5A40; font-size: 22px;">LOCAL : POC complet</div>
-        <p class="body" style="margin-top: 14px; font-size: 21px;">
-          • <b>7 conteneurs Docker</b> (<span class="mono">docker compose up</span> / <span class="mono">./demarrer.sh</span>)<br>
-          • Modèle LLM local sur l'hôte (Ollama)<br>
-          • Initialisation mesurée : <b>prête en 2 min 09</b><br>
-          • Coût infrastructure : <b>0,00 €</b>
-        </p>
+    <div class="row" style="align-items: stretch; margin-bottom: 16px;">
+      <div class="card grow" style="flex: 0 0 62%;">
+        <div class="stitle" style="color: #3A5A40;">Architecture cible industrielle (Scalabilité horizontale)</div>
+        <div style="font-family: 'SF Mono', Menlo, monospace; font-size: 16px; line-height: 1.4; background: #F4EFE6; padding: 14px; border-radius: 10px; margin-top: 10px;">
+          Utilisateurs ──► Load Balancer ──► [ N × Instances API FastAPI (Stateless) ]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼ (Services partagés)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┌──────────────────┼──────────────────┐<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼                  ▼                  ▼<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MongoDB            Milvus          Pool GPU Inférence (LLM)
+        </div>
+        <p class="small" style="margin-top: 10px;">• Séparation nette : compute API réplicable à volonté, bases mutualisées, pool GPU isolé.</p>
       </div>
-      <div class="card key grow" style="border: 2.5px solid #3A5A40;">
-        <div class="stitle" style="color:#0B2211; font-size: 22px;">EN LIGNE : Déploiement GPU T4</div>
-        <p class="body" style="margin-top: 14px; font-size: 21px;">
-          • <b>Hugging Face Spaces</b> (mono-conteneur Docker GPU T4 16 Go)<br>
-          • Modèle Qwen + Stockfish + Milvus Lite embarqués<br>
-          • CI/CD <b>GitHub Actions</b> (déploiement automatique sur push main)<br>
-          • Coût infrastructure : <b>0,40 $/h</b> (à l'usage) · Accès : <span class="mono">trikwi-p13-agent-echecs.hf.space</span>
+      <div class="card key grow" style="flex: 0 0 34%;">
+        <div class="stitle" style="color: #0B2211;">Preuve réelle POC (Déployée)</div>
+        <p class="body" style="font-size: 18px; margin-top: 8px;">
+          • <b>Hugging Face Spaces</b><br>
+          • GPU NVIDIA T4 (16 Go VRAM)<br>
+          • Stack complète embarquée avec Ollama CUDA, Stockfish et Milvus Lite<br>
+          • Déploiement automatisé par CI/CD GitHub Actions<br>
+          • Facturation à l'usage : <b>0,40 $/h</b>
         </p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>tester-installation.sh · space/Dockerfile</span><span>12 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture SI & Passage à l'échelle</span><span>10 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 13 — Analyse vidéo ═══════════ -->
+<!-- ═══════════ DIAPO 11 — Dimensionnement & Montée en charge ═══════════ -->
 <div class="slide">
   <div class="slide-header">
-    <div class="kicker">Deuxième partie</div>
-    <h1>Analyse vidéo</h1>
+    <div class="kicker">Dimensionnement</div>
+    <h1>Dimensionnement et montée en charge</h1>
   </div>
   <div class="slide-content">
-    <div style="text-align: center; font-family: 'SF Mono', Menlo, monospace; font-size: 19px; margin-bottom: 24px; background: #F0E6D2; padding: 16px 20px; border-radius: 14px;">
-      Vidéo ──► Images & transcripts ──► Détection échiquier ──► Position FEN ──► <span style="color:#3A5A40; font-weight:700;">FEN ↔ vidéo ↔ timestamp</span>
-    </div>
-    <div class="row" style="align-items: stretch; margin-bottom: 20px;">
+    <div class="row" style="align-items: stretch; margin-bottom: 14px;">
       <div class="card grow">
-        <div class="stitle">Aujourd'hui (POC)</div>
-        <p class="body" style="font-size: 21px; margin-top: 10px;">Recommandation globale de vidéos par ouverture :<br><i>« Voici 3 vidéos sur la Partie Italienne. »</i></p>
+        <div class="stitle">Facteurs limitants par composant</div>
+        <p class="body" style="font-size: 17px; line-height: 1.45;">
+          • <b>API FastAPI</b> : Stateless → réplication horizontale simple.<br>
+          • <b>Stockfish</b> : CPU parallélisable (~0,8 s / coup).<br>
+          • <b>Milvus & MongoDB</b> : Services partagés légers (7–11 ms).<br>
+          • <b>Inférence LLM</b> : <b>Goulot principal</b> → dimensionné par le pool GPU.
+        </p>
       </div>
-      <div class="card key grow">
-        <div class="stitle">Après analyse vidéo (Étude)</div>
-        <p class="body" style="font-size: 21px; margin-top: 10px;">Recommandation directe au timestamp exact :<br><i>« Cette position est expliquée à 4:32 dans cette vidéo. »</i></p>
+      <div class="card wood grow" style="flex: 0 0 60%;">
+        <div class="stitle">Scénarios d'hypothèses de charge (Base FFE : 60 000 licenciés)</div>
+        <p class="small" style="margin-bottom: 8px;"><i>Hypothèse d'utilisation : 30 analyses / utilisateur / mois.</i></p>
+        <table style="font-size: 16.5px;">
+          <tr><th>Scénario</th><th>Utilisateurs</th><th>Volume mensuel</th><th>Débit moyen</th><th>Cible GPU</th></tr>
+          <tr><td><strong>Scénario 1 %</strong></td><td>600 users</td><td>18 000 req/mois</td><td>~0,25 req/min</td><td>1 GPU partagé</td></tr>
+          <tr><td><strong>Scénario 5 %</strong></td><td>3 000 users</td><td>90 000 req/mois</td><td>~1,25 req/min</td><td>1 à 2 GPU</td></tr>
+          <tr><td><strong>Scénario 10 %</strong></td><td>6 000 users</td><td>180 000 req/mois</td><td>~2,50 req/min</td><td>2 à 3 GPU (autoscaling)</td></tr>
+        </table>
       </div>
-    </div>
-    <div class="card wood" style="text-align: center; padding: 18px;">
-      <p class="body" style="font-weight: 600; font-size: 21px; color: #2A2011;">Étude de faisabilité réalisée — développement hors périmètre du POC</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Analyse vidéo (Partie 2)</span><span>13 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Modélisation de la charge</span><span>11 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 14 — Résumé du POC ═══════════ -->
+<!-- ═══════════ DIAPO 12 — Coûts de fonctionnement ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Modèle économique</div>
+    <h1>Coûts de fonctionnement</h1>
+  </div>
+  <div class="slide-content">
+    <div class="row" style="align-items: stretch; margin-bottom: 14px;">
+      <div class="card grow" style="flex: 0 0 60%;">
+        <div class="stitle">Postes de dépenses opérationnelles (Scénario cible 5 %)</div>
+        <table style="font-size: 16.5px; margin-top: 6px;">
+          <tr><th>Poste de coût</th><th>Composant</th><th>Estimation mensuelle</th></tr>
+          <tr><td><strong>Inférence GPU</strong></td><td>Pool GPU (instances T4 / L4 à l'usage)</td><td>~150 à 280 € / mois</td></tr>
+          <tr><td><strong>API & Compute</strong></td><td>Instances FastAPI stateless (CPU / RAM)</td><td>~30 à 50 € / mois</td></tr>
+          <tr><td><strong>Bases de données</strong></td><td>Milvus managé + MongoDB managé</td><td>~50 à 80 € / mois</td></tr>
+          <tr><td><strong>Stockage & Logs</strong></td><td>Métriques, monitoring, sauvegardes</td><td>~20 € / mois</td></tr>
+          <tr><td><strong>APIs Externes</strong></td><td>Modèles open source + YouTube API</td><td><strong>0,00 €</strong></td></tr>
+          <tr><td><strong>TOTAL OPEX</strong></td><td><strong>Service en production (3 000 users)</strong></td><td><strong>~250 à 430 € / mois</strong></td></tr>
+        </table>
+      </div>
+      <div class="card wood grow" style="flex: 0 0 36%;">
+        <div class="stitle">Investissement Build (POC)</div>
+        <p class="body" style="font-size: 18px; margin-top: 8px;">
+          • <b>Développement POC</b> : ~25 à 30 jours-homme.<br>
+          • <b>Stack 100 % open source</b> : aucune redevance de licence logicielle propriétaire.<br>
+          • <b>Maîtrise budgétaire</b> : le coût reste dominé par le compute GPU ajustable selon l'usage.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Budget et coûts du système</span><span>12 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 13 — YouTube dans le POC ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Fonctionnalité livrée</div>
+    <h1>YouTube dans le POC</h1>
+  </div>
+  <div class="slide-content">
+    <div style="text-align: center; font-family: 'SF Mono', Menlo, monospace; font-size: 18px; margin-bottom: 20px; background: #F0E6D2; padding: 14px 18px; border-radius: 12px;">
+      Position de l'élève ──► Détection ouverture ──► YouTube Data API v3 ──► <span style="color:#3A5A40; font-weight:700;">Ressources vidéo recommandées</span>
+    </div>
+    <div class="row" style="align-items: stretch;">
+      <div class="card grow" style="border-left: 6px solid #3A5A40;">
+        <div class="stitle">Ce que fait l'application aujourd'hui</div>
+        <p class="body" style="font-size: 19px; margin-top: 8px;">
+          • L'agent identifie l'ouverture jouée sur l'échiquier.<br>
+          • Il interroge l'API officielle YouTube Data pour extraire les vidéos explicatives pertinentes.<br>
+          • Affichage direct : titre officiel, nom de la chaîne, durée et lien cliquable.<br>
+          • <b>Conformité stricte</b> : exploitation des métadonnées seules, aucun téléchargement de flux.
+        </p>
+      </div>
+      <div class="card wood grow" style="text-align: center; padding: 20px;">
+        <div class="stitle" style="font-size: 18px; margin-bottom: 8px;">Panneau vidéo intégré</div>
+        <p class="small">L'élève dispose immédiatement de cours vidéo de grands maîtres adaptés à son ouverture sans quitter l'interface d'entraînement.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Recommandation vidéo (Partie 1)</span><span>13 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 14 — Analyse vidéo : Évolution étudiée ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Deuxième partie · Étude</div>
+    <h1>Analyse vidéo : évolution étudiée</h1>
+  </div>
+  <div class="slide-content">
+    <div style="text-align: center; font-family: 'SF Mono', Menlo, monospace; font-size: 18px; margin-bottom: 20px; background: #F0E6D2; padding: 14px 18px; border-radius: 12px;">
+      Vidéo 15 min ──► 180 frames (1/5s) ──► ~30 positions clés ──► Détection FEN ──► <span style="color:#3A5A40; font-weight:700;">FEN ↔ vidéo ↔ timestamp</span>
+    </div>
+    <div class="row" style="align-items: stretch; margin-bottom: 16px;">
+      <div class="card grow">
+        <div class="stitle">Aujourd'hui (POC) : Position → Vidéo</div>
+        <p class="body" style="font-size: 19px; margin-top: 8px;">Recommandation globale par nom d'ouverture :<br><i>« Voici 3 vidéos sur la Partie Italienne. »</i></p>
+      </div>
+      <div class="card key grow">
+        <div class="stitle">Après analyse vidéo : Vidéo → Position</div>
+        <p class="body" style="font-size: 19px; margin-top: 8px;">Recommandation directe au timestamp exact :<br><i>« Cette position exacte est expliquée à 4:32 dans cette vidéo. »</i></p>
+      </div>
+    </div>
+    <div class="card wood" style="text-align: center; padding: 14px;">
+      <p class="body" style="font-weight: 600; font-size: 19px; color: #2A2011;">On part de la vidéo pour extraire les positions jouées et les transmettre à l'agent existant via la clé FEN.</p>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Ingénierie vidéo (Partie 2)</span><span>14 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 15 — Faisabilité et limites vidéo ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Étude d'ingénierie</div>
+    <h1>Faisabilité et limites de l'analyse vidéo</h1>
+  </div>
+  <div class="slide-content">
+    <div class="row" style="align-items: stretch; margin-bottom: 16px;">
+      <div class="card grow" style="border-top: 6px solid #3A5A40;">
+        <div class="stitle">1. Approche MVP : Transcripts-first + Vision 2D</div>
+        <p class="body" style="font-size: 18px; margin-top: 8px;">
+          • Reconstruire d'abord les coups cités dans le transcript textuel via <span class="mono">python-chess</span>.<br>
+          • Utiliser la vision par ordinateur 2D uniquement pour confirmer la position et caler l'horodatage exact (~3 min CPU / vidéo).
+        </p>
+      </div>
+      <div class="card key grow" style="border-top: 6px solid #3A5A40;">
+        <div class="stitle">2. Chiffrage de l'étude (Partie 2)</div>
+        <p class="body" style="font-size: 18px; margin-top: 8px;">
+          • <b>Build MVP</b> : <b>30 à 40 jours-homme</b> (budget estimé : <b>15 à 20 k€</b>).<br>
+          • <b>Coût unitaire Run</b> : <b>~0,10 à 0,15 € / vidéo</b> (à 1 000 vidéos/mois).<br>
+          • <b>Statut</b> : Étude de faisabilité livrée — développement hors POC.
+        </p>
+      </div>
+    </div>
+    <div class="card wood" style="padding: 16px 24px;">
+      <div class="stitle" style="font-size: 18px;">Limites & Risques identifiés dans la note</div>
+      <p class="small">• Risque juridique (CGU YouTube & droit d'auteur) atténué par le traitement des chaînes partenaires sous licence.<br>• Échiquiers 3D / angles inclinés exclus du MVP (réservés à une version V2).</p>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Livrable d'ingénierie (Partie 2)</span><span>15 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 16 — Résumé du POC ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Bilan du projet</div>
     <h1>Résumé du POC</h1>
   </div>
   <div class="slide-content">
-    <div class="row" style="align-items: stretch; margin-bottom: 24px;">
+    <div class="row" style="align-items: stretch; margin-bottom: 16px;">
       <div class="card key grow">
         <div class="stitle">Agent fonctionnel</div>
-        <p class="body" style="font-size: 20px;">Reconnaissance théorique immédiate, bascule moteur sur sortie de théorie, explications pédagogiques sourcées.</p>
+        <p class="body" style="font-size: 18px;">Reconnaissance théorique immédiate, explications pédagogiques sourcées, bascule moteur Stockfish.</p>
       </div>
       <div class="card grow">
         <div class="stitle">Architecture maîtrisée</div>
-        <p class="body" style="font-size: 20px;">Orchestration déterministe LangGraph, Stockfish UCI, base vectorielle Milvus, cache transverse MongoDB.</p>
+        <p class="body" style="font-size: 18px;">Orchestration déterministe LangGraph, Stockfish UCI, base vectorielle Milvus, cache transverse MongoDB.</p>
+      </div>
+      <div class="card grow">
+        <div class="stitle">Gisement de données</div>
+        <p class="body" style="font-size: 18px;">Pipeline ETL rejouable (4 sources, 477 fiches structurées, 95 FEN de référence validés).</p>
       </div>
     </div>
-    <div class="row" style="align-items: stretch; margin-bottom: 28px;">
+    <div class="row" style="align-items: stretch; margin-bottom: 20px;">
       <div class="card grow">
-        <div class="stitle">Performances validées</div>
-        <p class="body" style="font-size: 20px;">0 coup illégal sur 56 positions, latence sous 2,5 s sur GPU Cloud T4 (p95 = 2,41 s).</p>
+        <div class="stitle">Performances prouvées</div>
+        <p class="body" style="font-size: 18px;">0 coup illégal sur 56 positions, latence sous 2,5 s sur GPU Cloud T4 (p95 = 2,41 s).</p>
       </div>
       <div class="card grow">
         <div class="stitle">Déploiement éprouvé</div>
-        <p class="body" style="font-size: 20px;">Conteneurisation locale reproductible (2 min 09) et déploiement cloud GPU opérationnel sur Hugging Face Spaces.</p>
+        <p class="body" style="font-size: 18px;">Conteneurisation locale reproductible (2 min 09) et vitrine cloud GPU opérationnelle sur Hugging Face Spaces.</p>
+      </div>
+      <div class="card key grow">
+        <div class="stitle">Étude vidéo livrée</div>
+        <p class="body" style="font-size: 18px;">Note de cadrage, architecture MCP, faisabilité technique et modèle de coûts formalisés.</p>
       </div>
     </div>
-    <div class="card wood" style="text-align: center; padding: 18px;">
-      <p class="body" style="font-weight: 700; color: #3A5A40; font-size: 22px;">→ Place à la démonstration en direct et aux échanges.</p>
+    <div class="card wood" style="text-align: center; padding: 14px;">
+      <p class="body" style="font-weight: 700; color: #3A5A40; font-size: 21px;">→ Place à la démonstration en direct et aux échanges.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Conclusion du POC</span><span>14 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Conclusion du POC</span><span>16 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 15 — Merci ═══════════ -->
+<!-- ═══════════ DIAPO 17 — Démonstration et échanges ═══════════ -->
 <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
-  <h1 style="font-size: 88px; margin-bottom: 28px; color: #3A5A40;">Merci.</h1>
-  <p class="body" style="font-size: 34px; font-weight: 700; color: #1C1B18; margin-bottom: 16px;">
+  <div class="kicker" style="font-size: 24px; color: #3A5A40;">Session interactive</div>
+  <h1 style="font-size: 64px; margin-bottom: 24px; color: #1C1B18;">Démonstration en direct</h1>
+  <p class="body" style="font-size: 28px; max-width: 1200px; margin-bottom: 40px;">
+    Parcours nominal (Partie Italienne), demande de conseils sourcés, sortie de théorie sur Stockfish et exploration du code.
+  </p>
+  <div class="row" style="max-width: 1000px; justify-content: center;">
+    <div class="card wood grow" style="padding: 24px;">
+      <div class="stitle">Application locale</div>
+      <p class="mono" style="font-size: 18px;">http://localhost:4200</p>
+    </div>
+    <div class="card key grow" style="padding: 24px;">
+      <div class="stitle">Vitrine Cloud GPU T4</div>
+      <p class="mono" style="font-size: 18px;">trikwi-p13-agent-echecs.hf.space</p>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Démonstration live</span><span>17 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 18 — Merci ═══════════ -->
+<div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+  <h1 style="font-size: 88px; margin-bottom: 24px; color: #3A5A40;">Merci.</h1>
+  <p class="body" style="font-size: 34px; font-weight: 700; color: #1C1B18; margin-bottom: 14px;">
     Richard Hugou
   </p>
-  <p class="small" style="font-size: 22px; color: #7A756C; margin-bottom: 48px;">
+  <p class="small" style="font-size: 22px; color: #7A756C; margin-bottom: 40px;">
     IA Engineer — Cavalier Data
   </p>
-  <div class="card wood" style="padding: 24px 48px; font-size: 20px;">
-    <p class="mono" style="margin-bottom: 10px;">Dépôt : https://github.com/richardhugou/p13-agent-ia-echecs</p>
+  <div class="card wood" style="padding: 22px 48px; font-size: 19px;">
+    <p class="mono" style="margin-bottom: 8px;">Dépôt : https://github.com/richardhugou/p13-agent-ia-echecs</p>
     <p class="mono">Vitrine : https://trikwi-p13-agent-echecs.hf.space</p>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Fin de la soutenance</span><span>15 / 15</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Fin de la soutenance</span><span>18 / 18</span></div>
 </div>
 
 </body>

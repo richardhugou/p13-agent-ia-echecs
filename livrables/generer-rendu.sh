@@ -68,7 +68,7 @@ echo "  ✓ code + lien dépôt (.md)"
 
 echo "── 2. Le support de soutenance ──"
 cp livrables/rendu/presentation-soutenance.pdf "$STAGE/Hugou_Richard_2_presentation_082026.pdf"
-echo "  ✓ présentation (15 diapos)"
+echo "  ✓ présentation (18 diapos)"
 
 echo "── 3. La note détaillée d'ingénierie (Partie 2) ──"
 md_vers_pdf livrables/note-benefices-limites.md "$STAGE/Hugou_Richard_3_note_analyse_video_082026.pdf"

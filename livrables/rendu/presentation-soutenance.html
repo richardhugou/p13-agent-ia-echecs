@@ -20,7 +20,7 @@
     height: 1080px;
     page-break-after: always;
     background: #FCF9F4;
-    padding: 65px 95px 65px 95px;
+    padding: 60px 90px 60px 90px;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -29,7 +29,7 @@
   }
   .slide-header {
     flex-shrink: 0;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .slide-content {
     flex-grow: 1;
@@ -43,21 +43,21 @@
     text-transform: uppercase;
     color: #7A756C;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   h1 {
-    font-size: 46px;
+    font-size: 44px;
     font-weight: 700;
     line-height: 1.15;
     color: #1C1B18;
   }
   .body {
-    font-size: 22px;
-    line-height: 1.5;
+    font-size: 21px;
+    line-height: 1.45;
     color: #2A2011;
   }
   .small {
-    font-size: 17px;
+    font-size: 16.5px;
     line-height: 1.4;
     color: #7A756C;
   }
@@ -68,14 +68,14 @@
     font-size: 15px;
     color: #7A756C;
     border-top: 1px solid #E6E1D8;
-    padding-top: 14px;
-    margin-top: 16px;
+    padding-top: 12px;
+    margin-top: 14px;
   }
   .card {
     background: #FFFFFF;
     border-radius: 14px;
     border: 1px solid #E6E1D8;
-    padding: 26px 32px;
+    padding: 22px 28px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.03);
   }
   .card.key {
@@ -86,12 +86,12 @@
     background: #F4EFE6;
     border-color: #D4C9B8;
   }
-  .row { display: flex; gap: 28px; width: 100%; }
+  .row { display: flex; gap: 24px; width: 100%; }
   .grow { flex: 1; }
-  .stitle { font-size: 22px; font-weight: 700; color: #1C1B18; margin-bottom: 10px; }
+  .stitle { font-size: 21px; font-weight: 700; color: #1C1B18; margin-bottom: 8px; }
   .mono { font-family: "SF Mono", Menlo, Consolas, monospace; }
-  table { width: 100%; border-collapse: collapse; font-size: 18.5px; }
-  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #E6E1D8; }
+  table { width: 100%; border-collapse: collapse; font-size: 18px; }
+  th, td { text-align: left; padding: 11px 15px; border-bottom: 1px solid #E6E1D8; }
   th { background: #F4EFE6; font-weight: 700; color: #2A2011; }
 </style>
 </head>
@@ -139,12 +139,12 @@
       </div>
     </div>
     <div class="card wood">
-      <div class="stitle" style="margin-bottom: 12px;">Les 4 capacités attendues de l'agent</div>
+      <div class="stitle" style="margin-bottom: 10px;">Les 4 capacités attendues de l'agent</div>
       <div class="row">
-        <div class="grow body" style="font-size: 19px;"><b>1. Jouer</b> : proposer les coups recommandés par la théorie des maîtres.</div>
-        <div class="grow body" style="font-size: 19px;"><b>2. Expliquer</b> : justifier les plans stratégiques avec sources fiables.</div>
-        <div class="grow body" style="font-size: 19px;"><b>3. Conseiller</b> : recommander des vidéos pédagogiques ciblées.</div>
-        <div class="grow body" style="font-size: 19px;"><b>4. Évaluer</b> : analyser objectivement toute sortie de théorie via Stockfish.</div>
+        <div class="grow body" style="font-size: 18.5px;"><b>1. Jouer</b> : proposer les coups recommandés par la théorie des maîtres.</div>
+        <div class="grow body" style="font-size: 18.5px;"><b>2. Expliquer</b> : justifier les plans stratégiques avec sources fiables.</div>
+        <div class="grow body" style="font-size: 18.5px;"><b>3. Conseiller</b> : recommander des vidéos pédagogiques ciblées.</div>
+        <div class="grow body" style="font-size: 18.5px;"><b>4. Évaluer</b> : analyser objectivement toute sortie de théorie via Stockfish.</div>
       </div>
     </div>
   </div>
@@ -154,52 +154,89 @@
 <!-- ═══════════ DIAPO 3 — L'application en action ═══════════ -->
 <div class="slide">
   <div class="slide-header">
-    <div class="kicker">Le produit</div>
-    <h1>L'application en action</h1>
+    <div class="kicker">Le produit réel</div>
+    <h1>L'application en action : Frontend & API Backend</h1>
   </div>
   <div class="slide-content">
-    <div class="row" style="align-items: center; justify-content: space-between;">
-      <div style="flex: 0 0 68%; text-align: center;">
-        <img src="../../livrables/rendu/captures/ui-conseils-italienne.png" style="width: 100%; max-height: 640px; object-fit: contain; border-radius: 14px; border: 1px solid #7A756C; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <div class="row" style="align-items: stretch; justify-content: space-between;">
+      <!-- Gauche: UI Angular -->
+      <div class="card grow" style="flex: 0 0 54%; padding: 18px; text-align: center;">
+        <div class="stitle" style="font-size: 19px; margin-bottom: 8px; color: #3A5A40;">Interface Échiquéenne (Angular 17)</div>
+        <img src="../../livrables/rendu/captures/ui-conseils-italienne.png" style="width: 100%; max-height: 520px; object-fit: contain; border-radius: 10px; border: 1px solid #7A756C;">
+        <p class="small" style="margin-top: 8px;">Échiquier interactif, flèches tactiques, statistiques Lichess et conseils sourcés.</p>
       </div>
-      <div class="card grow" style="flex: 0 0 28%; text-align: center; padding: 32px 18px;">
-        <div class="stitle" style="font-size: 21px; margin-bottom: 14px;">Démonstration en vidéo</div>
-        <img src="../../livrables/rendu/captures/qr-code-video.svg" style="width: 190px; height: 190px; margin: 0 auto 14px auto; display: block;">
-        <p class="body" style="font-size: 18px; line-height: 1.4; margin-bottom: 10px;">Scénario complet en conditions réelles (~4 min) :</p>
-        <p class="small" style="font-size: 15px; color: #3A5A40; font-weight: 600;">Loom · 3-4 coups · Conseils RAG · Sortie de théorie Stockfish</p>
+
+      <!-- Droite: Swagger + QR Code -->
+      <div style="flex: 0 0 42%; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;">
+        <div class="card" style="padding: 16px;">
+          <div class="stitle" style="font-size: 18px; margin-bottom: 6px; color: #1C1B18;">API REST FastAPI (Swagger /docs)</div>
+          <img src="../../livrables/rendu/captures/swagger-api-docs.png" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px; border: 1px solid #E6E1D8;">
+          <p class="small" style="margin-top: 6px; font-size: 14.5px;">Endpoints REST documentés sous OpenAPI 3.1 (<span class="mono">/moves</span>, <span class="mono">/evaluate</span>, <span class="mono">/agent/ask</span>).</p>
+        </div>
+        <div class="card key" style="padding: 16px; text-align: center; display: flex; align-items: center; gap: 18px;">
+          <img src="../../livrables/rendu/captures/qr-code-video.svg" style="width: 120px; height: 120px; flex-shrink: 0;">
+          <div style="text-align: left;">
+            <div class="stitle" style="font-size: 18px; margin-bottom: 4px;">Démonstration (~4 min)</div>
+            <p class="body" style="font-size: 16px; line-height: 1.35;">Scénario filmé en conditions réelles : coups théoriques, RAG sourcé et déviation Stockfish.</p>
+            <p class="small" style="font-size: 14px; color: #3A5A40; font-weight: 600; margin-top: 4px;">Loom · Scan QR Code</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Interface Angular 17 en direct</span><span>3 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Angular 17 ──► FastAPI REST ──► LangGraph</span><span>3 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 4 — Parcours utilisateur ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Fonctionnement</div>
-    <h1>Parcours utilisateur</h1>
+    <h1>Parcours utilisateur (Preuves concrètes)</h1>
   </div>
   <div class="slide-content">
-    <div class="row" style="align-items: stretch; margin-bottom: 20px;">
-      <div class="card grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">1. Orientation & Choix</div>
-        <p class="body" style="font-size: 19px;">L'élève choisit son camp (ex: les Blancs). L'échiquier s'oriente immédiatement et l'ouverture cible (Partie Italienne) est sélectionnée.</p>
+    <div class="row" style="align-items: stretch; margin-bottom: 14px;">
+      <!-- Étape 1 -->
+      <div class="card grow" style="flex: 1; padding: 16px; border-top: 5px solid #3A5A40; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="stitle" style="font-size: 17.5px;">1. Orientation & Choix</div>
+          <img src="../../livrables/rendu/captures/step-1-orientation.png" style="width: 100%; max-height: 130px; object-fit: contain; border-radius: 8px; border: 1px solid #E6E1D8; margin: 6px 0;">
+        </div>
+        <p class="small" style="font-size: 15px; color: #2A2011;">L'élève choisit son camp (Blancs). L'échiquier s'oriente et l'ouverture cible est sélectionnée.</p>
       </div>
-      <div class="card grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">2. Jeu théorique</div>
-        <p class="body" style="font-size: 19px;">L'élève joue ses coups sur le plateau. L'agent joue automatiquement la réplique des maîtres Lichess la plus fréquente (1.e4 e5, 2.Cf3 Cc6).</p>
+
+      <!-- Étape 2 -->
+      <div class="card grow" style="flex: 1; padding: 16px; border-top: 5px solid #3A5A40; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="stitle" style="font-size: 17.5px;">2. Jeu théorique</div>
+          <img src="../../livrables/rendu/captures/step-2-jeu.png" style="width: 100%; max-height: 130px; object-fit: contain; border-radius: 8px; border: 1px solid #E6E1D8; margin: 6px 0;">
+        </div>
+        <p class="small" style="font-size: 15px; color: #2A2011;">L'élève joue sur le plateau. L'agent réplique avec le coup le plus joué (1.e4 e5, 2.Cf3 Cc6).</p>
       </div>
-      <div class="card grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">3. Conseils sourcés</div>
-        <p class="body" style="font-size: 19px;">À 3.Fc4, « Demander à Chessbot » affiche les coups des maîtres, les flèches tactiques, la synthèse sourcée et la vidéo YouTube associée.</p>
+
+      <!-- Étape 3 -->
+      <div class="card grow" style="flex: 1; padding: 16px; border-top: 5px solid #3A5A40; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="stitle" style="font-size: 17.5px;">3. Conseils sourcés</div>
+          <img src="../../livrables/rendu/captures/step-3-conseils.png" style="width: 100%; max-height: 130px; object-fit: contain; border-radius: 8px; border: 1px solid #E6E1D8; margin: 6px 0;">
+        </div>
+        <p class="small" style="font-size: 15px; color: #2A2011;">À 3.Fc4, affichage des stats maîtres, flèches tactiques, RAG sourcé et vidéo YouTube.</p>
       </div>
-      <div class="card grow" style="border-top: 6px solid #C97A63;">
-        <div class="stitle">4. Déviation moteur</div>
-        <p class="body" style="font-size: 19px;">Sur un coup hors théorie (ex: 4.g4?!), l'agent bascule instantanément sur Stockfish pour fournir une évaluation objective chiffrée (-1,47 cp).</p>
+
+      <!-- Étape 4 -->
+      <div class="card grow" style="flex: 1; padding: 16px; border-top: 5px solid #C97A63; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="stitle" style="font-size: 17.5px; color: #C97A63;">4. Déviation Stockfish</div>
+          <div style="background: #FDF2E9; border: 1px solid #C97A63; border-radius: 8px; padding: 14px; margin: 6px 0; text-align: center;">
+            <div style="font-size: 14px; font-weight: 700; color: #BA1A1A;">SORTIE DE THÉORIE</div>
+            <div style="font-size: 22px; font-weight: 800; color: #2A2011; margin: 4px 0;">-1,47 cp</div>
+            <div class="small" style="font-size: 12px; color: #7A756C;">Stockfish 16 · 4.g4?!</div>
+          </div>
+        </div>
+        <p class="small" style="font-size: 15px; color: #2A2011;">Sur un coup hors répertoire, bascule instantanée vers le moteur pour une évaluation objective.</p>
       </div>
     </div>
-    <div class="card wood" style="text-align: center; padding: 18px;">
-      <p class="body" style="font-weight: 600; color: #3A5A40; font-size: 21px;">Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.</p>
+    <div class="card wood" style="text-align: center; padding: 12px;">
+      <p class="body" style="font-weight: 600; color: #3A5A40; font-size: 19px;">Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.</p>
     </div>
   </div>
   <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 18</span></div>
@@ -680,35 +717,61 @@
 <!-- ═══════════ DIAPO 15 — Comment retrouver une position dans une vidéo ? ═══════════ -->
 <div class="slide">
   <div class="slide-header">
-    <div class="kicker">Partie 2 · Ingénierie</div>
+    <div class="kicker">Partie 2 · Ingénierie Computer Vision</div>
     <h1>Comment retrouver une position d'échecs dans une vidéo ?</h1>
   </div>
   <div class="slide-content">
-    <p class="body" style="font-size: 20px; margin-bottom: 12px; color: #3A5A40; font-weight: 500;">
-      Construire un index : position FEN ↔ vidéo ↔ timestamp
-    </p>
-    <div style="text-align: center; font-family: 'SF Mono', Menlo, monospace; font-size: 16.5px; margin-bottom: 16px; background: #F0E6D2; padding: 14px; border-radius: 12px; line-height: 1.45;">
-      VIDÉO PÉDAGOGIQUE ──► Images clés (1/5s) ──► Détection échiquier ──► Reconnaissance pièces<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
-      <span style="color:#3A5A40; font-weight:700;">FEN ↔ vidéo ↔ timestamp</span> ◄── Validation python-chess ◄── Reconstruction FEN ◄┘
-    </div>
-    <div class="row" style="align-items: stretch; margin-bottom: 10px;">
-      <div class="card grow">
-        <div class="stitle">Exemple d'indexation (Vidéo « L'Italienne »)</div>
-        <p class="mono" style="font-size: 16.5px; line-height: 1.5; margin-top: 6px;">
-          • 04:12 ──► FEN A (Début de variante)<br>
-          • <b>04:32 ──► FEN B (Position recherchée par l'élève)</b><br>
-          • 05:07 ──► FEN C (Suite tactique)<br>
-          • 06:21 ──► FEN D (Fin d'explication)
-        </p>
+    <div class="row" style="align-items: stretch; margin-bottom: 12px;">
+      <!-- Pipeline Visuel -->
+      <div class="card key grow" style="flex: 0 0 56%; padding: 18px;">
+        <div class="stitle" style="font-size: 18.5px; color: #0B2211; margin-bottom: 8px;">1. Chaîne Computer Vision (Flux Visuel)</div>
+        <div style="font-family: 'SF Mono', Menlo, monospace; font-size: 13.5px; line-height: 1.45; background: #FFFFFF; padding: 12px; border-radius: 8px; border: 1px solid #3A5A40;">
+          VIDÉO DU COURS (1 frame / 5 s)<br>
+          &nbsp;&nbsp;│<br>
+          &nbsp;&nbsp;▼ <b>Détection & Rectification (OpenCV)</b> : Contours, Hough, coins (Harris)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;└─► <i>Homographie projective</i> ──► Échiquier rectifié 8×8 (64 cases)<br>
+          &nbsp;&nbsp;│<br>
+          &nbsp;&nbsp;▼ <b>Reconnaissance des pièces</b><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;• <b>2D (Écrans)</b> : Classification CNN (13 classes : vide + 12 pièces)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;• <b>3D (Physique)</b> : Détecteur YOLO / Dataset <i>ChessReD</i> 10 800 images<br>
+          &nbsp;&nbsp;│<br>
+          &nbsp;&nbsp;▼ <b>Validation déterministe (python-chess)</b> : Contrôle légalité (roques, rois) ──► FEN
+        </div>
       </div>
-      <div class="card key grow" style="text-align: center; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
-        <div class="stitle" style="color: #0B2211;">Le FEN comme clé pivot</div>
-        <p class="body" style="font-size: 18px; margin-top: 8px;">Les positions extraites des vidéos rejoignent directement la théorie Lichess, Milvus et Stockfish de l'agent existant.</p>
+
+      <!-- Pipeline Transcripts + Alignement -->
+      <div class="card wood grow" style="flex: 0 0 40%; padding: 18px;">
+        <div class="stitle" style="font-size: 18.5px; color: #1C1B18; margin-bottom: 8px;">2. Flux Transcripts & Alignement</div>
+        <div style="font-family: 'SF Mono', Menlo, monospace; font-size: 13.5px; line-height: 1.45; background: #FFFFFF; padding: 12px; border-radius: 8px; border: 1px solid #D4C9B8;">
+          TRANSCRIPTS (Whisper / CC)<br>
+          &nbsp;&nbsp;│<br>
+          &nbsp;&nbsp;▼ Extraction des coups cités (<span class="mono">python-chess</span>)<br>
+          &nbsp;&nbsp;│<br>
+          &nbsp;&nbsp;▼ <b>Alignement multimodal</b> :<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;Vision (FEN) ∩ Transcript (explication)<br>
+          &nbsp;&nbsp;│<br>
+          &nbsp;&nbsp;▼ <b style="color:#3A5A40;">FEN ↔ Vidéo ↔ Timestamp (04:32)</b>
+        </div>
+      </div>
+    </div>
+
+    <!-- Références de l'état de l'art -->
+    <div class="row" style="gap: 14px;">
+      <div class="card grow" style="padding: 12px 18px;">
+        <div class="stitle" style="font-size: 15.5px; margin-bottom: 4px;">LiveChess2FEN & Chesscog</div>
+        <p class="small" style="font-size: 14px;">Approche par homographie + classification des 64 cases par CNN léger (ONNX Runtime, &lt; 3 min CPU / vidéo).</p>
+      </div>
+      <div class="card grow" style="padding: 12px 18px;">
+        <div class="stitle" style="font-size: 15.5px; margin-bottom: 4px;">Dataset ChessReD (10 800 images)</div>
+        <p class="small" style="font-size: 14px;">Démontre la difficulté du cas 3D (angles, occlusions, mains) et justifie son exclusion en MVP.</p>
+      </div>
+      <div class="card key grow" style="padding: 12px 18px;">
+        <div class="stitle" style="font-size: 15.5px; margin-bottom: 4px; color: #0B2211;">Le FEN comme pivot</div>
+        <p class="small" style="font-size: 14px;">L'index vidéo rejoint directement le moteur Stockfish, Milvus et Lichess de l'agent existant.</p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §2 · Chaîne fonctionnelle</span><span>15 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §2-§5 · Computer Vision</span><span>15 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 16 — Faisabilité de l'analyse vidéo ═══════════ -->

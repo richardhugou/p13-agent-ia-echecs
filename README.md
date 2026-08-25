@@ -57,28 +57,42 @@ L'application associe une interface échiquéenne interactive (Angular 17) et un
 
 ## 4. Architecture Logicielle & Déterminisme
 
-```
-                                 ┌───────────────┐
-                                 │   MONGODB     │  (Cache applicatif transverse :
-                                 │    CACHE      │   Lichess, Stockfish, Vidéos)
-                                 └───────▲───────┘
-                                         ┆ (lecture / écriture)
-      Navigateur (Élève) ──► FRONT ANGULAR (Échiquier responsive & panneau coach)
-                                 ↕ position FEN / réponse
-                            FASTAPI + LANGGRAPH (Orchestration déterministe)
-                 ┌────────────────────────┼────────────────────────┐
-                 ▼                        ▼                        ▼
-         LICHESS EXPLORER             STOCKFISH               MILVUS
-       (Théorie & statistiques)      (Moteur UCI)       (Base vectorielle)
-                                                                   ▼
-                                                       LLM LOCAL / CLOUD (Ollama)
-                                                                   ▼
-                                                            RÉPONSE SOURCÉE
+Le système sépare rigoureusement le calcul déterministe et la génération de langage : **les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation pédagogique.**
+
+```mermaid
+flowchart TD
+    User["Navigateur Élève (Angular 17)"] <-->|Position FEN / Réponse JSON| API["FastAPI + LangGraph\n(Orchestration Déterministe)"]
+    
+    API <-->|Cache Transverse TTL 24h/7j| Mongo[("MongoDB\nCache & Sessions")]
+    API -->|1. Théorie >= 5 parties| Lichess["Lichess Opening Explorer\n(2M+ parties de maîtres)"]
+    API -->|2. Sortie de théorie < 5| Stockfish["Stockfish 16 UCI\n(Évaluation chiffrée cp/mat)"]
+    API -->|3. Recherche RAG| Milvus[("Milvus Vector DB\n(Rayon d'ouverture / 1024d)")]
+    API -->|4. Vidéos ciblées| YT["YouTube Data API\n(Métadonnées officielles)"]
+    
+    Milvus --> LLM["LLM Qwen (Local / Cloud GPU)\n(Formulation pédagogique sourcée)"]
+    Lichess --> LLM
+    YT --> LLM
+    Stockfish --> LLM
+    LLM --> User
 ```
 
 - **Clé pivot FEN** : Notation Forsyth-Edwards standardisée (`FEN`) transmise sans ambiguïté entre tous les modules.
 - **Milvus vs MongoDB** : **Milvus** stocke la connaissance vectorisée (HNSW / cosinus) ; **MongoDB** assure la mise en cache transverse et la persistance des sessions.
-- **Orchestration déterministe (LangGraph)** : Le seuil de $\ge 5$ parties de maîtres dans Lichess décide de l'embranchement théorie vs déviation tactique Stockfish. Aucun choix de coup n'est délégué au LLM.
+- **Orchestration déterministe (LangGraph)** :
+
+```mermaid
+flowchart LR
+    Start([Position FEN]) --> Val[Validation python-chess]
+    Val --> Ident[Identification ECO & Nom]
+    Ident --> Dec{Théorie ?\nParties >= 5}
+    Dec -->|Oui| Lich[Lichess Masters\nStats & Coups]
+    Dec -->|Non| Stock[Stockfish 16 UCI\nScore centipions]
+    Lich --> RAG[Milvus RAG\nRayon actif]
+    RAG --> Vid[YouTube Data API\nCours ciblés]
+    Vid --> LLM[Synthèse LLM\nFormulation sourcée]
+    Stock --> LLM
+    LLM --> End([Réponse enrichie])
+```
 
 ---
 
@@ -101,8 +115,12 @@ L'application associe une interface échiquéenne interactive (Angular 17) et un
 
 ## 6. Recherche Sémantique & Base Vectorielle
 
-```
-Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ──► Fiches pertinentes ──► LLM
+```mermaid
+flowchart LR
+    Q["Question élève\n« pourquoi le fou vise f7 ? »"] --> Emb["Embedding 1024d\nqwen3-embedding:0.6b"]
+    Emb --> HNSW["Milvus (HNSW / Cosinus)\nFiltre : rayon Italienne (C50)"]
+    HNSW --> Fiches["Fiches pertinentes\n• Giuoco Piano (0.66)\n• Attaque f7 (0.65)"]
+    Fiches --> LLM["Synthèse LLM Sourcée\n(Prompt avec contexte strict)"]
 ```
 
 - **Espace vectoriel unifié** : Modèle multilingue `qwen3-embedding:0.6b` (1024 dimensions) alignant les concepts français et anglais.
@@ -161,27 +179,37 @@ L'analyse des logs d'exécution sur instance GPU Cloud met en évidence les méc
 
 ### 1. Architecture de Déploiement Découplée
 
-```
-                 UTILISATEURS (Web / Mobile)
-                              │
-                              ▼
-                       LOAD BALANCER
-                              │
-                 ┌────────────┼────────────┐
-                 ▼            ▼            ▼
-              API #1       API #2       API #N
-             FastAPI      FastAPI      FastAPI (Stateless sur CPU)
-                 │            │            │
-                 └────────────┼────────────┘
-                              │
-          ┌───────────────────┼───────────────────┐
-          ▼                   ▼                   ▼
-      MongoDB              Milvus             Stockfish 16
-       Cache             Vector DB             Moteur CPU
-                              │
-                              ▼ (Requêtes de génération)
-                   POOL D'INFÉRENCE GPU (LLM)
-           ⚠️ Goulot dimensionnant (vLLM / Triton / Ollama)
+```mermaid
+flowchart TD
+    Client["Utilisateurs (Web / Mobile)"] --> LB["Répartiteur de Charge (Load Balancer)"]
+    
+    subgraph Stateless ["Tier API Stateless (Scalabilité Horizontale CPU)"]
+        API1["Instance FastAPI #1"]
+        API2["Instance FastAPI #2"]
+        APIN["Instance FastAPI #N"]
+    end
+    
+    LB --> API1
+    LB --> API2
+    LB --> APIN
+    
+    subgraph Services ["Services Mutualisés (CPU & Stockage)"]
+        Mongo[("MongoDB\nCache & État")]
+        Milvus[("Milvus\nBase Vectorielle")]
+        Stockfish["Stockfish 16\nMoteur Tactique CPU"]
+    end
+    
+    API1 --> Services
+    API2 --> Services
+    APIN --> Services
+    
+    subgraph GPU ["Tier Inférence Dédié (GPU)"]
+        PoolGPU["Pool d'Inférence GPU (LLM Qwen)\n⚠️ Goulot Dimensionnant (vLLM / Triton / Ollama)\nAutoscaling selon trafic de pointe"]
+    end
+    
+    API1 -.->|Requêtes de génération| PoolGPU
+    API2 -.->|Requêtes de génération| PoolGPU
+    APIN -.->|Requêtes de génération| PoolGPU
 ```
 
 - **Principe architectural** : Les instances API FastAPI stateless scalent horizontalement sur CPU à coût très faible ; le pool GPU d'inférence est isolé et dimensionné selon la concurrence en heure de pointe.
@@ -215,35 +243,34 @@ L'analyse des logs d'exécution sur instance GPU Cloud met en évidence les méc
 
 ## 10. YouTube dans le POC vs Étude d'Analyse Vidéo (Partie 2)
 
-```
-                            VIDÉO DU COURS
-                           /              \
-                          ▼                ▼
-              [FLUX COMPUTER VISION]    [FLUX TRANSCRIPTS]
-              Échantillonnage (1/5s)    Whisper / Sous-titres CC
-                      │                            │
-                      ▼                            ▼
-              Détection échiquier       Coups cités extraits
-              (OpenCV, Hough, coins)       (python-chess)
-                      │                            │
-                      ▼                            │
-              Rectification perspective                    │
-              (Homographie 8x8 -> 64 cases)                │
-                      │                            │
-                      ▼                            │
-              Reconnaissance des pièces                    │
-              (CNN 2D 13 classes)                          │
-                      │                            │
-                      ▼                            │
-              Reconstruction FEN & validation              │
-              (python-chess : règles & roques)             │
-                      │                            │
-                      └─────────────┬──────────────┘
-                                    ▼
-                        ALIGNEMENT MULTIMODAL
-                                    │
-                                    ▼
-                   FEN ↔ Vidéo ↔ Timestamp exact (04:32)
+```mermaid
+flowchart TD
+    Video["Vidéo du Cours (MP4 / WebM)"] --> StreamV["Flux Visuel (Computer Vision)\n1 image / 5 secondes"]
+    Video --> StreamT["Flux Textuel (Transcripts)\nWhisper / Sous-titres CC"]
+    
+    subgraph Vision ["Pipeline Vision 2D (CPU < 3 min)"]
+        Det["Détection Échiquier\n(OpenCV Hough/Harris)"]
+        Hom["Rectification Projective\n(Homographie 8x8)"]
+        CNN["Classification Pièces\n(CNN 2D 13 classes)"]
+        CheckV["Validation Légale\n(python-chess)"]
+        FEN["Position FEN"]
+        Det --> Hom --> CNN --> CheckV --> FEN
+    end
+    
+    subgraph Transcript ["Pipeline Transcripts"]
+        Extract["Extraction Coups Cités\n(python-chess)"]
+        CheckT["Validation Notation"]
+        Text["Commentaires & Plans"]
+        Extract --> CheckT --> Text
+    end
+    
+    StreamV --> Det
+    StreamT --> Extract
+    
+    FEN --> Align{"Alignement Multimodal\nFEN (Vision) ∩ Explication (Audio)"}
+    Text --> Align
+    
+    Align --> Result["Index Vidéo FEN ↔ Horodatage Exact (04:32)"]
 ```
 
 | Dimension | YouTube dans le POC (Implémenté) | Analyse Vidéo Automatique (Étude Partie 2) |

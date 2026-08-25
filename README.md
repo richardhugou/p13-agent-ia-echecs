@@ -26,9 +26,11 @@ Léa prépare son prochain tournoi et souhaite travailler son répertoire sur la
 
 ## 2. L'Application en Action : Frontend & API Backend
 
-L'application associe une interface échiquéenne interactive (Angular 17) et une API REST asynchrone (FastAPI) :
+L'application associe une interface échiquéenne interactive (Angular 17) et une API REST asynchrone (FastAPI) documentée sous OpenAPI 3.1 :
 
-![Interface d'entraînement aux ouvertures](livrables/rendu/captures/ui-conseils-italienne.png)
+| Frontend Angular 17 (Échiquier interactif & Conseils) | Backend FastAPI (Documentation interactive `/docs`) |
+|:---:|:---:|
+| ![Interface d'entraînement aux ouvertures](livrables/rendu/captures/ui-conseils-italienne.png) | ![Documentation Swagger FastAPI](livrables/rendu/captures/swagger-api-docs.png) |
 
 - **Documentation OpenAPI (Swagger)** : endpoints exposés sous `/docs` (`/api/v1/moves`, `/evaluate`, `/videos`, `/vector-search`, `/agent/ask`).
 - **Démonstration en vidéo (~4 min)** : [Lien vidéo Loom](https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811).
@@ -42,9 +44,11 @@ L'application associe une interface échiquéenne interactive (Angular 17) et un
      (Blancs/Noirs)       (Réplique auto maîtres)    (Synthèse RAG + Vidéo)       (Évaluation Stockfish)
 ```
 
-1. **Orientation & Choix** : L'élève choisit son camp (les Blancs). L'échiquier s'oriente immédiatement et l'ouverture cible est sélectionnée. *(Capture : `step-1-orientation.png`)*
-2. **Jeu théorique interactif** : L'élève joue sur l'échiquier ; l'agent réplique instantanément avec le coup des maîtres le plus fréquent (1.e4 e5, 2.Cf3 Cc6). *(Capture : `step-2-jeu.png`)*
-3. **Conseils sourcés (« Demander à Chessbot »)** : À 3.Fc4, affichage des flèches tactiques, coups maîtres, synthèse RAG sourcée et vidéo YouTube associée. *(Capture : `step-3-conseils.png`)*
+| 1. Orientation & Choix du camp | 2. Jeu théorique interactif | 3. Conseils sourcés à la demande |
+|:---:|:---:|:---:|
+| ![Étape 1 : Choix du camp](livrables/rendu/captures/step-1-orientation.png) | ![Étape 2 : Jeu théorique](livrables/rendu/captures/step-2-jeu.png) | ![Étape 3 : Conseils sourcés](livrables/rendu/captures/step-3-conseils.png) |
+| L'élève sélectionne les Blancs ; l'échiquier s'oriente immédiatement et active le répertoire Italien. | L'élève joue 1.e4 ; l'agent réplique avec le coup maîtres le plus fréquent (1...e5, 2.Cf3 Cc6). | À 3.Fc4, « Demander à Chessbot » affiche flèches, coups maîtres, synthèse RAG et vidéo YouTube. |
+
 4. **Déviation Stockfish** : Sur un coup hors répertoire (ex: `4.g4?!`), bascule immédiate vers Stockfish 16 avec évaluation chiffrée (-1,47 cp).
 
 *Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.*
@@ -91,6 +95,8 @@ L'application associe une interface échiquéenne interactive (Angular 17) et un
 
 **Corpus validé** : **3 251 pages disponibles $\rightarrow$ 161 retenues $\rightarrow$ 477 fiches** (95 positions FEN de référence, 0 échec de calcul).
 
+![Entonnoir documentaire du corpus](notebooks/figures/01-entonnoir-corpus.png)
+
 ---
 
 ## 6. Recherche Sémantique & Base Vectorielle
@@ -103,6 +109,8 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 - **Règle des rayons signés** : Recherche restreinte au rayon actif de l'ouverture pour éviter les interférences hors périmètre.
 - **Seuil filet de sécurité (`RAG_SCORE_MIN = 0.58`)** : Garantie mathématique d'abstention sur les requêtes pièges (5/5 pièges bloqués, notebooks 05 et 07).
 - **Performances** : Recherche vectorielle exécutée en **7 à 11 ms** (p95) avec une séparation sémantique cible/hors-sujet portée de 0,29 à **0,50**.
+
+![Frontière d'abstention et séparation sémantique](notebooks/figures/05-frontiere-abstention.png)
 
 ---
 
@@ -118,6 +126,10 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 | **Latence globale (Cloud GPU T4)** | p95 $< 8\text{ s}$ | **1,81 s (p50) · 2,41 s (p95)** | Banc mesuré sur Hugging Face Spaces |
 | **Latence globale (Local CPU)** | p95 $< 8\text{ s}$ | **2,69 s (p50) · 6,35 s (p95)** | Banc local avec Ollama CPU |
 | **Coût d'API LLM** | 0,00 € | **0,00 €** | Modèles open source servis localement / GPU |
+
+| Latences mesurées (Scénario nominal & déviation) | Tracking et évaluation A/B sous MLflow |
+|:---:|:---:|
+| ![Latences mesurées de l'agent](notebooks/figures/06-latences-agent.png) | ![Tracking MLflow du Gold Set](notebooks/figures/04-mlflow-runs.png) |
 
 ---
 

@@ -110,7 +110,7 @@
     <p class="body" style="font-size: 26px; font-weight: 700;">Richard Hugou</p>
     <p class="small" style="font-size: 19px;">IA Engineer — Soutenance de projet — Août 2026</p>
   </div>
-  <div class="footer"><span>Cavalier Data</span><span>Projet OpenClassrooms P13</span><span>1 / 17</span></div>
+  <div class="footer"><span>Cavalier Data</span><span>Projet OpenClassrooms P13</span><span>1 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 2 — Besoin et contexte ═══════════ -->
@@ -148,7 +148,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Cadrage du besoin</span><span>2 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Cadrage du besoin</span><span>2 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 3 — L'application en action ═══════════ -->
@@ -170,7 +170,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Interface Angular 17 en direct</span><span>3 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Interface Angular 17 en direct</span><span>3 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 4 — Parcours utilisateur ═══════════ -->
@@ -202,7 +202,7 @@
       <p class="body" style="font-weight: 600; color: #3A5A40; font-size: 21px;">Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 5 — Architecture logicielle ═══════════ -->
@@ -275,7 +275,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture de composants</span><span>5 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture de composants</span><span>5 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 6 — Orchestration de l'agent ═══════════ -->
@@ -342,7 +342,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Graphe d'exécution LangGraph</span><span>6 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Graphe d'exécution LangGraph</span><span>6 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 7 — Gisement de données ═══════════ -->
@@ -369,7 +369,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml</span><span>7 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml</span><span>7 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 8 — Recherche sémantique ═══════════ -->
@@ -428,7 +428,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>8 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>8 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 9 — Performances mesurées ═══════════ -->
@@ -456,45 +456,120 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 10 — Déploiement ═══════════ -->
+<!-- ═══════════ DIAPO 10 — Limites du système ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Analyse critique</div>
+    <h1>Limites du système</h1>
+  </div>
+  <div class="slide-content">
+    <div class="card wood" style="padding: 10px 24px; margin-bottom: 14px;">
+      <table style="font-size: 17.5px;">
+        <tr><th>Limite identifiée</th><th>Impact sur le système</th><th>Mitigation & arbitrage d'ingénierie</th></tr>
+        <tr>
+          <td><strong>Dépendances externes</strong><br><span class="small">Lichess, YouTube API</span></td>
+          <td>Risque de latence réseau, coupure ou dépassement de quota.</td>
+          <td><b>Cache applicatif transverse MongoDB</b> pour toutes les requêtes fréquentes + mode dégradé gracieux.</td>
+        </tr>
+        <tr>
+          <td><strong>Rôle du LLM</strong><br><span class="small">Risque d'hallucination</span></td>
+          <td>Un LLM peut inventer un coup d'échecs ou une variante tactique.</td>
+          <td><b>Aucun choix de coup délégué au LLM</b> : coups imposés par Lichess / Stockfish ; formulation sous contrainte stricte de prompt.</td>
+        </tr>
+        <tr>
+          <td><strong>Périmètre du POC</strong><br><span class="small">8 ouvertures cibles</span></td>
+          <td>Couverture initiale limitée aux répertoires clés de l'étude.</td>
+          <td><b>Corpus extensible</b> via l'ETL rejouable (<span class="mono">etl/corpus.yml</span>) sans modification du graphe d'orchestration.</td>
+        </tr>
+        <tr>
+          <td><strong>Montée en charge</strong><br><span class="small">Compute GPU</span></td>
+          <td>L'inférence LLM est le facteur limitant en charge simultanée.</td>
+          <td><b>Séparation de tiers</b> : API stateless réplicable + pool d'inférence GPU dimensionné selon la concurrence.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Limites techniques & mitigations</span><span>10 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 11 — Déploiement ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Déploiement et infrastructure</div>
     <h1>Déploiement</h1>
   </div>
   <div class="slide-content">
-    <div class="row" style="align-items: stretch; margin-bottom: 16px;">
-      <div class="card key grow" style="flex: 0 0 46%; border-left: 6px solid #3A5A40;">
-        <div class="stitle" style="color: #0B2211;">Déploiement actuel du POC</div>
-        <p class="body" style="font-size: 18px; margin-top: 10px; line-height: 1.55;">
-          • <b>Hugging Face Space (Mono-conteneur)</b><br>
-          • <b>GPU NVIDIA T4 (16 Go VRAM)</b><br>
-          • Angular + FastAPI + LangGraph + Stockfish embarqués<br>
-          • Milvus Lite + Ollama CUDA (Modèle Qwen)<br>
-          • Déploiement automatisé par CI/CD GitHub Actions<br>
-          • Facturation à l'usage : <b>0,40 $/h</b>
-        </p>
-      </div>
-      <div class="card wood grow" style="flex: 0 0 50%; border-left: 6px solid #7A756C;">
-        <div class="stitle" style="color: #1C1B18;">Évolution : Passage à l'échelle</div>
-        <p class="body" style="font-size: 18px; margin-top: 10px; line-height: 1.55;">
-          • <b>API FastAPI stateless</b> réplicable horizontalement derrière un répartiteur de charge.<br>
-          • <b>Inférence LLM</b> : principal goulot de calcul dimensionnant le pool GPU.<br>
-          • <b>Bases de données (Milvus, MongoDB)</b> et moteur Stockfish mutualisés entre les instances API.
-        </p>
-      </div>
-    </div>
-    <div class="card" style="padding: 14px 24px; text-align: center;">
-      <p class="small" style="font-size: 16px;">Le POC démontre la faisabilité fonctionnelle sur un environnement GPU autonome ; l'architecture permet une séparation naturelle des tiers pour monter en charge.</p>
+    <svg viewBox="0 0 1150 260" style="width: 100%; max-height: 270px; margin: 0 auto; display: block;">
+      <defs>
+        <marker id="ar-dep" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#7A756C"/></marker>
+      </defs>
+
+      <!-- Gauche: POC Actuel -->
+      <rect x="20" y="10" width="460" height="240" rx="14" fill="#E8F5E9" stroke="#3A5A40" stroke-width="2"/>
+      <text x="250" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#0B2211">DÉPLOIEMENT ACTUEL DU POC</text>
+      
+      <rect x="45" y="55" width="180" height="34" rx="8" fill="#FFFFFF" stroke="#3A5A40" stroke-width="1.2"/>
+      <text x="135" y="77" text-anchor="middle" font-size="13" font-weight="700" fill="#2A2011">Utilisateur (Web)</text>
+      <line x1="225" y1="72" x2="265" y2="72" stroke="#3A5A40" stroke-width="1.5" marker-end="url(#ar-dep)"/>
+
+      <rect x="270" y="55" width="190" height="180" rx="10" fill="#FFFFFF" stroke="#3A5A40" stroke-width="1.5"/>
+      <text x="365" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#3A5A40">Hugging Face Space</text>
+      <text x="365" y="96" text-anchor="middle" font-size="11" fill="#7A756C">(Mono-conteneur GPU T4)</text>
+      <line x1="285" y1="106" x2="445" y2="106" stroke="#E6E1D8" stroke-width="1"/>
+      <text x="290" y="126" font-size="12" fill="#2A2011">• Front Angular 17</text>
+      <text x="290" y="146" font-size="12" fill="#2A2011">• API FastAPI + LangGraph</text>
+      <text x="290" y="166" font-size="12" fill="#2A2011">• Stockfish 16 UCI</text>
+      <text x="290" y="186" font-size="12" fill="#2A2011">• Milvus Lite (HNSW)</text>
+      <text x="290" y="206" font-size="12" fill="#2A2011">• Ollama CUDA (Qwen 4B)</text>
+      <text x="290" y="226" font-size="11" font-weight="700" fill="#3A5A40">Coût : 0,40 $/h à l'usage</text>
+
+      <!-- Droite: Évolution Cible -->
+      <rect x="520" y="10" width="610" height="240" rx="14" fill="#F4EFE6" stroke="#7A756C" stroke-width="2"/>
+      <text x="825" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#2A2011">ÉVOLUTION CIBLE (PASSAGE À L'ÉCHELLE)</text>
+
+      <rect x="545" y="55" width="130" height="34" rx="8" fill="#FFFFFF" stroke="#7A756C" stroke-width="1.2"/>
+      <text x="610" y="77" text-anchor="middle" font-size="13" font-weight="700" fill="#2A2011">Utilisateurs</text>
+      <line x1="675" y1="72" x2="720" y2="72" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar-dep)"/>
+
+      <rect x="725" y="55" width="110" height="34" rx="8" fill="#3A5A40"/>
+      <text x="780" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">Répartiteur</text>
+
+      <line x1="835" y1="65" x2="880" y2="55" stroke="#7A756C" stroke-width="1.2" marker-end="url(#ar-dep)"/>
+      <line x1="835" y1="79" x2="880" y2="89" stroke="#7A756C" stroke-width="1.2" marker-end="url(#ar-dep)"/>
+
+      <rect x="885" y="42" width="225" height="28" rx="6" fill="#FFFFFF" stroke="#7A756C" stroke-width="1"/>
+      <text x="997" y="61" text-anchor="middle" font-size="12" fill="#2A2011">Instance API #1 (FastAPI)</text>
+      <rect x="885" y="76" width="225" height="28" rx="6" fill="#FFFFFF" stroke="#7A756C" stroke-width="1"/>
+      <text x="997" y="95" text-anchor="middle" font-size="12" fill="#2A2011">Instance API #N (Stateless)</text>
+
+      <line x1="997" y1="104" x2="997" y2="128" stroke="#7A756C" stroke-width="1.5" marker-end="url(#ar-dep)"/>
+
+      <rect x="680" y="132" width="430" height="105" rx="10" fill="#FFFFFF" stroke="#7A756C" stroke-width="1.5"/>
+      <text x="895" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#2A2011">SERVICES PARTAGÉS & INFÉRENCE DÉDIÉE</text>
+      
+      <rect x="695" y="162" width="125" height="60" rx="8" fill="#F4EFE6" stroke="#D4C9B8" stroke-width="1"/>
+      <text x="757" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#2A2011">MongoDB</text>
+      <text x="757" y="205" text-anchor="middle" font-size="10.5" fill="#7A756C">Cache mutualisé</text>
+
+      <rect x="832" y="162" width="125" height="60" rx="8" fill="#F4EFE6" stroke="#D4C9B8" stroke-width="1"/>
+      <text x="894" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#2A2011">Milvus</text>
+      <text x="894" y="205" text-anchor="middle" font-size="10.5" fill="#7A756C">Index vectoriel</text>
+
+      <rect x="969" y="162" width="130" height="60" rx="8" fill="#FFDAD2" stroke="#BA1A1A" stroke-width="1.2"/>
+      <text x="1034" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#410002">Pool GPU (LLM)</text>
+      <text x="1034" y="205" text-anchor="middle" font-size="10.5" fill="#BA1A1A">Goulot dimensionnant</text>
+    </svg>
+    <div class="card" style="padding: 10px 20px; text-align: center; margin-top: 10px;">
+      <p class="small" style="font-size: 15.5px;">L'API FastAPI stateless se réplique horizontalement à faible coût ; le pool d'inférence LLM absorbe la charge GPU selon le trafic.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Stratégie de déploiement</span><span>10 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Stratégie de déploiement</span><span>11 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 11 — Dimensionnement & Montée en charge ═══════════ -->
+<!-- ═══════════ DIAPO 12 — Dimensionnement & Montée en charge ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Dimensionnement</div>
@@ -512,21 +587,24 @@
         </p>
       </div>
       <div class="card wood grow" style="flex: 0 0 60%;">
-        <div class="stitle">Scénarios d'hypothèses de charge (Base FFE : 60 000 licenciés)</div>
+        <div class="stitle">Modélisation de volume (Base FFE : 60 000 licenciés)</div>
         <p class="small" style="margin-bottom: 8px;"><i>Hypothèse d'utilisation : 30 analyses / utilisateur / mois.</i></p>
         <table style="font-size: 16.5px;">
-          <tr><th>Scénario</th><th>Utilisateurs</th><th>Volume mensuel</th><th>Débit moyen</th><th>Cible GPU</th></tr>
-          <tr><td><strong>Scénario 1 %</strong></td><td>600 users</td><td>18 000 req/mois</td><td>~0,25 req/min</td><td>1 GPU partagé</td></tr>
-          <tr><td><strong>Scénario 5 %</strong></td><td>3 000 users</td><td>90 000 req/mois</td><td>~1,25 req/min</td><td>1 à 2 GPU</td></tr>
-          <tr><td><strong>Scénario 10 %</strong></td><td>6 000 users</td><td>180 000 req/mois</td><td>~2,50 req/min</td><td>2 à 3 GPU (autoscaling)</td></tr>
+          <tr><th>Scénario</th><th>Utilisateurs</th><th>Volume mensuel</th><th>Débit moyen</th><th>Dimensionnement GPU cible</th></tr>
+          <tr><td><strong>Scénario 1 %</strong></td><td>600 users</td><td>18 000 req/mois</td><td>~0,25 req/min</td><td>Pool GPU partagé</td></tr>
+          <tr><td><strong>Scénario 5 %</strong></td><td>3 000 users</td><td>90 000 req/mois</td><td>~1,25 req/min</td><td>Pool GPU (trafic de pointe)</td></tr>
+          <tr><td><strong>Scénario 10 %</strong></td><td>6 000 users</td><td>180 000 req/mois</td><td>~2,50 req/min</td><td>Pool GPU avec autoscaling</td></tr>
         </table>
       </div>
     </div>
+    <div class="card" style="padding: 10px 20px; text-align: center;">
+      <p class="small" style="font-size: 15.5px;"><i>Le dimensionnement GPU réel dépend du volume de concurrence en heure de pointe et du throughput en tokens/s, à valider par test de charge.</i></p>
+    </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Modélisation de la charge</span><span>11 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Modélisation de la charge</span><span>12 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 12 — Coûts de fonctionnement ═══════════ -->
+<!-- ═══════════ DIAPO 13 — Coûts de fonctionnement ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Modèle économique</div>
@@ -557,10 +635,10 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Budget et coûts du système</span><span>12 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Budget et coûts du système</span><span>13 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 13 — La limite du POC ═══════════ -->
+<!-- ═══════════ DIAPO 14 — La limite du POC ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Partie 2 · Cadrage du besoin</div>
@@ -596,10 +674,10 @@
       <p class="body" style="font-weight: 700; color: #1C1B18; font-size: 19.5px;">Le problème à résoudre : passer d'une recommandation par ouverture à une recommandation par position.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §1-§3</span><span>13 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §1-§3</span><span>14 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 14 — Comment retrouver une position dans une vidéo ? ═══════════ -->
+<!-- ═══════════ DIAPO 15 — Comment retrouver une position dans une vidéo ? ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Partie 2 · Ingénierie</div>
@@ -630,10 +708,10 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §2 · Chaîne fonctionnelle</span><span>14 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §2 · Chaîne fonctionnelle</span><span>15 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 15 — Faisabilité de l'analyse vidéo ═══════════ -->
+<!-- ═══════════ DIAPO 16 — Faisabilité de l'analyse vidéo ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Partie 2 · Faisabilité et arbitrages</div>
@@ -669,10 +747,10 @@
       <p class="small" style="font-size: 16px;">Étude d'ingénierie formalisée (note de cadrage, architecture MCP, modèle de coûts) — Développement hors périmètre du POC.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §6-§9</span><span>15 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §6-§9</span><span>16 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 16 — Résumé du POC ═══════════ -->
+<!-- ═══════════ DIAPO 17 — Résumé du POC ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Bilan du projet</div>
@@ -700,7 +778,7 @@
       </div>
       <div class="card grow">
         <div class="stitle">Déploiement éprouvé</div>
-        <p class="body" style="font-size: 18px;">Conteneurisation locale reproductible (2 min 09) et vitrine cloud GPU sur Hugging Face Spaces.</p>
+        <p class="body" style="font-size: 18px;">Conteneurisation reproductible et déploiement GPU validé sur Hugging Face Spaces.</p>
       </div>
       <div class="card key grow">
         <div class="stitle">Étude vidéo livrée</div>
@@ -711,10 +789,10 @@
       <p class="body" style="font-weight: 700; color: #3A5A40; font-size: 21px;">→ Place aux échanges et aux questions du jury.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Conclusion du POC</span><span>16 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Conclusion du POC</span><span>17 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 17 — Merci ═══════════ -->
+<!-- ═══════════ DIAPO 18 — Merci ═══════════ -->
 <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
   <h1 style="font-size: 88px; margin-bottom: 24px; color: #3A5A40;">Merci.</h1>
   <p class="body" style="font-size: 34px; font-weight: 700; color: #1C1B18; margin-bottom: 14px;">
@@ -726,7 +804,7 @@
   <div class="card wood" style="padding: 22px 48px; font-size: 19px;">
     <p class="mono">Dépôt GitHub public : https://github.com/richardhugou/p13-agent-ia-echecs</p>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Fin de la soutenance</span><span>17 / 17</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Fin de la soutenance</span><span>18 / 18</span></div>
 </div>
 
 </body>

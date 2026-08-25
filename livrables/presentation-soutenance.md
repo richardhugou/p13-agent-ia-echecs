@@ -1,7 +1,7 @@
 # Présentation — Coach IA pour les ouvertures d'échecs (FFE)
 
-> **Structure en 17 diapositives** :
-> 1. Titre · 2. Besoin & contexte · 3. L'application en action · 4. Parcours utilisateur · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Déploiement · 11. Dimensionnement et montée en charge · 12. Coûts de fonctionnement · 13. La limite du POC : recommander une vidéo ne suffit pas · 14. Comment retrouver une position dans une vidéo ? · 15. Faisabilité de l'analyse vidéo · 16. Résumé du POC · 17. Merci.
+> **Structure en 18 diapositives** :
+> 1. Titre · 2. Besoin & contexte · 3. L'application en action · 4. Parcours utilisateur · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Limites du système · 11. Déploiement · 12. Dimensionnement et montée en charge · 13. Coûts de fonctionnement · 14. La limite du POC : recommander une vidéo ne suffit pas · 15. Comment retrouver une position dans une vidéo ? · 16. Faisabilité de l'analyse vidéo · 17. Résumé du POC · 18. Merci.
 
 ---
 
@@ -153,7 +153,19 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ---
 
-## Diapo 10 — Déploiement
+## Diapo 10 — Limites du système
+
+| Limite identifiée | Impact sur le système | Mitigation et arbitrage technique |
+|---|---|---|
+| **Dépendances externes (Lichess, YouTube)** | Risque de latence réseau ou quota API | Mise en cache applicative transverse (MongoDB) + mode dégradé |
+| **Rôle du LLM** | Risque d'hallucination tactique | Le LLM ne choisit aucun coup : formulation uniquement sous contrainte de contexte |
+| **Périmètre du POC** | 8 ouvertures couvertes (manifeste signé) | Extension simple via l'ETL sans modification du graphe d'orchestration |
+| **Montée en charge** | Capacité simultanée limitée par le compute GPU | Séparation de l'inférence LLM dans un pool GPU dédié et réplicable |
+| **Analyse vidéo** | Indexation par métadonnées globales | Étude d'ingénierie formalisée (Partie 2), développement hors POC |
+
+---
+
+## Diapo 11 — Déploiement
 
 ```
           DÉPLOIEMENT ACTUEL DU POC                   ÉVOLUTION : PASSAGE À L'ÉCHELLE
@@ -161,24 +173,26 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
                  Utilisateur                                    Utilisateurs
                       │                                              │
                       ▼                                              ▼
-           ┌─────────────────────┐                            ┌──────────────┐
-           │ Hugging Face Space  │                            │ Instance API │ (Stateless)
-           │ (NVIDIA GPU T4)     │                            └──────┬───────┘
-           │                     │                                   │
-           │ • Angular + FastAPI │                                   ▼
-           │ • LangGraph         │                           Services partagés
-           │ • Stockfish         │                            ┌──────┼──────┐
-           │ • Milvus Lite       │                            ▼      ▼      ▼
-           │ • Ollama + Qwen     │                         MongoDB Milvus  Pool GPU (LLM)
-           └─────────────────────┘
+           ┌─────────────────────┐                              Répartiteur
+           │ Hugging Face Space  │                                   │
+           │ (NVIDIA GPU T4)     │                     ┌─────────────┴─────────────┐
+           │                     │                     ▼                           ▼
+           │ • Angular + FastAPI │               Instance API #1             Instance API #N (Stateless)
+           │ • LangGraph         │                     │                           │
+           │ • Stockfish         │                     └─────────────┬─────────────┘
+           │ • Milvus Lite       │                                   ▼
+           │ • Ollama + Qwen     │                           Services partagés
+           └─────────────────────┘                            ┌──────┼──────┐
+                                                              ▼      ▼      ▼
+                                                           MongoDB Milvus  Pool GPU (LLM)
 ```
 
 - **Déploiement actuel (POC)** : Instance autonome sur Hugging Face Spaces avec GPU NVIDIA T4 (16 Go VRAM) et Ollama CUDA (coût : 0,40 $/h à l'usage).
-- **Principe de montée en charge** : L'API FastAPI est stateless et réplicable horizontalement ; l'inférence LLM constitue le principal poste de calcul dimensionnant. Bases et moteurs sont mutualisés.
+- **Principe de passage à l'échelle** : L'API FastAPI est stateless et réplicable horizontalement ; l'inférence LLM constitue le principal poste de calcul dimensionnant. Bases et moteurs sont mutualisés.
 
 ---
 
-## Diapo 11 — Dimensionnement et montée en charge
+## Diapo 12 — Dimensionnement et montée en charge
 
 ### 1. Facteurs dimensionnants par composant
 
@@ -190,21 +204,23 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 | **Base MongoDB** | Volume de cache | Instance partagée avec TTL |
 | **Inférence LLM** | VRAM & compute GPU | **Goulot principal** : dimensionnement du pool d'instances GPU |
 
-### 2. Scénarios d'hypothèses de charge (Base FFE : 60 000 licenciés)
+### 2. Modélisation de volume (Base FFE : 60 000 licenciés)
 
 *Hypothèse d'utilisation : 30 analyses / utilisateur / mois.*
 
-| Scénario d'adoption | Utilisateurs actifs | Volume estimé / mois | Débit moyen estimé | Dimensionnement GPU cible |
+| Scénario d'adoption | Utilisateurs actifs | Volume mensuel estimé | Débit moyen estimé | Dimensionnement GPU cible |
 |---|---|---|---|---|
-| **Scénario 1 %** | 600 utilisateurs | 18 000 requêtes / mois | ~0,25 req / min | 1 instance GPU partagée |
-| **Scénario 5 %** | 3 000 utilisateurs | 90 000 requêtes / mois | ~1,25 req / min | 1 à 2 instances GPU |
-| **Scénario 10 %** | 6 000 utilisateurs | 180 000 requêtes / mois | ~2,50 req / min | 2 à 3 instances GPU (avec autoscaling) |
+| **Scénario 1 %** | 600 utilisateurs | 18 000 requêtes / mois | ~0,25 req / min | Pool GPU partagé |
+| **Scénario 5 %** | 3 000 utilisateurs | 90 000 requêtes / mois | ~1,25 req / min | Pool GPU dimensionné sur trafic de pointe |
+| **Scénario 10 %** | 6 000 utilisateurs | 180 000 requêtes / mois | ~2,50 req / min | Pool GPU avec politique d'autoscaling |
+
+*Le nombre exact d'instances GPU découle de la concurrence en heure de pointe et de la latence cible, à valider par test de charge.*
 
 ---
 
-## Diapo 12 — Coûts de fonctionnement
+## Diapo 13 — Coûts de fonctionnement
 
-> *Estimation budgétaire — Architecture cible de production (Scénario 5 % / 3 000 utilisateurs)*
+> *Estimation budgétaire — Architecture cible de production (Scénario 5 % / 3 000 utilisateurs actifs)*
 
 ### 1. Postes de dépenses opérationnelles (OPEX mensuel estimé)
 
@@ -222,7 +238,7 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ---
 
-## Diapo 13 — La limite du POC : recommander une vidéo ne suffit pas
+## Diapo 14 — La limite du POC : recommander une vidéo ne suffit pas
 
 > *Aujourd'hui, l'agent trouve une vidéo par ouverture. L'objectif est de retrouver le passage pertinent.*
 
@@ -248,7 +264,7 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ---
 
-## Diapo 14 — Comment retrouver une position dans une vidéo ?
+## Diapo 15 — Comment retrouver une position dans une vidéo ?
 
 > *Construire un index : position FEN ↔ vidéo ↔ timestamp*
 
@@ -269,7 +285,7 @@ FEN ↔ vidéo ↔ timestamp ◄── Validation python-chess ◄── Reconst
 
 ---
 
-## Diapo 15 — Faisabilité de l'analyse vidéo
+## Diapo 16 — Faisabilité de l'analyse vidéo
 
 > *Une extension techniquement faisable et articulée autour d'un MVP maîtrisé*
 
@@ -286,18 +302,18 @@ FEN ↔ vidéo ↔ timestamp ◄── Validation python-chess ◄── Reconst
 
 ---
 
-## Diapo 16 — Résumé du POC
+## Diapo 17 — Résumé du POC
 
 1. **Agent fonctionnel** : Reconnaissance théorique immédiate, explications pédagogiques sourcées, bascule moteur Stockfish.
 2. **Architecture maîtrisée** : Orchestration déterministe LangGraph, Stockfish UCI, base vectorielle Milvus, cache MongoDB.
 3. **Gisement de données validé** : Pipeline ETL rejouable (4 sources, 477 fiches structurées, 95 FEN de référence).
 4. **Performances prouvées** : 0 coup illégal sur 56 positions, latence sous 2,5 s sur GPU T4 (p95 = 2,41 s).
-5. **Déploiement éprouvé** : Conteneurisation locale reproductible (2 min 09) et vitrine cloud GPU sur Hugging Face Spaces.
+5. **Déploiement éprouvé** : Conteneurisation locale reproductible (2 min 09) et déploiement GPU validé sur Hugging Face Spaces.
 6. **Étude d'ingénierie livrée** : Note de cadrage, architecture MCP, faisabilité technique et modèle de coûts formalisés.
 
 ---
 
-## Diapo 17 — Merci
+## Diapo 18 — Merci
 
 **Merci pour votre attention.**
 

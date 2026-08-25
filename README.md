@@ -30,7 +30,7 @@ L'application propose une interface échiquéenne fluide (Angular 17) connectée
 
 ![Interface d'entraînement aux ouvertures](livrables/rendu/captures/ui-conseils-italienne.png)
 
-- **Vidéo de démonstration en conditions réelles (~45 s)** : [Voir sur Loom](https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811)
+- **Vidéo de démonstration en conditions réelles (~4 min)** : [Voir sur Loom](https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811)
 - **Vitrine Cloud en direct (GPU NVIDIA T4)** : https://trikwi-p13-agent-echecs.hf.space
 
 ---

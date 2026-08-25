@@ -31,25 +31,26 @@ La FFE compte **60 000 licenciés**, dont ~60 % de jeunes espoirs, pour seulemen
 
 ## Diapo 3 — L'application en action
 
-**Démonstration en conditions réelles (~4 min)** :
-- Interface échiquéenne fluide (Angular 17) connectée à l'agent conversationnel.
-- Parcours complet : choix du camp, répliques automatiques, conseils sourcés, bascule moteur sur sortie de théorie.
-- *Lien vidéo Loom : https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811*
+**Preuves d'implémentation réelles** :
+- **Frontend Angular 17** : interface échiquéenne fluide connectée en temps réel au backend.
+- **Backend FastAPI (`/docs`)** : endpoints REST documentés sous OpenAPI 3.1 (`/api/v1/moves`, `/evaluate`, `/videos`, `/vector-search`, `/agent/ask`).
+- **Démonstration en vidéo (~4 min)** : scénario complet filmé en conditions réelles (QR code Loom).
 
 Visuels :
-- Capture réelle de l'application (`livrables/rendu/captures/ui-conseils-italienne.png`).
-- QR Code vectoriel menant vers la vidéo de démonstration.
+- Capture réelle de l'échiquier et du panneau coach (`livrables/rendu/captures/ui-conseils-italienne.png`).
+- Capture réelle de la documentation Swagger UI FastAPI (`livrables/rendu/captures/swagger-api-docs.png`).
+- QR Code vectoriel menant vers la vidéo de démonstration Loom.
 
 ---
 
 ## Diapo 4 — Parcours utilisateur
 
-Scénario nominal de l'élève (les Blancs sur la Partie Italienne) :
+Scénario nominal de l'élève (les Blancs sur la Partie Italienne) appuyé par les captures réelles :
 
-1. **Orientation du plateau** : choix du camp (« Je joue les Blancs ») et sélection de l'ouverture cible.
-2. **Jeu théorique interactif** : l'élève joue ses coups ; l'agent joue automatiquement la réplique des maîtres la plus fréquente (1.e4 e5, 2.Cf3 Cc6).
-3. **Conseil à la demande (« Demander à Chessbot »)** : à 3.Fc4, affichage des flèches tactiques, coups maîtres, synthèse RAG sourcée et vidéo YouTube associée.
-4. **Bascule moteur sur coup hors théorie** : sur un coup hors répertoire (ex: 4.g4?!), l'agent bascule instantanément sur Stockfish avec évaluation chiffrée (-1,47 cp).
+1. **Orientation & Choix** : L'élève sélectionne son camp (les Blancs). L'échiquier s'oriente immédiatement et l'ouverture cible (Partie Italienne) est activée. *(Capture : `step-1-orientation.png`)*
+2. **Jeu théorique interactif** : L'élève joue ses coups sur l'échiquier ; l'agent réplique automatiquement avec le coup des maîtres le plus fréquent (1.e4 e5, 2.Cf3 Cc6). *(Capture : `step-2-jeu.png`)*
+3. **Conseil à la demande (« Demander à Chessbot »)** : À 3.Fc4, affichage des flèches tactiques, coups maîtres, synthèse RAG sourcée et vidéo YouTube associée. *(Capture : `step-3-conseils.png`)*
+4. **Déviation moteur sur coup hors théorie** : Sur un coup hors répertoire (ex: 4.g4?!), l'agent bascule instantanément sur Stockfish avec évaluation chiffrée (-1,47 cp).
 
 *Principe directeur : les faits sont extraits des moteurs spécialisés, le LLM intervient uniquement pour la formulation.*
 
@@ -266,39 +267,65 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ## Diapo 15 — Comment retrouver une position dans une vidéo ?
 
-> *Construire un index : position FEN ↔ vidéo ↔ timestamp*
+> *La chaîne technique : Computer Vision + Transcripts ──► Validation légale ──► Index FEN / Timestamp*
+
+### 1. Le double pipeline : Vision & Transcripts
 
 ```
-VIDÉO PÉDAGOGIQUE ──► Images clés (1/5s) ──► Détection échiquier ──► Reconnaissance pièces
-                                                                             │
-                                                                             ▼
-FEN ↔ vidéo ↔ timestamp ◄── Validation python-chess ◄── Reconstruction FEN ◄┘
+                           VIDÉO DU COURS
+                          /              \
+                         ▼                ▼
+             [FLUX COMPUTER VISION]    [FLUX TRANSCRIPTS]
+             Échantillonnage (1/5s)    Whisper / Sous-titres CC
+                     │                            │
+                     ▼                            ▼
+             Détection échiquier       Coups cités extraits
+             (OpenCV, Hough, coins)       (python-chess)
+                     │                            │
+                     ▼                            │
+             Rectification perspective                    │
+             (Homographie 8x8 -> 64 cases)                │
+                     │                            │
+                     ▼                            │
+             Reconnaissance des pièces                    │
+             • 2D : CNN (13 classes) / ONNX               │
+             • 3D : Détecteur (YOLO / ChessReD)           │
+                     │                            │
+                     ▼                            │
+             Reconstruction FEN & validation              │
+             (python-chess : règles & roques)             │
+                     │                            │
+                     └─────────────┬──────────────┘
+                                   ▼
+                       ALIGNEMENT MULTIMODAL
+                                   │
+                                   ▼
+                  FEN ↔ Vidéo ↔ Timestamp (04:32)
 ```
 
-**Exemple d'indexation d'un cours (Vidéo « La Partie Italienne »)** :
-- `04:12` $\rightarrow$ FEN A
-- `04:32` $\rightarrow$ **FEN B (position exacte de l'élève)**
-- `05:07` $\rightarrow$ FEN C
-- `06:21` $\rightarrow$ FEN D
-
-*Le FEN reste la clé pivot commune pour relier directement la vidéo à l'agent existant.*
+- **Rectification par homographie (OpenCV)** : transformation projective pour aplatir l'échiquier incliné en une grille parfaite de 64 cases indépendantes.
+- **Classification 2D (13 classes)** : 1 case vide + 6 pièces blanches + 6 pièces noires (*LiveChess2FEN / Chesscog*).
+- **Validation déterministe (`python-chess`)** : vérification stricte de la légalité (un seul roi par camp, pions valides). Tout FEN illégal est rejeté.
+- **Croisement temporel** : la vision détecte la position, le transcript confirme le moment où le professeur explique le coup clé.
 
 ---
 
-## Diapo 16 — Faisabilité de l'analyse vidéo
+## Diapo 16 — Faisabilité de l'analyse vidéo & Arbitrages
 
 > *Une extension techniquement faisable et articulée autour d'un MVP maîtrisé*
 
 ### 1. Approche MVP : Transcripts-first + Vision 2D
-- Récupérer les transcripts textuels et reconstruire les coups cités avec `python-chess`.
-- Utiliser la vision par ordinateur 2D uniquement pour confirmer la position et caler l'horodatage exact (~3 min CPU / vidéo).
+- Traitement prioritaire des cours avec échiquier 2D numérique (90 % du catalogue FFE / YouTube).
+- Coût de calcul ultra-léger : ~3 min CPU / vidéo (20 vidéos / heure / worker CPU).
 
-### 2. Ce qu'on peut viser (Pilote de 100 vidéos)
+### 2. Chiffrage du pilote (100 vidéos de cours)
 - **Délai & Effort** : 6 à 8 semaines · **30 à 40 jours-homme** (budget : **15 à 20 k€**).
-- **Indicateurs clés** : Précision FEN $\ge 90\%$ · Coût unitaire $\le 0,20\text{ € / vidéo}$ · $\ge 30\%$ des recommandations enrichies d'un timestamp exact.
+- **Coût d'exécution Run** : **~0,10 à 0,15 € / vidéo traitée** (compute CPU + stockage).
+- **Indicateurs clés** : Précision FEN $\ge 90\%$ · $\ge 30\%$ des requêtes enrichies d'un timestamp exact.
 
-### 3. Ce qu'on ne fait pas maintenant (Exclusions MVP)
-- Pas de vision 3D généralisée ni d'angles de caméra inclinés en MVP $\rightarrow$ repoussés en V2 après mesure du pilote.
+### 3. Arbitrage d'ingénierie : Exclusion de la 3D en MVP
+- **Complexité 3D physique (V2)** : perspectives variables, pièces occultées par les mains, éclairages (*dataset ChessReD* 10 800 images) $\rightarrow$ repoussée en V2 après validation du pilote 2D.
+- **Périmètre juridique sécurisé** : licences Creative Commons et partenariats chaînes officielles FFE.
 
 ---
 

@@ -31,8 +31,7 @@ La FFE compte **60 000 licenciés**, dont ~60 % de jeunes espoirs, pour seulemen
 
 ## Diapo 3 — L'application en action
 
-**Démonstration en conditions réelles** :
-- Interface échiquéenne fluide (Angular 17) connectée à l'agent conversationnel.
+**Démonstration en conditions réelles (~4 min)** :
 - Parcours complet : choix du camp, répliques automatiques, conseils sourcés, bascule moteur sur sortie de théorie.
 - *Lien vidéo Loom : https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811*
 

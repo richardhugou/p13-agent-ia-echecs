@@ -151,47 +151,11 @@
   <div class="footer"><span>Cavalier Data × FFE</span><span>Cadrage du besoin</span><span>2 / 18</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 3 — L'application en action ═══════════ -->
+<!-- ═══════════ DIAPO 3 — Parcours utilisateur ═══════════ -->
 <div class="slide">
   <div class="slide-header">
-    <div class="kicker">Le produit réel</div>
-    <h1>L'application en action : Frontend & API Backend</h1>
-  </div>
-  <div class="slide-content">
-    <div class="row" style="align-items: stretch; justify-content: space-between;">
-      <!-- Gauche: UI Angular -->
-      <div class="card grow" style="flex: 0 0 54%; padding: 18px; text-align: center;">
-        <div class="stitle" style="font-size: 19px; margin-bottom: 8px; color: #3A5A40;">Interface Échiquéenne (Angular 17)</div>
-        <img src="../../livrables/rendu/captures/ui-conseils-italienne.png" style="width: 100%; max-height: 520px; object-fit: contain; border-radius: 10px; border: 1px solid #7A756C;">
-        <p class="small" style="margin-top: 8px;">Échiquier interactif, flèches tactiques, statistiques Lichess et conseils sourcés.</p>
-      </div>
-
-      <!-- Droite: Swagger + QR Code -->
-      <div style="flex: 0 0 42%; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;">
-        <div class="card" style="padding: 16px;">
-          <div class="stitle" style="font-size: 18px; margin-bottom: 6px; color: #1C1B18;">API REST FastAPI (Swagger /docs)</div>
-          <img src="../../livrables/rendu/captures/swagger-api-docs.png" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px; border: 1px solid #E6E1D8;">
-          <p class="small" style="margin-top: 6px; font-size: 14.5px;">Endpoints REST documentés sous OpenAPI 3.1 (<span class="mono">/moves</span>, <span class="mono">/evaluate</span>, <span class="mono">/agent/ask</span>).</p>
-        </div>
-        <div class="card key" style="padding: 16px; text-align: center; display: flex; align-items: center; gap: 18px;">
-          <img src="../../livrables/rendu/captures/qr-code-video.svg" style="width: 120px; height: 120px; flex-shrink: 0;">
-          <div style="text-align: left;">
-            <div class="stitle" style="font-size: 18px; margin-bottom: 4px;">Démonstration (~4 min)</div>
-            <p class="body" style="font-size: 16px; line-height: 1.35;">Scénario filmé en conditions réelles : coups théoriques, RAG sourcé et déviation Stockfish.</p>
-            <p class="small" style="font-size: 14px; color: #3A5A40; font-weight: 600; margin-top: 4px;">Loom · Scan QR Code</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Angular 17 ──► FastAPI REST ──► LangGraph</span><span>3 / 18</span></div>
-</div>
-
-<!-- ═══════════ DIAPO 4 — Parcours utilisateur ═══════════ -->
-<div class="slide">
-  <div class="slide-header">
-    <div class="kicker">Fonctionnement</div>
-    <h1>Parcours utilisateur (Preuves concrètes)</h1>
+    <div class="kicker">L'expérience conçue</div>
+    <h1>Parcours utilisateur (Le service proposé)</h1>
   </div>
   <div class="slide-content">
     <div class="row" style="align-items: stretch; margin-bottom: 16px; gap: 20px;">
@@ -246,7 +210,43 @@
       <p class="body" style="font-weight: 600; color: #3A5A40; font-size: 20px;">Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>3 / 18</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 4 — L'application en action ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Le produit réel</div>
+    <h1>L'application en action : Frontend & API Backend</h1>
+  </div>
+  <div class="slide-content">
+    <div class="row" style="align-items: stretch; justify-content: space-between;">
+      <!-- Gauche: UI Angular -->
+      <div class="card grow" style="flex: 0 0 54%; padding: 18px; text-align: center;">
+        <div class="stitle" style="font-size: 19px; margin-bottom: 8px; color: #3A5A40;">Interface Échiquéenne (Angular 17)</div>
+        <img src="../../livrables/rendu/captures/ui-conseils-italienne.png" style="width: 100%; max-height: 520px; object-fit: contain; border-radius: 10px; border: 1px solid #7A756C;">
+        <p class="small" style="margin-top: 8px;">Échiquier interactif, flèches tactiques, statistiques Lichess et conseils sourcés.</p>
+      </div>
+
+      <!-- Droite: Swagger + QR Code -->
+      <div style="flex: 0 0 42%; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;">
+        <div class="card" style="padding: 16px;">
+          <div class="stitle" style="font-size: 18px; margin-bottom: 6px; color: #1C1B18;">API REST FastAPI (Swagger /docs)</div>
+          <img src="../../livrables/rendu/captures/swagger-api-docs.png" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px; border: 1px solid #E6E1D8;">
+          <p class="small" style="margin-top: 6px; font-size: 14.5px;">Endpoints REST documentés sous OpenAPI 3.1 (<span class="mono">/moves</span>, <span class="mono">/evaluate</span>, <span class="mono">/agent/ask</span>).</p>
+        </div>
+        <div class="card key" style="padding: 16px; text-align: center; display: flex; align-items: center; gap: 18px;">
+          <img src="../../livrables/rendu/captures/qr-code-video.svg" style="width: 120px; height: 120px; flex-shrink: 0;">
+          <div style="text-align: left;">
+            <div class="stitle" style="font-size: 18px; margin-bottom: 4px;">Démonstration (~4 min)</div>
+            <p class="body" style="font-size: 16px; line-height: 1.35;">Scénario filmé en conditions réelles : coups théoriques, RAG sourcé et déviation Stockfish.</p>
+            <p class="small" style="font-size: 14px; color: #3A5A40; font-weight: 600; margin-top: 4px;">Loom · Scan QR Code</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Angular 17 ──► FastAPI REST ──► LangGraph</span><span>4 / 18</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 5 — Architecture logicielle ═══════════ -->

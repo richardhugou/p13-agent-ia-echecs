@@ -1,7 +1,7 @@
 # Présentation — Coach IA pour les ouvertures d'échecs (FFE)
 
 > **Structure en 18 diapositives** :
-> 1. Titre · 2. Besoin & contexte · 3. L'application en action · 4. Parcours utilisateur · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Limites du système · 11. Déploiement · 12. Dimensionnement et montée en charge · 13. Coûts de fonctionnement · 14. La limite du POC : recommander une vidéo ne suffit pas · 15. Comment retrouver une position dans une vidéo ? · 16. Faisabilité de l'analyse vidéo · 17. Résumé du POC · 18. Merci.
+> 1. Titre · 2. Besoin & contexte · 3. Parcours utilisateur (Le service proposé) · 4. L'application en action · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Limites du système · 11. Déploiement · 12. Dimensionnement et montée en charge · 13. Coûts de fonctionnement · 14. La limite du POC : recommander une vidéo ne suffit pas · 15. Comment retrouver une position dans une vidéo ? · 16. Faisabilité de l'analyse vidéo · 17. Résumé du POC · 18. Merci.
 
 ---
 
@@ -29,21 +29,7 @@ La FFE compte **60 000 licenciés**, dont ~60 % de jeunes espoirs, pour seulemen
 
 ---
 
-## Diapo 3 — L'application en action
-
-**Preuves d'implémentation réelles** :
-- **Frontend Angular 17** : interface échiquéenne fluide connectée en temps réel au backend.
-- **Backend FastAPI (`/docs`)** : endpoints REST documentés sous OpenAPI 3.1 (`/api/v1/moves`, `/evaluate`, `/videos`, `/vector-search`, `/agent/ask`).
-- **Démonstration en vidéo (~4 min)** : scénario complet filmé en conditions réelles (QR code Loom).
-
-Visuels :
-- Capture réelle de l'échiquier et du panneau coach (`livrables/rendu/captures/ui-conseils-italienne.png`).
-- Capture réelle de la documentation Swagger UI FastAPI (`livrables/rendu/captures/swagger-api-docs.png`).
-- QR Code vectoriel menant vers la vidéo de démonstration Loom.
-
----
-
-## Diapo 4 — Parcours utilisateur
+## Diapo 3 — Parcours utilisateur (Le service proposé)
 
 Scénario nominal de l'élève (les Blancs sur la Partie Italienne) appuyé par les captures réelles :
 
@@ -53,6 +39,20 @@ Scénario nominal de l'élève (les Blancs sur la Partie Italienne) appuyé par 
 4. **Déviation moteur sur coup hors théorie** : Sur un coup hors répertoire (ex: 4.g4?!), l'agent bascule instantanément sur Stockfish avec évaluation chiffrée (-1,47 cp).
 
 *Principe directeur : les faits sont extraits des moteurs spécialisés, le LLM intervient uniquement pour la formulation.*
+
+---
+
+## Diapo 4 — L'application en action : Frontend & API Backend
+
+**Preuves d'implémentation réelles** :
+- **Frontend Angular 17** : interface échiquée fluide connectée en temps réel au backend.
+- **Backend FastAPI (`/docs`)** : endpoints REST documentés sous OpenAPI 3.1 (`/api/v1/moves`, `/evaluate`, `/videos`, `/vector-search`, `/agent/ask`).
+- **Démonstration en vidéo (~4 min)** : scénario complet filmé en conditions réelles (QR code Loom).
+
+Visuels :
+- Capture réelle de l'échiquier et du panneau coach (`livrables/rendu/captures/ui-conseils-italienne.png`).
+- Capture réelle de la documentation Swagger UI FastAPI (`livrables/rendu/captures/swagger-api-docs.png`).
+- QR Code vectoriel menant vers la vidéo de démonstration Loom.
 
 ---
 

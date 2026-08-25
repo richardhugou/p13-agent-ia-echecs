@@ -1,7 +1,7 @@
 # Présentation — Coach IA pour les ouvertures d'échecs (FFE)
 
-> **Structure en 18 diapositives** :
-> 1. Titre · 2. Besoin & contexte · 3. Parcours utilisateur (Le service proposé) · 4. L'application en action · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Limites du système · 11. Déploiement · 12. Dimensionnement et montée en charge · 13. Coûts de fonctionnement · 14. La limite du POC : recommander une vidéo ne suffit pas · 15. Comment retrouver une position dans une vidéo ? · 16. Faisabilité de l'analyse vidéo · 17. Résumé du POC · 18. Merci.
+> **Structure en 19 diapositives** :
+> 1. Titre · 2. Besoin & contexte · 3. Parcours utilisateur (Le service proposé) · 4. L'application en action · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Limites de l'architecture actuelle · 11. Architecture de déploiement cible · 12. Dimensionnement et montée en charge · 13. Coûts de fonctionnement · 14. La limite du POC : recommander une vidéo ne suffit pas · 15. Analyse vidéo : fonctionnement & double flux · 16. Technologies Computer Vision & Arbitrages · 17. Faisabilité et coûts de l'analyse vidéo · 18. Résumé du POC · 19. Merci.
 
 ---
 
@@ -45,7 +45,7 @@ Scénario nominal de l'élève (les Blancs sur la Partie Italienne) appuyé par 
 ## Diapo 4 — L'application en action : Frontend & API Backend
 
 **Preuves d'implémentation réelles** :
-- **Frontend Angular 17** : interface échiquée fluide connectée en temps réel au backend.
+- **Frontend Angular 17** : interface échiquéenne fluide connectée en temps réel au backend.
 - **Backend FastAPI (`/docs`)** : endpoints REST documentés sous OpenAPI 3.1 (`/api/v1/moves`, `/evaluate`, `/videos`, `/vector-search`, `/agent/ask`).
 - **Démonstration en vidéo (~4 min)** : scénario complet filmé en conditions réelles (QR code Loom).
 
@@ -66,15 +66,15 @@ Visuels :
                                          ┆ (lecture / écriture)
       Navigateur (Élève) ──► FRONT ANGULAR (Échiquier responsive & panneau coach)
                                  ↕ position FEN / réponse
-                           FASTAPI + LANGGRAPH (Orchestration déterministe)
-                ┌────────────────────────┼────────────────────────┐
-                ▼                        ▼                        ▼
-        LICHESS EXPLORER             STOCKFISH               MILVUS
-      (Théorie & statistiques)      (Moteur UCI)       (Base vectorielle)
-                                                                  ▼
-                                                      LLM LOCAL / CLOUD (Ollama)
-                                                                  ▼
-                                                           RÉPONSE SOURCÉE
+                            FASTAPI + LANGGRAPH (Orchestration déterministe)
+                 ┌────────────────────────┼────────────────────────┐
+                 ▼                        ▼                        ▼
+         LICHESS EXPLORER             STOCKFISH               MILVUS
+       (Théorie & statistiques)      (Moteur UCI)       (Base vectorielle)
+                                                                   ▼
+                                                       LLM LOCAL / CLOUD (Ollama)
+                                                                   ▼
+                                                            RÉPONSE SOURCÉE
 ```
 
 - **Clé pivot FEN** : notation standardisée circulant sans ambiguïté entre tous les composants.
@@ -154,42 +154,50 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ---
 
-## Diapo 10 — Limites du système
+## Diapo 10 — Limites de l'architecture actuelle
 
-| Limite identifiée | Impact sur le système | Mitigation et arbitrage technique |
-|---|---|---|
-| **Dépendances externes (Lichess, YouTube)** | Risque de latence réseau ou quota API | Mise en cache applicative transverse (MongoDB) + mode dégradé |
-| **Rôle du LLM** | Risque d'hallucination tactique | Le LLM ne choisit aucun coup : formulation uniquement sous contrainte de contexte |
-| **Périmètre du POC** | 8 ouvertures couvertes (manifeste signé) | Extension simple via l'ETL sans modification du graphe d'orchestration |
-| **Montée en charge** | Capacité simultanée limitée par le compute GPU | Séparation de l'inférence LLM dans un pool GPU dédié et réplicable |
-| **Analyse vidéo** | Indexation par métadonnées globales | Étude d'ingénierie formalisée (Partie 2), développement hors POC |
+**Constat sur le déploiement POC mono-conteneur** :
+- **Mono-conteneur** : Front + API + Stockfish + Milvus + LLM (Ollama) colocalisés sur la même machine hôte.
+- **Goulot d'étranglement GPU / LLM** : 1 requête = nominal (2,41 s T4) ; *N* requêtes simultanées = collision sur la VRAM et file d'inférence saturée.
+- **Couplage fort** : Impossible de scaler le serveur web FastAPI sans dupliquer inutilement l'instance LLM.
+
+| Périmètre | Mitigation appliquée |
+|---|---|
+| **Dépendances externes (Lichess, YouTube)** | Cache transverse MongoDB (TTL 24h / 7j) + mode dégradé gracieux |
+| **Hallucinations LLM (Tactique)** | 0 coup délégué au LLM : coups imposés par les moteurs de règles |
+| **Périmètre des répertoires** | Corpus extensible via l'ETL rejouable (`etl/corpus.yml`) |
+| **Montée en charge (Concurrence)** | Séparation de tiers : API stateless réplicable + Pool GPU dédié |
+
+*Conclusion : Le POC valide le fonctionnement. La production impose de séparer le compute HTTP stateless de l'inférence GPU.*
 
 ---
 
-## Diapo 11 — Déploiement
+## Diapo 11 — Architecture de déploiement cible
 
 ```
-          DÉPLOIEMENT ACTUEL DU POC                   ÉVOLUTION : PASSAGE À L'ÉCHELLE
-          
-                 Utilisateur                                    Utilisateurs
-                      │                                              │
-                      ▼                                              ▼
-           ┌─────────────────────┐                              Répartiteur
-           │ Hugging Face Space  │                                   │
-           │ (NVIDIA GPU T4)     │                     ┌─────────────┴─────────────┐
-           │                     │                     ▼                           ▼
-           │ • Angular + FastAPI │               Instance API #1             Instance API #N (Stateless)
-           │ • LangGraph         │                     │                           │
-           │ • Stockfish         │                     └─────────────┬─────────────┘
-           │ • Milvus Lite       │                                   ▼
-           │ • Ollama + Qwen     │                           Services partagés
-           └─────────────────────┘                            ┌──────┼──────┐
-                                                              ▼      ▼      ▼
-                                                           MongoDB Milvus  Pool GPU (LLM)
+                 UTILISATEURS (Web / Mobile)
+                              │
+                              ▼
+                       LOAD BALANCER
+                              │
+                 ┌────────────┼────────────┐
+                 ▼            ▼            ▼
+              API #1       API #2       API #N
+             FastAPI      FastAPI      FastAPI (Stateless sur CPU)
+                 │            │            │
+                 └────────────┼────────────┘
+                              │
+          ┌───────────────────┼───────────────────┐
+          ▼                   ▼                   ▼
+      MongoDB              Milvus             Stockfish 16
+       Cache             Vector DB             Moteur CPU
+                              │
+                              ▼ (Requêtes de génération)
+                   POOL D'INFÉRENCE GPU (LLM)
+           ⚠️ Goulot dimensionnant (vLLM / Triton / Ollama)
 ```
 
-- **Déploiement actuel (POC)** : Instance autonome sur Hugging Face Spaces avec GPU NVIDIA T4 (16 Go VRAM) et Ollama CUDA (coût : 0,40 $/h à l'usage).
-- **Principe de passage à l'échelle** : L'API FastAPI est stateless et réplicable horizontalement ; l'inférence LLM constitue le principal poste de calcul dimensionnant. Bases et moteurs sont mutualisés.
+- **Principe architectural** : Les instances API FastAPI stateless scalent horizontalement sur CPU à coût minimal ; le pool GPU d'inférence est isolé et ajusté selon la charge.
 
 ---
 
@@ -215,8 +223,6 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 | **Scénario 5 %** | 3 000 utilisateurs | 90 000 requêtes / mois | ~1,25 req / min | Pool GPU dimensionné sur trafic de pointe |
 | **Scénario 10 %** | 6 000 utilisateurs | 180 000 requêtes / mois | ~2,50 req / min | Pool GPU avec politique d'autoscaling |
 
-*Le nombre exact d'instances GPU découle de la concurrence en heure de pointe et de la latence cible, à valider par test de charge.*
-
 ---
 
 ## Diapo 13 — Coûts de fonctionnement
@@ -236,6 +242,7 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ### 2. Investissement de développement (Build)
 - **Développement initial du POC** : ~25 à 30 jours-homme.
+- **Stack 100 % open source** : aucune licence propriétaire.
 
 ---
 
@@ -265,54 +272,62 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ---
 
-## Diapo 15 — Comment retrouver une position dans une vidéo ?
-
-> *La chaîne technique : Computer Vision + Transcripts ──► Validation légale ──► Index FEN / Timestamp*
-
-### 1. Le double pipeline : Vision & Transcripts
+## Diapo 15 — Analyse vidéo : fonctionnement & double flux
 
 ```
-                           VIDÉO DU COURS
-                          /              \
-                         ▼                ▼
-             [FLUX COMPUTER VISION]    [FLUX TRANSCRIPTS]
-             Échantillonnage (1/5s)    Whisper / Sous-titres CC
-                     │                            │
-                     ▼                            ▼
-             Détection échiquier       Coups cités extraits
-             (OpenCV, Hough, coins)       (python-chess)
-                     │                            │
-                     ▼                            │
-             Rectification perspective                    │
-             (Homographie 8x8 -> 64 cases)                │
-                     │                            │
-                     ▼                            │
-             Reconnaissance des pièces                    │
-             • 2D : CNN (13 classes) / ONNX               │
-             • 3D : Détecteur (YOLO / ChessReD)           │
-                     │                            │
-                     ▼                            │
-             Reconstruction FEN & validation              │
-             (python-chess : règles & roques)             │
-                     │                            │
-                     └─────────────┬──────────────┘
-                                   ▼
-                       ALIGNEMENT MULTIMODAL
-                                   │
-                                   ▼
-                  FEN ↔ Vidéo ↔ Timestamp (04:32)
+                            VIDÉO DU COURS
+                           /              \
+                          ▼                ▼
+              [FLUX COMPUTER VISION]    [FLUX TRANSCRIPTS]
+              Échantillonnage (1/5s)    Whisper / Sous-titres CC
+                      │                            │
+                      ▼                            ▼
+              Détection échiquier       Coups cités extraits
+              (OpenCV, Hough, coins)       (python-chess)
+                      │                            │
+                      ▼                            │
+              Rectification perspective                    │
+              (Homographie 8x8 -> 64 cases)                │
+                      │                            │
+                      ▼                            │
+              Reconnaissance des pièces                    │
+              (CNN 2D 13 classes)                          │
+                      │                            │
+                      ▼                            │
+              Reconstruction FEN & validation              │
+              (python-chess : règles & roques)             │
+                      │                            │
+                      └─────────────┬──────────────┘
+                                    ▼
+                        ALIGNEMENT MULTIMODAL
+                                    │
+                                    ▼
+                   FEN ↔ Vidéo ↔ Timestamp (04:32)
 ```
 
-- **Rectification par homographie (OpenCV)** : transformation projective pour aplatir l'échiquier incliné en une grille parfaite de 64 cases indépendantes.
-- **Classification 2D (13 classes)** : 1 case vide + 6 pièces blanches + 6 pièces noires (*LiveChess2FEN / Chesscog*).
-- **Validation déterministe (`python-chess`)** : vérification stricte de la légalité (un seul roi par camp, pions valides). Tout FEN illégal est rejeté.
-- **Croisement temporel** : la vision détecte la position, le transcript confirme le moment où le professeur explique le coup clé.
+*Principe : La vision identifie la position montrée, le transcript extrait ce qui est expliqué, l'alignement crée la ressource pédagogique exacte.*
 
 ---
 
-## Diapo 16 — Faisabilité de l'analyse vidéo & Arbitrages
+## Diapo 16 — Technologies Computer Vision & Arbitrages (2D vs 3D)
 
-> *Une extension techniquement faisable et articulée autour d'un MVP maîtrisé*
+1. **Échiquier 2D (MVP — Écrans logiciels)** :
+   - **OpenCV** : Localisation des coins et rectification par homographie projective pour obtenir un carré parfait 8×8 (64 cases).
+   - **CNN léger (13 classes)** : Classification rapide case par case (vide + 6 blanches + 6 noires).
+   - **Inférence CPU (< 3 min / vidéo)** : Problème de vision classique quasi résolu (*LiveChess2FEN, Chesscog*).
+
+2. **Plateau 3D (V2 — Parties physiques)** :
+   - **Détecteur d'objets (YOLO)** : Nécessite un dataset lourd comme *ChessReD* (10 800 images réelles).
+   - **Complexités majeures** : Angles de caméra variables, ombres, occlusions et mains masquant les pièces.
+   - **Arbitrage d'ingénierie** : Exclu du MVP, repoussé en V2 après retour d'expérience du pilote.
+
+3. **Clé pivot FEN commune** :
+   - **Validation légale** : `python-chess` rejette automatiquement tout FEN non conforme.
+   - **Jointure directe** : Les FEN indexés rejoignent immédiatement la base vectorielle Milvus et Stockfish sans réentraînement de l'agent.
+
+---
+
+## Diapo 17 — Faisabilité et coûts de l'analyse vidéo
 
 ### 1. Approche MVP : Transcripts-first + Vision 2D
 - Traitement prioritaire des cours avec échiquier 2D numérique (90 % du catalogue FFE / YouTube).
@@ -323,13 +338,15 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 - **Coût d'exécution Run** : **~0,10 à 0,15 € / vidéo traitée** (compute CPU + stockage).
 - **Indicateurs clés** : Précision FEN $\ge 90\%$ · $\ge 30\%$ des requêtes enrichies d'un timestamp exact.
 
-### 3. Arbitrage d'ingénierie : Exclusion de la 3D en MVP
-- **Complexité 3D physique (V2)** : perspectives variables, pièces occultées par les mains, éclairages (*dataset ChessReD* 10 800 images) $\rightarrow$ repoussée en V2 après validation du pilote 2D.
-- **Périmètre juridique sécurisé** : licences Creative Commons et partenariats chaînes officielles FFE.
+### 3. Arbitrages d'ingénierie & Juridique
+- **Exclusion de la 3D en V1** : focalisation sur la 2D pour maximiser le ROI et la fiabilité.
+- **Périmètre juridique maîtrisé** : licences Creative Commons et partenariats chaînes officielles FFE (zéro stockage de vidéos).
+
+*Message clé : Le coût du système réside dans le développement initial (jours-homme), pas dans le GPU (le MVP 2D tourne sur CPU).*
 
 ---
 
-## Diapo 17 — Résumé du POC
+## Diapo 18 — Résumé du POC
 
 1. **Agent fonctionnel** : Reconnaissance théorique immédiate, explications pédagogiques sourcées, bascule moteur Stockfish.
 2. **Architecture maîtrisée** : Orchestration déterministe LangGraph, Stockfish UCI, base vectorielle Milvus, cache MongoDB.
@@ -340,7 +357,7 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ---
 
-## Diapo 18 — Merci
+## Diapo 19 — Merci
 
 **Merci pour votre attention.**
 

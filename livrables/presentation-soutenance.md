@@ -1,7 +1,7 @@
 # Présentation — Coach IA pour les ouvertures d'échecs (FFE)
 
-> **Structure en 18 diapositives** :
-> 1. Titre · 2. Besoin & contexte · 3. L'application en action · 4. Parcours utilisateur · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Architecture de déploiement · 11. Dimensionnement & montée en charge · 12. Coûts de fonctionnement · 13. YouTube dans le POC · 14. Analyse vidéo : évolution étudiée · 15. Faisabilité et limites vidéo · 16. Résumé du POC · 17. Démonstration et échanges · 18. Merci.
+> **Structure en 17 diapositives** :
+> 1. Titre · 2. Besoin & contexte · 3. L'application en action · 4. Parcours utilisateur · 5. Architecture logicielle · 6. Orchestration de l'agent · 7. Gisement de données · 8. Recherche sémantique · 9. Performances mesurées · 10. Déploiement · 11. Dimensionnement et montée en charge · 12. Coûts de fonctionnement · 13. La limite du POC : recommander une vidéo ne suffit pas · 14. Comment retrouver une position dans une vidéo ? · 15. Faisabilité de l'analyse vidéo · 16. Résumé du POC · 17. Merci.
 
 ---
 
@@ -32,6 +32,7 @@ La FFE compte **60 000 licenciés**, dont ~60 % de jeunes espoirs, pour seulemen
 ## Diapo 3 — L'application en action
 
 **Démonstration en conditions réelles (~4 min)** :
+- Interface échiquéenne fluide (Angular 17) connectée à l'agent conversationnel.
 - Parcours complet : choix du camp, répliques automatiques, conseils sourcés, bascule moteur sur sortie de théorie.
 - *Lien vidéo Loom : https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811*
 
@@ -152,40 +153,38 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ---
 
-## Diapo 10 — Architecture de déploiement
-
-### Architecture cible industrielle (Scalabilité horizontale)
+## Diapo 10 — Déploiement
 
 ```
-                              Utilisateurs
-                                   │
-                                   ▼
-                            Load Balancer
-                                   │
-                     ┌─────────────┴─────────────┐
-                     ▼                           ▼
-               Instance API #1             Instance API #N  (Stateless, réplicable)
-                     │                           │
-                     └─────────────┬─────────────┘
-                                   ▼
-                           Services Partagés
-                     ┌─────────────┼─────────────┐
-                     ▼             ▼             ▼
-                  MongoDB       Milvus       Pool Inférence GPU (LLM)
+          DÉPLOIEMENT ACTUEL DU POC                   ÉVOLUTION : PASSAGE À L'ÉCHELLE
+          
+                 Utilisateur                                    Utilisateurs
+                      │                                              │
+                      ▼                                              ▼
+           ┌─────────────────────┐                            ┌──────────────┐
+           │ Hugging Face Space  │                            │ Instance API │ (Stateless)
+           │ (NVIDIA GPU T4)     │                            └──────┬───────┘
+           │                     │                                   │
+           │ • Angular + FastAPI │                                   ▼
+           │ • LangGraph         │                           Services partagés
+           │ • Stockfish         │                            ┌──────┼──────┐
+           │ • Milvus Lite       │                            ▼      ▼      ▼
+           │ • Ollama + Qwen     │                         MongoDB Milvus  Pool GPU (LLM)
+           └─────────────────────┘
 ```
 
-- **Séparation des tiers** : API stateless réplicable horizontalement, bases mutualisées, pool GPU dédié à l'inférence LLM (goulot principal).
-- **Preuve réelle de déploiement (POC)** : Déploiement opérationnel sur Hugging Face Spaces avec GPU NVIDIA T4 (16 Go VRAM) et Ollama CUDA (`trikwi-p13-agent-echecs.hf.space`).
+- **Déploiement actuel (POC)** : Instance autonome sur Hugging Face Spaces avec GPU NVIDIA T4 (16 Go VRAM) et Ollama CUDA (coût : 0,40 $/h à l'usage).
+- **Principe de montée en charge** : L'API FastAPI est stateless et réplicable horizontalement ; l'inférence LLM constitue le principal poste de calcul dimensionnant. Bases et moteurs sont mutualisés.
 
 ---
 
-## Diapo 11 — Dimensionnement & Montée en charge
+## Diapo 11 — Dimensionnement et montée en charge
 
 ### 1. Facteurs dimensionnants par composant
 
 | Composant | Facteur limitant | Stratégie de passage à l'échelle |
 |---|---|---|
-| **API Backend (FastAPI)** | Nombre de requêtes HTTP | Réplication horizontale stateless derrière Load Balancer |
+| **API Backend (FastAPI)** | Nombre de requêtes HTTP | Réplication horizontale stateless derrière répartiteur de charge |
 | **Moteur Stockfish** | CPU | Parallélisation multi-cœurs (0,8 s / coup) |
 | **Base Milvus** | Volume documentaire & index | Service mutualisé (recherche 7–11 ms) |
 | **Base MongoDB** | Volume de cache | Instance partagée avec TTL |
@@ -205,6 +204,8 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 
 ## Diapo 12 — Coûts de fonctionnement
 
+> *Estimation budgétaire — Architecture cible de production (Scénario 5 % / 3 000 utilisateurs)*
+
 ### 1. Postes de dépenses opérationnelles (OPEX mensuel estimé)
 
 | Poste d'infrastructure | Rôle technique | Estimation mensuelle (Scénario 5 %) |
@@ -214,51 +215,74 @@ Question élève ──► Embedding (1024d) ──► Cosinus HNSW (Milvus) ─
 | **Bases de données** | Instances managées Milvus + MongoDB | ~50 à 80 € / mois |
 | **Stockage & Monitoring** | Logs, métriques, sauvegardes | ~20 € / mois |
 | **APIs Externes (LLM / YouTube)** | Modèles open source + quotas YouTube Data API officiels | **0,00 €** |
-| **Total OPEX estimé** | Infrastructure de production pour 3 000 utilisateurs actifs | **~250 à 430 € / mois** |
+| **TOTAL OPEX ESTIMÉ** | **Infrastructure de production dimensionnée pour 3 000 users** | **~250 à 430 € / mois** |
 
 ### 2. Investissement de développement (Build)
 - **Développement initial du POC** : ~25 à 30 jours-homme.
 
 ---
 
-## Diapo 13 — YouTube dans le POC
+## Diapo 13 — La limite du POC : recommander une vidéo ne suffit pas
 
-**Principe fonctionnel : Position d'échecs $\rightarrow$ Vidéo pédagogique**
+> *Aujourd'hui, l'agent trouve une vidéo par ouverture. L'objectif est de retrouver le passage pertinent.*
 
 ```
-Position jouée ──► Détection ouverture ──► YouTube Data API v3 ──► Vidéos recommandées
+       AUJOURD'HUI (POC)                                 OBJECTIF VISÉ
+       
+       Position de l'élève                             Position de l'élève
+               │                                               │
+               ▼                                               ▼
+        Partie Italienne                                      FEN
+               │                                               │
+               ▼                                               ▼
+            YouTube                                Index des positions vidéo
+               │                                               │
+               ▼                                               ▼
+       3 vidéos proposées                              Vidéo X — 04:32
+       
+ ❌ Mais où est ma position ?                   « Cette position est expliquée
+ ❌ À quel moment est-elle expliquée ?                      à 4:32 »
 ```
 
-- **Fonctionnalité livrée dans le POC** : L'agent identifie l'ouverture jouée sur l'échiquier et interroge l'API officielle YouTube Data v3 pour afficher des vidéos explicatives ciblées.
-- **Affichage intégré** : Titre officiel, nom de la chaîne, durée et lien direct intégrés dans le panneau coach de l'application.
-- **Conformité stricte** : Exploitation exclusive des métadonnées de l'API officielle, sans aucun téléchargement illégal de flux vidéo.
+**Le problème à résoudre** : passer d'une recommandation globale par ouverture à une recommandation précise à la position et au timestamp près.
 
 ---
 
-## Diapo 14 — Analyse vidéo : Évolution étudiée
+## Diapo 14 — Comment retrouver une position dans une vidéo ?
 
-**Principe fonctionnel : Vidéo de cours $\rightarrow$ Positions d'échecs (FEN)**
+> *Construire un index : position FEN ↔ vidéo ↔ timestamp*
 
 ```
-Vidéo 15 min ──► 180 frames (1/5s) ──► ~30 positions clés ──► Détection FEN ──► Horodatage précis
+VIDÉO PÉDAGOGIQUE ──► Images clés (1/5s) ──► Détection échiquier ──► Reconnaissance pièces
+                                                                             │
+                                                                             ▼
+FEN ↔ vidéo ↔ timestamp ◄── Validation python-chess ◄── Reconstruction FEN ◄┘
 ```
 
-- **Changement de paradigme** : On ne cherche plus une vidéo à partir d'une position, mais on extrait les positions d'une vidéo pour les injecter dans l'agent existant.
-- **Valeur ajoutée utilisateur** :
-  - *Aujourd'hui (POC)* : Recommandation globale par nom d'ouverture (*« Voici 3 vidéos sur l'Italienne »*).
-  - *Après analyse vidéo* : Recommandation au timestamp exact (*« Cette position est expliquée à 4:32 »*).
+**Exemple d'indexation d'un cours (Vidéo « La Partie Italienne »)** :
+- `04:12` $\rightarrow$ FEN A
+- `04:32` $\rightarrow$ **FEN B (position exacte de l'élève)**
+- `05:07` $\rightarrow$ FEN C
+- `06:21` $\rightarrow$ FEN D
+
+*Le FEN reste la clé pivot commune pour relier directement la vidéo à l'agent existant.*
 
 ---
 
-## Diapo 15 — Faisabilité et limites vidéo
+## Diapo 15 — Faisabilité de l'analyse vidéo
 
-### 1. Approche d'ingénierie retenue (MVP Transcripts-first + Vision 2D)
-- **Arbitrage technique** : Reconstruire d'abord les coups cités à partir des transcripts textuels (`python-chess`), puis utiliser la vision par ordinateur 2D pour confirmer la position et caler l'horodatage exact (~3 min CPU / vidéo).
+> *Une extension techniquement faisable et articulée autour d'un MVP maîtrisé*
 
-### 2. Chiffrage de l'étude (Livrable Partie 2)
-- **Build MVP** : **30 à 40 jours-homme** (budget estimé : **15 à 20 k€**).
-- **Run unitaire** : **~0,10 à 0,15 € par vidéo traitée** (à 1 000 vidéos/mois).
-- **Statut** : *Étude de faisabilité complète livrée — développement hors périmètre du POC.*
+### 1. Approche MVP : Transcripts-first + Vision 2D
+- Récupérer les transcripts textuels et reconstruire les coups cités avec `python-chess`.
+- Utiliser la vision par ordinateur 2D uniquement pour confirmer la position et caler l'horodatage exact (~3 min CPU / vidéo).
+
+### 2. Ce qu'on peut viser (Pilote de 100 vidéos)
+- **Délai & Effort** : 6 à 8 semaines · **30 à 40 jours-homme** (budget : **15 à 20 k€**).
+- **Indicateurs clés** : Précision FEN $\ge 90\%$ · Coût unitaire $\le 0,20\text{ € / vidéo}$ · $\ge 30\%$ des recommandations enrichies d'un timestamp exact.
+
+### 3. Ce qu'on ne fait pas maintenant (Exclusions MVP)
+- Pas de vision 3D généralisée ni d'angles de caméra inclinés en MVP $\rightarrow$ repoussés en V2 après mesure du pilote.
 
 ---
 
@@ -268,22 +292,12 @@ Vidéo 15 min ──► 180 frames (1/5s) ──► ~30 positions clés ──�
 2. **Architecture maîtrisée** : Orchestration déterministe LangGraph, Stockfish UCI, base vectorielle Milvus, cache MongoDB.
 3. **Gisement de données validé** : Pipeline ETL rejouable (4 sources, 477 fiches structurées, 95 FEN de référence).
 4. **Performances prouvées** : 0 coup illégal sur 56 positions, latence sous 2,5 s sur GPU T4 (p95 = 2,41 s).
-5. **Déploiement éprouvé** : Conteneurisation locale reproductible (2 min 09) et déploiement cloud GPU sur Hugging Face Spaces.
-6. **Étude d'analyse vidéo livrée** : Note de cadrage, architecture MCP, faisabilité et modèle économique formalisés.
+5. **Déploiement éprouvé** : Conteneurisation locale reproductible (2 min 09) et vitrine cloud GPU sur Hugging Face Spaces.
+6. **Étude d'ingénierie livrée** : Note de cadrage, architecture MCP, faisabilité technique et modèle de coûts formalisés.
 
 ---
 
-## Diapo 17 — Démonstration et échanges
-
-**Place à la démonstration en direct et aux échanges.**
-
-- Démonstration interactive sur l'application Angular en direct.
-- Scénario nominal (Partie Italienne), demande de conseils, déviation sur coup hors théorie.
-- Présentation des tests et du code source.
-
----
-
-## Diapo 18 — Merci
+## Diapo 17 — Merci
 
 **Merci pour votre attention.**
 
@@ -292,4 +306,3 @@ IA Engineer — Cavalier Data
 *Projet OpenClassrooms × Fédération Française des Échecs*  
 
 - **Dépôt GitHub public** : https://github.com/richardhugou/p13-agent-ia-echecs
-- **Vitrine Cloud en direct** : https://trikwi-p13-agent-echecs.hf.space

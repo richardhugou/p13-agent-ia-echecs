@@ -110,7 +110,7 @@
     <p class="body" style="font-size: 26px; font-weight: 700;">Richard Hugou</p>
     <p class="small" style="font-size: 19px;">IA Engineer — Soutenance de projet — Août 2026</p>
   </div>
-  <div class="footer"><span>Cavalier Data</span><span>Projet OpenClassrooms P13</span><span>1 / 18</span></div>
+  <div class="footer"><span>Cavalier Data</span><span>Projet OpenClassrooms P13</span><span>1 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 2 — Besoin et contexte ═══════════ -->
@@ -148,7 +148,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Cadrage du besoin</span><span>2 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Cadrage du besoin</span><span>2 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 3 — L'application en action ═══════════ -->
@@ -170,7 +170,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Interface Angular 17 en direct</span><span>3 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Interface Angular 17 en direct</span><span>3 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 4 — Parcours utilisateur ═══════════ -->
@@ -202,7 +202,7 @@
       <p class="body" style="font-weight: 600; color: #3A5A40; font-size: 21px;">Principe directeur : les faits proviennent des moteurs spécialisés, le LLM intervient uniquement pour la formulation.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Parcours élève nominal</span><span>4 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 5 — Architecture logicielle ═══════════ -->
@@ -275,7 +275,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture de composants</span><span>5 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture de composants</span><span>5 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 6 — Orchestration de l'agent ═══════════ -->
@@ -342,7 +342,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Graphe d'exécution LangGraph</span><span>6 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Graphe d'exécution LangGraph</span><span>6 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 7 — Gisement de données ═══════════ -->
@@ -369,7 +369,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml</span><span>7 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 03 — EDA · etl/corpus.yml</span><span>7 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 8 — Recherche sémantique ═══════════ -->
@@ -428,7 +428,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>8 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebooks 02 · 07</span><span>8 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 9 — Performances mesurées ═══════════ -->
@@ -456,42 +456,42 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>notebook 05 · MLflow gold-set-rag</span><span>9 / 17</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 10 — Architecture de déploiement ═══════════ -->
+<!-- ═══════════ DIAPO 10 — Déploiement ═══════════ -->
 <div class="slide">
   <div class="slide-header">
     <div class="kicker">Déploiement et infrastructure</div>
-    <h1>Architecture de déploiement</h1>
+    <h1>Déploiement</h1>
   </div>
   <div class="slide-content">
     <div class="row" style="align-items: stretch; margin-bottom: 16px;">
-      <div class="card grow" style="flex: 0 0 62%;">
-        <div class="stitle" style="color: #3A5A40;">Architecture cible industrielle (Scalabilité horizontale)</div>
-        <div style="font-family: 'SF Mono', Menlo, monospace; font-size: 16px; line-height: 1.4; background: #F4EFE6; padding: 14px; border-radius: 10px; margin-top: 10px;">
-          Utilisateurs ──► Load Balancer ──► [ N × Instances API FastAPI (Stateless) ]<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼ (Services partagés)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┌──────────────────┼──────────────────┐<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼                  ▼                  ▼<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MongoDB            Milvus          Pool GPU Inférence (LLM)
-        </div>
-        <p class="small" style="margin-top: 10px;">• Séparation nette : compute API réplicable à volonté, bases mutualisées, pool GPU isolé.</p>
-      </div>
-      <div class="card key grow" style="flex: 0 0 34%;">
-        <div class="stitle" style="color: #0B2211;">Preuve réelle POC (Déployée)</div>
-        <p class="body" style="font-size: 18px; margin-top: 8px;">
-          • <b>Hugging Face Spaces</b><br>
-          • GPU NVIDIA T4 (16 Go VRAM)<br>
-          • Stack complète embarquée avec Ollama CUDA, Stockfish et Milvus Lite<br>
+      <div class="card key grow" style="flex: 0 0 46%; border-left: 6px solid #3A5A40;">
+        <div class="stitle" style="color: #0B2211;">Déploiement actuel du POC</div>
+        <p class="body" style="font-size: 18px; margin-top: 10px; line-height: 1.55;">
+          • <b>Hugging Face Space (Mono-conteneur)</b><br>
+          • <b>GPU NVIDIA T4 (16 Go VRAM)</b><br>
+          • Angular + FastAPI + LangGraph + Stockfish embarqués<br>
+          • Milvus Lite + Ollama CUDA (Modèle Qwen)<br>
           • Déploiement automatisé par CI/CD GitHub Actions<br>
           • Facturation à l'usage : <b>0,40 $/h</b>
         </p>
       </div>
+      <div class="card wood grow" style="flex: 0 0 50%; border-left: 6px solid #7A756C;">
+        <div class="stitle" style="color: #1C1B18;">Évolution : Passage à l'échelle</div>
+        <p class="body" style="font-size: 18px; margin-top: 10px; line-height: 1.55;">
+          • <b>API FastAPI stateless</b> réplicable horizontalement derrière un répartiteur de charge.<br>
+          • <b>Inférence LLM</b> : principal goulot de calcul dimensionnant le pool GPU.<br>
+          • <b>Bases de données (Milvus, MongoDB)</b> et moteur Stockfish mutualisés entre les instances API.
+        </p>
+      </div>
+    </div>
+    <div class="card" style="padding: 14px 24px; text-align: center;">
+      <p class="small" style="font-size: 16px;">Le POC démontre la faisabilité fonctionnelle sur un environnement GPU autonome ; l'architecture permet une séparation naturelle des tiers pour monter en charge.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Architecture SI & Passage à l'échelle</span><span>10 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Stratégie de déploiement</span><span>10 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 11 — Dimensionnement & Montée en charge ═══════════ -->
@@ -523,7 +523,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Modélisation de la charge</span><span>11 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Modélisation de la charge</span><span>11 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 12 — Coûts de fonctionnement ═══════════ -->
@@ -533,118 +533,143 @@
     <h1>Coûts de fonctionnement</h1>
   </div>
   <div class="slide-content">
+    <p class="small" style="margin-bottom: 10px; font-weight: 600; color: #3A5A40;">Estimation budgétaire — Architecture cible de production (Scénario 5 % / 3 000 utilisateurs actifs)</p>
     <div class="row" style="align-items: stretch; margin-bottom: 14px;">
       <div class="card grow" style="flex: 0 0 60%;">
-        <div class="stitle">Postes de dépenses opérationnelles (Scénario cible 5 %)</div>
-        <table style="font-size: 16.5px; margin-top: 6px;">
+        <div class="stitle">Postes de dépenses opérationnelles (OPEX mensuel estimé)</div>
+        <table style="font-size: 16px; margin-top: 6px;">
           <tr><th>Poste de coût</th><th>Composant</th><th>Estimation mensuelle</th></tr>
           <tr><td><strong>Inférence GPU</strong></td><td>Pool GPU (instances T4 / L4 à l'usage)</td><td>~150 à 280 € / mois</td></tr>
           <tr><td><strong>API & Compute</strong></td><td>Instances FastAPI stateless (CPU / RAM)</td><td>~30 à 50 € / mois</td></tr>
           <tr><td><strong>Bases de données</strong></td><td>Milvus managé + MongoDB managé</td><td>~50 à 80 € / mois</td></tr>
           <tr><td><strong>Stockage & Logs</strong></td><td>Métriques, monitoring, sauvegardes</td><td>~20 € / mois</td></tr>
           <tr><td><strong>APIs Externes</strong></td><td>Modèles open source + YouTube API</td><td><strong>0,00 €</strong></td></tr>
-          <tr><td><strong>TOTAL OPEX</strong></td><td><strong>Service en production (3 000 users)</strong></td><td><strong>~250 à 430 € / mois</strong></td></tr>
+          <tr><td><strong>TOTAL OPEX</strong></td><td><strong>Production dimensionnée (3 000 users)</strong></td><td><strong>~250 à 430 € / mois</strong></td></tr>
         </table>
       </div>
       <div class="card wood grow" style="flex: 0 0 36%;">
         <div class="stitle">Investissement Build (POC)</div>
-        <p class="body" style="font-size: 18px; margin-top: 8px;">
-          • <b>Développement POC</b> : ~25 à 30 jours-homme.<br>
-          • <b>Stack 100 % open source</b> : aucune redevance de licence logicielle propriétaire.<br>
-          • <b>Maîtrise budgétaire</b> : le coût reste dominé par le compute GPU ajustable selon l'usage.
+        <p class="body" style="font-size: 17.5px; margin-top: 8px; line-height: 1.5;">
+          • <b>Développement initial POC</b> : ~25 à 30 jours-homme.<br>
+          • <b>Stack 100 % open source</b> : aucune redevance logicielle propriétaire.<br>
+          • <b>Maîtrise des coûts</b> : infrastructure ajustable à l'usage réel.
         </p>
       </div>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Budget et coûts du système</span><span>12 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Budget et coûts du système</span><span>12 / 17</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 13 — YouTube dans le POC ═══════════ -->
+<!-- ═══════════ DIAPO 13 — La limite du POC ═══════════ -->
 <div class="slide">
   <div class="slide-header">
-    <div class="kicker">Fonctionnalité livrée</div>
-    <h1>YouTube dans le POC</h1>
+    <div class="kicker">Partie 2 · Cadrage du besoin</div>
+    <h1>La limite du POC : recommander une vidéo ne suffit pas</h1>
   </div>
   <div class="slide-content">
-    <div style="text-align: center; font-family: 'SF Mono', Menlo, monospace; font-size: 18px; margin-bottom: 20px; background: #F0E6D2; padding: 14px 18px; border-radius: 12px;">
-      Position de l'élève ──► Détection ouverture ──► YouTube Data API v3 ──► <span style="color:#3A5A40; font-weight:700;">Ressources vidéo recommandées</span>
-    </div>
-    <div class="row" style="align-items: stretch;">
-      <div class="card grow" style="border-left: 6px solid #3A5A40;">
-        <div class="stitle">Ce que fait l'application aujourd'hui</div>
-        <p class="body" style="font-size: 19px; margin-top: 8px;">
-          • L'agent identifie l'ouverture jouée sur l'échiquier.<br>
-          • Il interroge l'API officielle YouTube Data pour extraire les vidéos explicatives pertinentes.<br>
-          • Affichage direct : titre officiel, nom de la chaîne, durée et lien cliquable.<br>
-          • <b>Conformité stricte</b> : exploitation des métadonnées seules, aucun téléchargement de flux.
-        </p>
-      </div>
-      <div class="card wood grow" style="text-align: center; padding: 20px;">
-        <div class="stitle" style="font-size: 18px; margin-bottom: 8px;">Panneau vidéo intégré</div>
-        <p class="small">L'élève dispose immédiatement de cours vidéo de grands maîtres adaptés à son ouverture sans quitter l'interface d'entraînement.</p>
-      </div>
-    </div>
-  </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Recommandation vidéo (Partie 1)</span><span>13 / 18</span></div>
-</div>
-
-<!-- ═══════════ DIAPO 14 — Analyse vidéo : Évolution étudiée ═══════════ -->
-<div class="slide">
-  <div class="slide-header">
-    <div class="kicker">Deuxième partie · Étude</div>
-    <h1>Analyse vidéo : évolution étudiée</h1>
-  </div>
-  <div class="slide-content">
-    <div style="text-align: center; font-family: 'SF Mono', Menlo, monospace; font-size: 18px; margin-bottom: 20px; background: #F0E6D2; padding: 14px 18px; border-radius: 12px;">
-      Vidéo 15 min ──► 180 frames (1/5s) ──► ~30 positions clés ──► Détection FEN ──► <span style="color:#3A5A40; font-weight:700;">FEN ↔ vidéo ↔ timestamp</span>
-    </div>
+    <p class="body" style="font-size: 21px; margin-bottom: 16px; color: #3A5A40; font-weight: 500;">
+      Aujourd'hui, l'agent trouve une vidéo par ouverture. L'objectif est de retrouver le passage pertinent.
+    </p>
     <div class="row" style="align-items: stretch; margin-bottom: 16px;">
-      <div class="card grow">
-        <div class="stitle">Aujourd'hui (POC) : Position → Vidéo</div>
-        <p class="body" style="font-size: 19px; margin-top: 8px;">Recommandation globale par nom d'ouverture :<br><i>« Voici 3 vidéos sur la Partie Italienne. »</i></p>
+      <div class="card grow" style="border-left: 6px solid #C97A63;">
+        <div class="stitle" style="color: #C97A63;">Aujourd'hui (POC)</div>
+        <div style="font-family: 'SF Mono', Menlo, monospace; font-size: 16.5px; line-height: 1.5; margin: 10px 0;">
+          Position de l'élève ──► Partie Italienne ──► YouTube Data API ──► 3 vidéos proposées
+        </div>
+        <p class="body" style="font-size: 18px; color: #BA1A1A; margin-top: 8px;">
+          ❌ Mais où est ma position dans les 20 minutes de vidéo ?<br>
+          ❌ À quel instant précis est-elle expliquée ?
+        </p>
       </div>
-      <div class="card key grow">
-        <div class="stitle">Après analyse vidéo : Vidéo → Position</div>
-        <p class="body" style="font-size: 19px; margin-top: 8px;">Recommandation directe au timestamp exact :<br><i>« Cette position exacte est expliquée à 4:32 dans cette vidéo. »</i></p>
+      <div class="card key grow" style="border-left: 6px solid #3A5A40;">
+        <div class="stitle" style="color: #0B2211;">Objectif visé (Partie 2)</div>
+        <div style="font-family: 'SF Mono', Menlo, monospace; font-size: 16.5px; line-height: 1.5; margin: 10px 0;">
+          Position de l'élève ──► FEN ──► Index des positions vidéo ──► Vidéo X à 04:32
+        </div>
+        <p class="body" style="font-size: 18px; color: #0B2211; margin-top: 8px;">
+          ✅ <b>« Cette position exacte est expliquée à 4:32 »</b><br>
+          ✅ Lien direct horodaté pour l'élève.
+        </p>
       </div>
     </div>
     <div class="card wood" style="text-align: center; padding: 14px;">
-      <p class="body" style="font-weight: 600; font-size: 19px; color: #2A2011;">On part de la vidéo pour extraire les positions jouées et les transmettre à l'agent existant via la clé FEN.</p>
+      <p class="body" style="font-weight: 700; color: #1C1B18; font-size: 19.5px;">Le problème à résoudre : passer d'une recommandation par ouverture à une recommandation par position.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Ingénierie vidéo (Partie 2)</span><span>14 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §1-§3</span><span>13 / 17</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 15 — Faisabilité et limites vidéo ═══════════ -->
+<!-- ═══════════ DIAPO 14 — Comment retrouver une position dans une vidéo ? ═══════════ -->
 <div class="slide">
   <div class="slide-header">
-    <div class="kicker">Étude d'ingénierie</div>
-    <h1>Faisabilité et limites de l'analyse vidéo</h1>
+    <div class="kicker">Partie 2 · Ingénierie</div>
+    <h1>Comment retrouver une position d'échecs dans une vidéo ?</h1>
+  </div>
+  <div class="slide-content">
+    <p class="body" style="font-size: 20px; margin-bottom: 12px; color: #3A5A40; font-weight: 500;">
+      Construire un index : position FEN ↔ vidéo ↔ timestamp
+    </p>
+    <div style="text-align: center; font-family: 'SF Mono', Menlo, monospace; font-size: 16.5px; margin-bottom: 16px; background: #F0E6D2; padding: 14px; border-radius: 12px; line-height: 1.45;">
+      VIDÉO PÉDAGOGIQUE ──► Images clés (1/5s) ──► Détection échiquier ──► Reconnaissance pièces<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      <span style="color:#3A5A40; font-weight:700;">FEN ↔ vidéo ↔ timestamp</span> ◄── Validation python-chess ◄── Reconstruction FEN ◄┘
+    </div>
+    <div class="row" style="align-items: stretch; margin-bottom: 10px;">
+      <div class="card grow">
+        <div class="stitle">Exemple d'indexation (Vidéo « L'Italienne »)</div>
+        <p class="mono" style="font-size: 16.5px; line-height: 1.5; margin-top: 6px;">
+          • 04:12 ──► FEN A (Début de variante)<br>
+          • <b>04:32 ──► FEN B (Position recherchée par l'élève)</b><br>
+          • 05:07 ──► FEN C (Suite tactique)<br>
+          • 06:21 ──► FEN D (Fin d'explication)
+        </p>
+      </div>
+      <div class="card key grow" style="text-align: center; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+        <div class="stitle" style="color: #0B2211;">Le FEN comme clé pivot</div>
+        <p class="body" style="font-size: 18px; margin-top: 8px;">Les positions extraites des vidéos rejoignent directement la théorie Lichess, Milvus et Stockfish de l'agent existant.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §2 · Chaîne fonctionnelle</span><span>14 / 17</span></div>
+</div>
+
+<!-- ═══════════ DIAPO 15 — Faisabilité de l'analyse vidéo ═══════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="kicker">Partie 2 · Faisabilité et arbitrages</div>
+    <h1>Faisabilité de l'analyse vidéo</h1>
   </div>
   <div class="slide-content">
     <div class="row" style="align-items: stretch; margin-bottom: 16px;">
       <div class="card grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">1. Approche MVP : Transcripts-first + Vision 2D</div>
-        <p class="body" style="font-size: 18px; margin-top: 8px;">
+        <div class="stitle">1. Approche MVP : Transcripts + Vision 2D</div>
+        <p class="body" style="font-size: 17.5px; line-height: 1.5; margin-top: 8px;">
           • Reconstruire d'abord les coups cités dans le transcript textuel via <span class="mono">python-chess</span>.<br>
-          • Utiliser la vision par ordinateur 2D uniquement pour confirmer la position et caler l'horodatage exact (~3 min CPU / vidéo).
+          • Utiliser la vision par ordinateur 2D uniquement pour confirmer la position et caler l'horodatage (~3 min CPU / vidéo).
         </p>
       </div>
       <div class="card key grow" style="border-top: 6px solid #3A5A40;">
-        <div class="stitle">2. Chiffrage de l'étude (Partie 2)</div>
-        <p class="body" style="font-size: 18px; margin-top: 8px;">
-          • <b>Build MVP</b> : <b>30 à 40 jours-homme</b> (budget estimé : <b>15 à 20 k€</b>).<br>
-          • <b>Coût unitaire Run</b> : <b>~0,10 à 0,15 € / vidéo</b> (à 1 000 vidéos/mois).<br>
-          • <b>Statut</b> : Étude de faisabilité livrée — développement hors POC.
+        <div class="stitle">2. Chiffrage du pilote (100 vidéos)</div>
+        <p class="body" style="font-size: 17.5px; line-height: 1.5; margin-top: 8px;">
+          • <b>Délai</b> : 6 à 8 semaines.<br>
+          • <b>Effort & Budget Build</b> : <b>30 à 40 j-h (15 à 20 k€)</b>.<br>
+          • <b>Coût Run</b> : <b>~0,10 à 0,15 € / vidéo traitée</b>.<br>
+          • <b>Cibles</b> : Précision FEN ≥ 90 %, ≥ 30 % des requêtes avec timestamp.
+        </p>
+      </div>
+      <div class="card wood grow" style="border-top: 6px solid #C97A63;">
+        <div class="stitle">3. Exclusions du MVP</div>
+        <p class="body" style="font-size: 17.5px; line-height: 1.5; margin-top: 8px;">
+          • <b>Pas de vision 3D généralisée</b> ni d'angles inclinés en V1.<br>
+          • <b>Périmètre juridique maîtrisé</b> : vidéos sous licence Creative Commons et chaînes partenaires FFE.
         </p>
       </div>
     </div>
-    <div class="card wood" style="padding: 16px 24px;">
-      <div class="stitle" style="font-size: 18px;">Limites & Risques identifiés dans la note</div>
-      <p class="small">• Risque juridique (CGU YouTube & droit d'auteur) atténué par le traitement des chaînes partenaires sous licence.<br>• Échiquiers 3D / angles inclinés exclus du MVP (réservés à une version V2).</p>
+    <div class="card" style="padding: 14px 24px; text-align: center;">
+      <p class="small" style="font-size: 16px;">Étude d'ingénierie formalisée (note de cadrage, architecture MCP, modèle de coûts) — Développement hors périmètre du POC.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Livrable d'ingénierie (Partie 2)</span><span>15 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Note d'analyse vidéo §6-§9</span><span>15 / 17</span></div>
 </div>
 
 <!-- ═══════════ DIAPO 16 — Résumé du POC ═══════════ -->
@@ -675,7 +700,7 @@
       </div>
       <div class="card grow">
         <div class="stitle">Déploiement éprouvé</div>
-        <p class="body" style="font-size: 18px;">Conteneurisation locale reproductible (2 min 09) et vitrine cloud GPU opérationnelle sur Hugging Face Spaces.</p>
+        <p class="body" style="font-size: 18px;">Conteneurisation locale reproductible (2 min 09) et vitrine cloud GPU sur Hugging Face Spaces.</p>
       </div>
       <div class="card key grow">
         <div class="stitle">Étude vidéo livrée</div>
@@ -683,33 +708,13 @@
       </div>
     </div>
     <div class="card wood" style="text-align: center; padding: 14px;">
-      <p class="body" style="font-weight: 700; color: #3A5A40; font-size: 21px;">→ Place à la démonstration en direct et aux échanges.</p>
+      <p class="body" style="font-weight: 700; color: #3A5A40; font-size: 21px;">→ Place aux échanges et aux questions du jury.</p>
     </div>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Conclusion du POC</span><span>16 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Conclusion du POC</span><span>16 / 17</span></div>
 </div>
 
-<!-- ═══════════ DIAPO 17 — Démonstration et échanges ═══════════ -->
-<div class="slide" style="justify-content: center; align-items: center; text-align: center;">
-  <div class="kicker" style="font-size: 24px; color: #3A5A40;">Session interactive</div>
-  <h1 style="font-size: 64px; margin-bottom: 24px; color: #1C1B18;">Démonstration en direct</h1>
-  <p class="body" style="font-size: 28px; max-width: 1200px; margin-bottom: 40px;">
-    Parcours nominal (Partie Italienne), demande de conseils sourcés, sortie de théorie sur Stockfish et exploration du code.
-  </p>
-  <div class="row" style="max-width: 1000px; justify-content: center;">
-    <div class="card wood grow" style="padding: 24px;">
-      <div class="stitle">Application locale</div>
-      <p class="mono" style="font-size: 18px;">http://localhost:4200</p>
-    </div>
-    <div class="card key grow" style="padding: 24px;">
-      <div class="stitle">Vitrine Cloud GPU T4</div>
-      <p class="mono" style="font-size: 18px;">trikwi-p13-agent-echecs.hf.space</p>
-    </div>
-  </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Démonstration live</span><span>17 / 18</span></div>
-</div>
-
-<!-- ═══════════ DIAPO 18 — Merci ═══════════ -->
+<!-- ═══════════ DIAPO 17 — Merci ═══════════ -->
 <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
   <h1 style="font-size: 88px; margin-bottom: 24px; color: #3A5A40;">Merci.</h1>
   <p class="body" style="font-size: 34px; font-weight: 700; color: #1C1B18; margin-bottom: 14px;">
@@ -719,10 +724,9 @@
     IA Engineer — Cavalier Data
   </p>
   <div class="card wood" style="padding: 22px 48px; font-size: 19px;">
-    <p class="mono" style="margin-bottom: 8px;">Dépôt : https://github.com/richardhugou/p13-agent-ia-echecs</p>
-    <p class="mono">Vitrine : https://trikwi-p13-agent-echecs.hf.space</p>
+    <p class="mono">Dépôt GitHub public : https://github.com/richardhugou/p13-agent-ia-echecs</p>
   </div>
-  <div class="footer"><span>Cavalier Data × FFE</span><span>Fin de la soutenance</span><span>18 / 18</span></div>
+  <div class="footer"><span>Cavalier Data × FFE</span><span>Fin de la soutenance</span><span>17 / 17</span></div>
 </div>
 
 </body>

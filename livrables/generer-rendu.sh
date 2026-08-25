@@ -52,7 +52,7 @@ cat <<'MD' > "$STAGE/Hugou_Richard_1_code_lien_depot.md"
 - **Dépôt GitHub public** : https://github.com/richardhugou/p13-agent-ia-echecs
 - **Branche de soutenance** : `main` / `develop`
 - **Vitrine Cloud (Hugging Face Spaces GPU T4)** : https://trikwi-p13-agent-echecs.hf.space
-- **Vidéo de démonstration (Loom)** : https://www.loom.com/share/821b854d6676475bb82cb1830448a3c3
+- **Vidéo de démonstration (Loom)** : https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811
 
 ## Démarrage rapide en local
 

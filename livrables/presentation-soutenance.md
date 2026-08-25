@@ -32,7 +32,7 @@ La FFE prépare ses jeunes espoirs aux championnats d'Europe. **60 000 licencié
 
 **Vidéo de démonstration en conditions réelles (~45 s)** :
 - Parcours complet : choix du camp (Blancs), travail sur l'Italienne (3.Fc4), déclenchement des conseils sourcés, sortie de théorie (4.g4?!), bascule moteur Stockfish.
-- *Lien vidéo Loom : https://www.loom.com/share/821b854d6676475bb82cb1830448a3c3*
+- *Lien vidéo Loom : https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811*
 
 Visuels :
 - Capture d'écran réelle de l'application (`rendu/captures/ui-conseils-italienne.png`).

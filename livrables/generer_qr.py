@@ -105,7 +105,13 @@ def generer_qr_svg_autonome(url: str, output_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    url_loom = "https://www.loom.com/share/821b854d6676475bb82cb1830448a3c3"
+    url_loom = "https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811"
     out = Path(__file__).resolve().parent / "rendu" / "captures" / "qr-code-video.svg"
     out.parent.mkdir(parents=True, exist_ok=True)
-    generer_qr_svg_autonome(url_loom, out)
+    try:
+        import segno
+        q = segno.make(url_loom)
+        q.save(str(out), scale=10, border=4)
+        print(f"QR code SVG réel généré avec succès dans {out}")
+    except ImportError:
+        generer_qr_svg_autonome(url_loom, out)

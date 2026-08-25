@@ -1,7 +1,6 @@
 # Coach IA pour les ouvertures d'échecs (FFE × Cavalier Data)
 
 [![CI/CD Pipeline](https://github.com/richardhugou/p13-agent-ia-echecs/actions/workflows/ci.yml/badge.svg)](https://github.com/richardhugou/p13-agent-ia-echecs/actions)
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces%20GPU%20T4-blue)](https://trikwi-p13-agent-echecs.hf.space)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Angular 17](https://img.shields.io/badge/Angular-17-DD0031.svg?logo=angular&logoColor=white)](https://angular.io/)
 [![LangGraph](https://img.shields.io/badge/Orchestration-LangGraph-FF6F00.svg)](https://github.com/langchain-ai/langgraph)
@@ -31,7 +30,6 @@ L'application propose une interface échiquéenne fluide (Angular 17) connectée
 ![Interface d'entraînement aux ouvertures](livrables/rendu/captures/ui-conseils-italienne.png)
 
 - **Vidéo de démonstration en conditions réelles (~4 min)** : [Voir sur Loom](https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811)
-- **Vitrine Cloud en direct (GPU NVIDIA T4)** : https://trikwi-p13-agent-echecs.hf.space
 
 ---
 

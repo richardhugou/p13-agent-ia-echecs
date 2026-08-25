@@ -51,7 +51,6 @@ cat <<'MD' > "$STAGE/Hugou_Richard_1_code_lien_depot.md"
 - **Auteur** : Richard Hugou (IA Engineer — Cavalier Data)
 - **Dépôt GitHub public** : https://github.com/richardhugou/p13-agent-ia-echecs
 - **Branche de soutenance** : `main` / `develop`
-- **Vitrine Cloud (Hugging Face Spaces GPU T4)** : https://trikwi-p13-agent-echecs.hf.space
 - **Vidéo de démonstration (Loom)** : https://www.loom.com/share/d9b9362a60d74c838f022c29f307d811
 
 ## Démarrage rapide en local
@@ -68,7 +67,7 @@ echo "  ✓ code + lien dépôt (.md)"
 
 echo "── 2. Le support de soutenance ──"
 cp livrables/rendu/presentation-soutenance.pdf "$STAGE/Hugou_Richard_2_presentation_082026.pdf"
-echo "  ✓ présentation (18 diapos)"
+echo "  ✓ présentation (17 diapos)"
 
 echo "── 3. La note détaillée d'ingénierie (Partie 2) ──"
 md_vers_pdf livrables/note-benefices-limites.md "$STAGE/Hugou_Richard_3_note_analyse_video_082026.pdf"
